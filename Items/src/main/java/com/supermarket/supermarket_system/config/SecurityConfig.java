@@ -39,7 +39,7 @@ public class SecurityConfig {
                         // ITEM ENDPOINTS
                         // ============================================
                         // Anyone can view items
-                        .requestMatchers(HttpMethod.GET, "/items", "/items/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/items", "/items/**", "/test/getTest").permitAll()
 
                         // Only ADMIN can create, update, or delete items
                         .requestMatchers(HttpMethod.POST, "/items").hasRole("ADMIN")

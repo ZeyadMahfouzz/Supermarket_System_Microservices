@@ -41,7 +41,7 @@ public class TestController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/nayoPage")
+    @GetMapping("/getTest")
     public ResponseEntity<String> showNayoPage(HttpServletRequest request) {
         return ResponseEntity.ok("HIIIII WASSAAAAP");
     }

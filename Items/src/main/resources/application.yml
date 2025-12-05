@@ -1,9 +1,11 @@
 spring:
   application:
-    name: Supermarket_System
+    name: Items
+
+
 
   datasource:
-    url: jdbc:mysql://localhost:3306/supermarketdb
+    url: jdbc:mysql://localhost:3306/items
     username: root
     password: dumbPassword
 
