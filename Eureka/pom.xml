@@ -12,7 +12,7 @@
     </parent>
 
     <groupId>com.supermarket</groupId>
-    <artifactId>eureka-server</artifactId>
+    <artifactId>Eureka</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
