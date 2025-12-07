@@ -39,14 +39,14 @@ public class PaymentApplication {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // Constructors
-    public Payment() {
+    // Constructors must match the class name
+    public PaymentApplication() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
         this.status = "PENDING";
     }
 
-    public Payment(Long orderId, Double amount, String paymentMethod) {
+    public PaymentApplication(Long orderId, Double amount, String paymentMethod) {
         this();
         this.orderId = orderId;
         this.amount = amount;
