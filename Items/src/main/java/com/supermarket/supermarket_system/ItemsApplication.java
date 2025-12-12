@@ -7,10 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @OpenAPIDefinition(info = @Info(title = "Supermarket System API", version = "1.0"))
-public class SupermarketSystemApplication {
+public class ItemsApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SupermarketSystemApplication.class, args);
+        SpringApplication.run(ItemsApplication.class, args);
     }
 
 }
