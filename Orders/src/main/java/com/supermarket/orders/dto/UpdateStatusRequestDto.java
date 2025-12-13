@@ -12,7 +12,7 @@ import jakarta.validation.constraints.Pattern;
 @AllArgsConstructor
 public class UpdateStatusRequestDto {
     @NotBlank(message = "Status is required")
-    @Pattern(regexp = "PENDING|SHIPPING|DELIVERED|CANCELLED", 
-             message = "Status must be PENDING, SHIPPING, DELIVERED, or CANCELLED")
+    @Pattern(regexp = "PENDING|PROCESSING|SHIPPING|DELIVERED|CANCELLED",
+             message = "Status must be PENDING, PROCESSING, SHIPPING, DELIVERED, or CANCELLED")
     private String status;
 }
