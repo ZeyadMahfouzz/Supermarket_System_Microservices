@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="267d24eb-9f31-430b-9553-8719e849eedf" name="Changes" comment="Fixed Gateway" />
+    <list default="true" id="267d24eb-9f31-430b-9553-8719e849eedf" name="Changes" comment="Fixed Gateway">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Orders/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Orders/src/main/resources/application.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -61,6 +65,9 @@
     &quot;Spring Boot.CartApplication.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.EurekaApplication.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.GatewayApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.ItemsApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.OrdersApplication (1).executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.OrdersApplication.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.UsersApplication.executor&quot;: &quot;Run&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
@@ -110,6 +117,8 @@
             <map>
               <entry key="EurekaApplication" value="STOPPED" />
               <entry key="GatewayApplication" value="STOPPED" />
+              <entry key="ItemsApplication" value="STOPPED" />
+              <entry key="OrdersApplication (1)" value="STOPPED" />
               <entry key="UsersApplication" value="STOPPED" />
             </map>
           </value>
@@ -117,7 +126,7 @@
       </map>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.EurekaApplication">
+  <component name="RunManager" selected="Spring Boot.UsersApplication">
     <configuration name="CartApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="Cart" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.CartApplication" />
@@ -146,9 +155,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="OrdersApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <configuration name="OrdersApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
       <module name="Orders" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.OrdersApplication" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.orders.OrdersApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.supermarket.orders.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -183,13 +199,14 @@
       <item itemvalue="Spring Boot.CartApplication" />
       <item itemvalue="Spring Boot.GatewayApplication" />
       <item itemvalue="Spring Boot.ItemsApplication" />
-      <item itemvalue="Spring Boot.OrdersApplication" />
       <item itemvalue="Spring Boot.PaymentApplication" />
+      <item itemvalue="Spring Boot.OrdersApplication (1)" />
       <item itemvalue="Spring Boot.UsersApplication" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Spring Boot.UsersApplication" />
+        <item itemvalue="Spring Boot.OrdersApplication (1)" />
         <item itemvalue="Spring Boot.UsersApplication" />
       </list>
     </recent_temporary>
@@ -234,6 +251,8 @@
       <workItem from="1765628344526" duration="26000" />
       <workItem from="1765633644407" duration="425000" />
       <workItem from="1765635509391" duration="105000" />
+      <workItem from="1765799217162" duration="1187000" />
+      <workItem from="1765806654770" duration="2651000" />
     </task>
     <task id="LOCAL-00001" summary="Users - Gateway - Eureka">
       <option name="closed" value="true" />
