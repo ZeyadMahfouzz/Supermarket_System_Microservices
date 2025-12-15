@@ -1,6 +1,6 @@
-package com.supermarket.orders.dto;
+package com.supermarket.supermarket_system.dto;
 
-import com.supermarket.orders.model.Order;
+import com.supermarket.supermarket_system.model.Order;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;

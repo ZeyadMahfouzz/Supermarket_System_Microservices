@@ -1,7 +1,7 @@
-package com.supermarket.orders.service;
+package com.supermarket.supermarket_system.service;
 
-import com.supermarket.orders.model.Order;
-import com.supermarket.orders.repository.OrderRepository;
+import com.supermarket.supermarket_system.model.Order;
+import com.supermarket.supermarket_system.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

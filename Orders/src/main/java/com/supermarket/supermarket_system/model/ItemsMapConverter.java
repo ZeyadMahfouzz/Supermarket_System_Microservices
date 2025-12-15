@@ -1,4 +1,4 @@
-package com.supermarket.orders.model;
+package com.supermarket.supermarket_system.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

@@ -1,6 +1,6 @@
-package com.supermarket.orders.repository;
+package com.supermarket.supermarket_system.repository;
 
-import com.supermarket.orders.model.Order;
+import com.supermarket.supermarket_system.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

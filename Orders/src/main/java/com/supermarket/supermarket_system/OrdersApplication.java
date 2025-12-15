@@ -1,4 +1,4 @@
-package com.supermarket.orders;
+package com.supermarket.supermarket_system;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,7 +11,6 @@ public class OrdersApplication {
     public static void main(String[] args) {
         SpringApplication.run(OrdersApplication.class, args);
     }
-
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();

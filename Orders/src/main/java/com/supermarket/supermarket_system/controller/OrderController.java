@@ -1,11 +1,11 @@
-package com.supermarket.orders.controller;
+package com.supermarket.supermarket_system.controller;
 
-import com.supermarket.orders.dto.CheckoutRequestDto;
-import com.supermarket.orders.dto.OrderMapper;
-import com.supermarket.orders.dto.OrderResponseDto;
-import com.supermarket.orders.dto.UpdateStatusRequestDto;
-import com.supermarket.orders.model.Order;
-import com.supermarket.orders.service.OrderService;
+import com.supermarket.supermarket_system.dto.CheckoutRequestDto;
+import com.supermarket.supermarket_system.dto.OrderMapper;
+import com.supermarket.supermarket_system.dto.OrderResponseDto;
+import com.supermarket.supermarket_system.dto.UpdateStatusRequestDto;
+import com.supermarket.supermarket_system.model.Order;
+import com.supermarket.supermarket_system.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

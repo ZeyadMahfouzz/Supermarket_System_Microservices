@@ -1,4 +1,4 @@
-package com.supermarket.orders.model;
+package com.supermarket.supermarket_system.model;
 
 import lombok.Getter;
 import lombok.Setter;
