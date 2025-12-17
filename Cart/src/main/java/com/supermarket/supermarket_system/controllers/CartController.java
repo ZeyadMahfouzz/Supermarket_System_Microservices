@@ -23,17 +23,7 @@ public class CartController {
         return CartMapper.toDto(cart);
     }
 
-    @PostMapping("/items")
-    public CartResponseDto addItem(@RequestHeader("X-User-Id") Long userId,
-                                   @Valid @RequestBody AddCartItemRequestDto request) {
-        Cart cart = cartService.addItem(
-                userId,
-                request.getItemId(),
-                request.getQuantity(),
-                request.getUnitPrice()
-        );
-        return CartMapper.toDto(cart);
-    }
+
 
     @PutMapping("/items/{cartItemId}")
     public CartResponseDto updateItemQuantity(@RequestHeader("X-User-Id") Long userId,
