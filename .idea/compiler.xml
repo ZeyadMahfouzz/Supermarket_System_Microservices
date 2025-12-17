@@ -7,15 +7,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Orders" />
-        <module name="Users" />
         <module name="Payment" />
-        <module name="supermarket_system (5)" />
-        <module name="supermarket_system (3)" />
-        <module name="supermarket_system (4)" />
         <module name="Gateway" />
-        <module name="supermarket_system (1)" />
-        <module name="supermarket_system (2)" />
         <module name="Items" />
+        <module name="Users" />
         <module name="Eureka" />
         <module name="gateway" />
         <module name="Cart" />
@@ -35,11 +30,6 @@
       <module name="Payment" options="-parameters" />
       <module name="Users" options="-parameters" />
       <module name="gateway" options="-parameters" />
-      <module name="supermarket_system (1)" options="-parameters" />
-      <module name="supermarket_system (2)" options="-parameters" />
-      <module name="supermarket_system (3)" options="-parameters" />
-      <module name="supermarket_system (4)" options="-parameters" />
-      <module name="supermarket_system (5)" options="-parameters" />
     </option>
   </component>
 </project>
