@@ -4,39 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="267d24eb-9f31-430b-9553-8719e849eedf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/config/RabbitConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/dto/cart/CartCheckoutEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/dto/items/ItemAvailabilityRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/dto/items/ItemAvailabilityResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/services/CartPublisher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/config/RabbitConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/dto/items/ItemAvailabilityRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/dto/items/ItemAvailabilityResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/listeners/ItemAvailabilityListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/config/RabbitConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/dto/CheckoutEventDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cart/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Cart/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/controllers/CartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/controllers/CartController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/dto/cart/AddCartItemRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/dto/cart/AddCartItemRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/services/CartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/services/CartService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cart/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Cart/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gateway/src/main/java/com/supermarket/supermarket_system/filter/AuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Gateway/src/main/java/com/supermarket/supermarket_system/filter/AuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gateway/src/main/java/com/supermarket/supermarket_system/services/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Gateway/src/main/java/com/supermarket/supermarket_system/services/JwtService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gateway/src/main/java/com/supermarket/supermarket_system/utils/JwtUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/Gateway/src/main/java/com/supermarket/supermarket_system/utils/JwtUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Items/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Items/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/security/JwtAuthFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Items/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Items/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Orders/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Orders/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/OrdersApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/OrdersApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/service/OrderService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Orders/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Orders/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Users/src/main/java/com/supermarket/supermarket_system/services/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Users/src/main/java/com/supermarket/supermarket_system/services/JwtService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Users/src/main/java/com/supermarket/supermarket_system/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Users/src/main/java/com/supermarket/supermarket_system/services/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Users/src/main/java/com/supermarket/supermarket_system/utils/JwtUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/Users/src/main/java/com/supermarket/supermarket_system/utils/JwtUtils.java" afterDir="false" />
-    </list>
+    <list default="true" id="267d24eb-9f31-430b-9553-8719e849eedf" name="Changes" comment="Tried configuring rabbit mq, add &quot;add item&quot; to cart and fixed token issue" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -280,7 +248,7 @@
       <workItem from="1765817935178" duration="300000" />
       <workItem from="1765979788516" duration="5873000" />
       <workItem from="1765985715134" duration="3663000" />
-      <workItem from="1765991564462" duration="310000" />
+      <workItem from="1765991564462" duration="510000" />
     </task>
     <task id="LOCAL-00001" summary="Users - Gateway - Eureka">
       <option name="closed" value="true" />
@@ -338,7 +306,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765810436868</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Tried configuring rabbit mq, add &quot;add item&quot; to cart and fixed token issue">
+      <option name="closed" value="true" />
+      <created>1765992052978</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1765992052978</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -349,7 +325,8 @@
     <MESSAGE value="compiler.xml changes" />
     <MESSAGE value="Fixed Eureka" />
     <MESSAGE value="Fixed Gateway" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed Gateway" />
+    <MESSAGE value="Tried configuring rabbit mq, add &quot;add item&quot; to cart and fixed token issue" />
+    <option name="LAST_COMMIT_MESSAGE" value="Tried configuring rabbit mq, add &quot;add item&quot; to cart and fixed token issue" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
