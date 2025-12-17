@@ -4,6 +4,7 @@ import com.supermarket.supermarket_system.model.Order;
 import com.supermarket.supermarket_system.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import java.util.HashMap;
@@ -18,8 +19,14 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final RestTemplate restTemplate;
 
-    private static final String ITEM_SERVICE_URL = "http://localhost:8081/api/items";
-    private static final String CART_SERVICE_URL = "http://localhost:8083/api/cart";
+    // Use Eureka service names (LoadBalanced RestTemplate) to call Cart and Items
+    private String itemServiceUrl() {
+        return "http://Items/items";
+    }
+
+    private String cartServiceUrl() {
+        return "http://Cart/cart";
+    }
 
     // 1. Create Order from Cart
     public Order createOrderFromCart(Long userId, String paymentMethod) {
@@ -28,7 +35,7 @@ public class OrderService {
         // Fetch cart items
         Map cartItems;
         try {
-            cartItems = restTemplate.getForObject(CART_SERVICE_URL + "/" + userId, Map.class);
+            cartItems = restTemplate.getForObject(cartServiceUrl() + "/" + userId, Map.class);
             if (cartItems == null || ((Map) cartItems.get("items")).isEmpty()) {
                 throw new RuntimeException("Cart is empty for user: " + userId);
             }
@@ -53,7 +60,7 @@ public class OrderService {
 
         // Clear cart after successful order
         try {
-            restTemplate.delete(CART_SERVICE_URL + "/" + userId);
+            restTemplate.delete(cartServiceUrl() + "/" + userId);
             log.info("Cart cleared for user: {}", userId);
         } catch (Exception e) {
             log.warn("Failed to clear cart for user: {}, but order was created", userId, e);
@@ -174,7 +181,7 @@ public class OrderService {
         Map<String, Object> details = new HashMap<>();
         order.getItems().forEach((itemId, quantity) -> {
             try {
-                Map itemData = restTemplate.getForObject(ITEM_SERVICE_URL + "/" + itemId, Map.class);
+                Map itemData = restTemplate.getForObject(itemServiceUrl() + "/" + itemId, Map.class);
                 if (itemData != null) {
                     Map<String, Object> itemInfo = new HashMap<>();
                     itemInfo.put("quantity", quantity);
@@ -193,7 +200,7 @@ public class OrderService {
         items.forEach((itemId, quantity) -> {
             try {
                 int adjustment = restore ? quantity : -quantity;
-                restTemplate.put(ITEM_SERVICE_URL + "/" + itemId + "/quantity?adjustment=" + adjustment, null);
+                restTemplate.put(itemServiceUrl() + "/" + itemId + "/quantity?adjustment=" + adjustment, null);
                 log.debug("Updated quantity for item {}: adjustment {}", itemId, adjustment);
             } catch (Exception e) {
                 log.error("Failed to update quantity for item ID: {}, adjustment: {}", itemId, restore ? quantity : -quantity, e);
@@ -208,7 +215,7 @@ public class OrderService {
             try {
                 // Check stock availability before ordering
                 if (!restore) {
-                    Map itemData = restTemplate.getForObject(ITEM_SERVICE_URL + "/" + itemId, Map.class);
+                    Map itemData = restTemplate.getForObject(itemServiceUrl() + "/" + itemId, Map.class);
                     if (itemData == null) {
                         throw new RuntimeException("Item not found: " + itemId);
                     }
@@ -221,7 +228,7 @@ public class OrderService {
 
                 // Update quantities
                 int adjustment = restore ? quantity : -quantity;
-                restTemplate.put(ITEM_SERVICE_URL + "/" + itemId + "/quantity?adjustment=" + adjustment, null);
+                restTemplate.put(itemServiceUrl() + "/" + itemId + "/quantity?adjustment=" + adjustment, null);
                 log.debug("Stock validated and updated for item {}: adjustment {}", itemId, adjustment);
             } catch (Exception e) {
                 log.error("Failed to validate/update stock for item ID: {}", itemId, e);
