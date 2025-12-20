@@ -136,7 +136,7 @@ public class OrderController {
     @PostMapping("/status/update")
     public ResponseEntity<?> updateOrderStatus(
             @RequestHeader("X-User-Role") String role,
-            @RequestBody Map<String, Object> body) {
+            @Valid @RequestBody UpdateStatusRequestDto request) {
 
         // Admin check
         if (!"ADMIN".equalsIgnoreCase(role)) {
@@ -144,31 +144,11 @@ public class OrderController {
                     .body(Map.of("error", "Access denied: Admins only"));
         }
 
-        Object orderIdObj = body.get("orderId");
-        String status = (String) body.get("status");
-
-        if (orderIdObj == null) {
-            return ResponseEntity.badRequest()
-                    .body(Map.of("error", "orderId is required"));
-        }
-
-        if (status == null || status.isBlank()) {
-            return ResponseEntity.badRequest()
-                    .body(Map.of("error", "status is required"));
-        }
-
-        Long orderId;
         try {
-            orderId = orderIdObj instanceof Number ?
-                    ((Number) orderIdObj).longValue() :
-                    Long.parseLong(orderIdObj.toString());
-        } catch (NumberFormatException e) {
-            return ResponseEntity.badRequest()
-                    .body(Map.of("error", "orderId must be a valid number"));
-        }
-
-        try {
-            Order order = orderService.updateOrderStatus(orderId, status);
+            Order order = orderService.updateOrderStatus(
+                    request.getOrderId(),
+                    request.getStatus()
+            );
             OrderResponseDto response = orderMapper.toResponseDto(order);
             return ResponseEntity.ok(response);
 
