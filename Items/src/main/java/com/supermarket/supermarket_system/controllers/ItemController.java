@@ -227,4 +227,65 @@ public class ItemController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/restore")
+    @Transactional
+    public ResponseEntity<Map<String, Object>> restoreItemQuantity(@RequestBody Map<String, Object> request) {
+        System.out.println("=== HTTP RESTORE REQUEST RECEIVED ===");
+        System.out.println("Request: " + request);
+
+        Map<String, Object> response = new HashMap<>();
+
+        // Validate request
+        if (request == null || request.get("itemId") == null || request.get("quantity") == null) {
+            System.out.println("ERROR: Invalid request - missing itemId or quantity");
+            response.put("success", false);
+            response.put("message", "Invalid request: missing itemId or quantity");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // Parse itemId
+        Number itemIdNum = (Number) request.get("itemId");
+        Long itemId = itemIdNum == null ? null : itemIdNum.longValue();
+        System.out.println("Parsed itemId: " + itemId);
+
+        // Parse quantity
+        Number quantityNum = (Number) request.get("quantity");
+        int quantity = quantityNum == null ? 0 : quantityNum.intValue();
+        System.out.println("Parsed quantity to restore: " + quantity);
+
+        if (itemId == null || quantity <= 0) {
+            System.out.println("ERROR: Invalid itemId or quantity");
+            response.put("success", false);
+            response.put("message", "Invalid itemId or quantity");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // Find item
+        Item item = itemRepository.findById(itemId).orElse(null);
+        System.out.println("Item found: " + (item != null ? item.getName() : "NULL"));
+
+        if (item == null) {
+            System.out.println("ERROR: Item not found with ID: " + itemId);
+            response.put("success", false);
+            response.put("message", "Item not found");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // Restore quantity (add it back)
+        int newQuantity = item.getQuantity() + quantity;
+        item.setQuantity(newQuantity);
+        itemRepository.save(item);
+        System.out.println("SUCCESS: Quantity restored. New quantity: " + newQuantity);
+
+        // Return success response
+        response.put("success", true);
+        response.put("message", "Quantity restored successfully");
+        response.put("newQuantity", newQuantity);
+
+        System.out.println("Response: " + response);
+        System.out.println("=== END HTTP RESTORE REQUEST ===");
+
+        return ResponseEntity.ok(response);
+    }
+
 }

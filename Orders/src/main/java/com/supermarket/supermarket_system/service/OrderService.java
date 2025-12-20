@@ -5,9 +5,13 @@ import com.supermarket.supermarket_system.model.Order;
 import com.supermarket.supermarket_system.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -199,18 +203,77 @@ public class OrderService {
         order.setItemDetails(details);
     }
 
+    // Replace the updateItemQuantities method in OrderService.java with this:
+
     private void updateItemQuantities(Map<Long, Integer> items, boolean restore) {
         items.forEach((itemId, quantity) -> {
             try {
-                int adjustment = restore ? quantity : -quantity;
-                restTemplate.put(itemServiceUrl() + "/" + itemId + "/quantity?adjustment=" + adjustment, null);
-                log.debug("Updated quantity for item {}: adjustment {}", itemId, adjustment);
+                if (restore) {
+                    // Restore quantities by calling the /items/restore endpoint
+                    Map<String, Object> restoreRequest = new HashMap<>();
+                    restoreRequest.put("itemId", itemId);
+                    restoreRequest.put("quantity", quantity);
+
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                    HttpEntity<Map<String, Object>> entity = new HttpEntity<>(restoreRequest, headers);
+
+                    ResponseEntity<Map> response = restTemplate.postForEntity(
+                            itemServiceUrl() + "/restore",
+                            entity,
+                            Map.class
+                    );
+
+                    if (response.getStatusCode() != HttpStatus.OK || response.getBody() == null) {
+                        throw new RuntimeException("Items service did not respond properly for restoration");
+                    }
+
+                    Map<String, Object> respMap = response.getBody();
+                    boolean success = Boolean.TRUE.equals(respMap.get("success"));
+
+                    if (!success) {
+                        String message = (String) respMap.getOrDefault("message", "Failed to restore item quantity");
+                        throw new RuntimeException(message);
+                    }
+
+                    log.debug("Restored quantity for item {}: +{}", itemId, quantity);
+                } else {
+                    // Deduct quantities by calling the /items/deduct endpoint
+                    Map<String, Object> deductRequest = new HashMap<>();
+                    deductRequest.put("itemId", itemId);
+                    deductRequest.put("quantity", quantity);
+
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                    HttpEntity<Map<String, Object>> entity = new HttpEntity<>(deductRequest, headers);
+
+                    ResponseEntity<Map> response = restTemplate.postForEntity(
+                            itemServiceUrl() + "/deduct",
+                            entity,
+                            Map.class
+                    );
+
+                    if (response.getStatusCode() != HttpStatus.OK || response.getBody() == null) {
+                        throw new RuntimeException("Items service did not respond properly for deduction");
+                    }
+
+                    Map<String, Object> respMap = response.getBody();
+                    boolean success = Boolean.TRUE.equals(respMap.get("success"));
+
+                    if (!success) {
+                        String message = (String) respMap.getOrDefault("message", "Failed to deduct item quantity");
+                        throw new RuntimeException(message);
+                    }
+
+                    log.debug("Deducted quantity for item {}: -{}", itemId, quantity);
+                }
             } catch (Exception e) {
-                log.error("Failed to update quantity for item ID: {}, adjustment: {}", itemId, restore ? quantity : -quantity, e);
-                throw new RuntimeException("Failed to update item quantity for item: " + itemId);
+                log.error("Failed to update quantity for item ID: {}, restore: {}", itemId, restore, e);
+                throw new RuntimeException("Failed to update item quantity for item: " + itemId + ". " + e.getMessage());
             }
         });
     }
+
 
     // Helper: Validate stock availability and update quantities
     private void validateAndUpdateStock(Map<Long, Integer> items, boolean restore) {

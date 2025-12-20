@@ -4,31 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="267d24eb-9f31-430b-9553-8719e849eedf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/HUMANIZED_DESIGN_UPDATE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/REBRANDING_COMPLETE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/SPRINGMART_BRANDING.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/restart-clean.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/OrdersPage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/start-fresh.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/verify-setup.sh" afterDir="false" />
+    <list default="true" id="267d24eb-9f31-430b-9553-8719e849eedf" name="Changes" comment="cancellation returns quantity">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/models/CartItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/models/CartItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/services/CartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/services/CartService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/listeners/ItemAvailabilityListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/listeners/ItemAvailabilityListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/models/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/models/Item.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/axios.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/axios.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/services.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/services.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/cart/CartItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/cart/CartItem.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/Navbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/Navbar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/items/ItemCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/items/ItemCard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/contexts/AuthContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/contexts/AuthContext.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/contexts/CartContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/contexts/CartContext.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/AuthPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/AuthPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/CartPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/CartPage.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/HomePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/HomePage.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +22,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Frontend" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -122,6 +99,9 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Zeyad\OneDrive - New Giza University\Desktop\NGU\DisS_Project\Supermarket_System_MicroServices\Eureka" />
@@ -148,41 +128,38 @@
         <option value="SpringBootApplicationConfigurationType" />
       </set>
     </option>
+    <option name="hiddenConfigurations">
+      <map>
+        <entry key="SpringBootApplicationConfigurationType">
+          <value>
+            <set>
+              <option value="UsersApplication" />
+            </set>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="configurationStatuses">
       <map>
         <entry key="SpringBootApplicationConfigurationType">
           <value>
             <map>
-              <entry key="CartApplication (1)" value="STOPPED" />
+              <entry key="CartApplication" value="STOPPED" />
               <entry key="EurekaApplication" value="STOPPED" />
               <entry key="GatewayApplication" value="STOPPED" />
-              <entry key="ItemsApplication (1)" value="STOPPED" />
-              <entry key="OrdersApplication (1)" value="FAILED" />
-              <entry key="PaymentApplication (1)" value="STOPPED" />
+              <entry key="ItemsApplication" value="STOPPED" />
+              <entry key="OrdersApplication" value="STOPPED" />
+              <entry key="PaymentApplication" value="STOPPED" />
               <entry key="UsersApplication" value="STOPPED" />
-              <entry key="UsersApplication (1)" value="STOPPED" />
             </map>
           </value>
         </entry>
       </map>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.PaymentApplication (1)">
-    <configuration name="CartApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="supermarket_system (1)" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.CartApplication" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.supermarket.supermarket_system.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Spring Boot.UsersApplication">
     <configuration name="CartApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="supermarket_system (1)" />
+      <module name="Cart" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.CartApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -202,19 +179,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ItemsApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="supermarket_system (2)" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.ItemsApplication" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.supermarket.supermarket_system.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="ItemsApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="Items" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.ItemsApplication" />
@@ -222,35 +186,9 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="OrdersApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="supermarket_system (3)" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.OrdersApplication" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.supermarket.supermarket_system.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="OrdersApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="supermarket_system (3)" />
+      <module name="Orders" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.OrdersApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PaymentApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="supermarket_system (4)" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.PaymentApplication" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.supermarket.supermarket_system.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -262,8 +200,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UsersApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="supermarket_system (5)" />
+    <configuration name="UsersApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="Users" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.UsersApplication" />
       <extension name="coverage">
         <pattern>
@@ -282,19 +220,11 @@
       <item itemvalue="Spring Boot.GatewayApplication" />
       <item itemvalue="Spring Boot.ItemsApplication" />
       <item itemvalue="Spring Boot.PaymentApplication" />
-      <item itemvalue="Spring Boot.CartApplication (1)" />
-      <item itemvalue="Spring Boot.ItemsApplication (1)" />
-      <item itemvalue="Spring Boot.OrdersApplication (1)" />
-      <item itemvalue="Spring Boot.PaymentApplication (1)" />
-      <item itemvalue="Spring Boot.UsersApplication (1)" />
+      <item itemvalue="Spring Boot.UsersApplication" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.OrdersApplication (1)" />
-        <item itemvalue="Spring Boot.PaymentApplication (1)" />
-        <item itemvalue="Spring Boot.CartApplication (1)" />
-        <item itemvalue="Spring Boot.ItemsApplication (1)" />
-        <item itemvalue="Spring Boot.UsersApplication (1)" />
+        <item itemvalue="Spring Boot.UsersApplication" />
       </list>
     </recent_temporary>
   </component>
@@ -472,7 +402,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766229725890</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="cancellation returns quantity">
+      <option name="closed" value="true" />
+      <created>1766240514501</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1766240514501</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -517,7 +455,8 @@
     <MESSAGE value="added role constraints for items endpoints" />
     <MESSAGE value="used dto for status update in orders" />
     <MESSAGE value="Fixed payment and modified OrderController.java" />
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="cancellation returns quantity" />
+    <option name="LAST_COMMIT_MESSAGE" value="cancellation returns quantity" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -525,16 +464,11 @@
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/Gateway/src/main/java/com/supermarket/supermarket_system/services/JwtService.java</url>
           <line>12</line>
-          <properties class="com.supermarket.supermarket_system.services.JwtService">
+          <properties class="com.supermarket.supermarket_system.services.JwtService" method="generateToken">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/controllers/ItemController.java</url>
-          <line>100</line>
-          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
