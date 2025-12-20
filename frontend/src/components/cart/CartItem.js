@@ -6,6 +6,14 @@ const CartItem = ({ item }) => {
   const [updating, setUpdating] = useState(false);
   const { updateQuantity, removeItem } = useCart();
 
+  // Debug logging
+  console.log('CartItem received:', {
+    itemId: item.itemId,
+    name: item.name,
+    imageUrl: item.imageUrl,
+    fullItem: item
+  });
+
   const handleQuantityChange = async (newQuantity) => {
     if (newQuantity < 1) return;
 
@@ -22,14 +30,28 @@ const CartItem = ({ item }) => {
 
   return (
     <div className="flex items-center gap-4 p-4 bg-white rounded-lg shadow-md animate-slide-down hover:shadow-lg transition-shadow">
-      {/* Item Image Placeholder */}
-      <div className="w-20 h-20 rounded-lg bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center flex-shrink-0">
-        <span className="text-3xl">🛒</span>
+      {/* Item Image */}
+      <div className="w-20 h-20 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0">
+        {item.imageUrl ? (
+          <img
+            src={item.imageUrl}
+            alt={item.name || `Item ${item.itemId}`}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.parentElement.innerHTML = '<div class="w-full h-full flex items-center justify-center"><span class="text-2xl text-gray-400">📦</span></div>';
+            }}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <span className="text-2xl text-gray-400">📦</span>
+          </div>
+        )}
       </div>
 
       {/* Item Details */}
       <div className="flex-1 min-w-0">
-        <h3 className="font-semibold text-gray-800 truncate">Item #{item.itemId}</h3>
+        <h3 className="font-semibold text-gray-800 truncate">{item.name || `Item #${item.itemId}`}</h3>
         <p className="text-sm text-gray-600">${item.unitPrice?.toFixed(2)} each</p>
       </div>
 

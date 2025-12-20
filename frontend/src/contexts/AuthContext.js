@@ -50,6 +50,10 @@ export const AuthProvider = ({ children }) => {
           role: payload.role || 'USER',
         };
 
+        console.log('Login successful - User data:', userData);
+        console.log('Role from JWT:', payload.role);
+        console.log('Is Admin?', userData.role === 'ADMIN');
+
         localStorage.setItem('token', response.token);
         localStorage.setItem('userId', userData.id);
         localStorage.setItem('userEmail', userData.email);

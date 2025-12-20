@@ -16,6 +16,7 @@ api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
+    const userRole = localStorage.getItem('userRole');
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -24,6 +25,16 @@ api.interceptors.request.use(
     if (userId) {
       config.headers['X-User-Id'] = userId;
     }
+
+    if (userRole) {
+      config.headers['X-User-Role'] = userRole;
+    }
+
+    console.log('API Request Headers:', {
+      userId: config.headers['X-User-Id'],
+      userRole: config.headers['X-User-Role'],
+      url: config.url
+    });
 
     return config;
   },
@@ -42,6 +53,7 @@ api.interceptors.response.use(
       localStorage.removeItem('userId');
       localStorage.removeItem('userEmail');
       localStorage.removeItem('userName');
+      localStorage.removeItem('userRole');
       window.location.href = '/login';
     }
     return Promise.reject(error);

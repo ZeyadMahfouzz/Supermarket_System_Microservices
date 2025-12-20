@@ -76,15 +76,41 @@ export const cartAPI = {
   },
 };
 
-// Orders APIs (for future use)
+// Orders APIs
 export const ordersAPI = {
-  getUserOrders: async (userId) => {
-    const response = await api.get(`/Orders/user/${userId}/history`);
+  // Get user's order history
+  getUserOrders: async () => {
+    const response = await api.get('/orders/history');
     return response.data;
   },
 
+  // Get specific order by ID
   getOrderById: async (orderId) => {
-    const response = await api.get(`/Orders/${orderId}/details`);
+    const response = await api.post('/orders/details', { orderId });
+    return response.data;
+  },
+
+  // Get all orders (ADMIN only)
+  getAllOrders: async () => {
+    const response = await api.get('/orders/all');
+    return response.data;
+  },
+
+  // Get orders by status
+  getOrdersByStatus: async (status) => {
+    const response = await api.post('/orders/status', { status });
+    return response.data;
+  },
+
+  // Update order status (ADMIN only)
+  updateOrderStatus: async (orderId, status) => {
+    const response = await api.post('/orders/status/update', { orderId, status });
+    return response.data;
+  },
+
+  // Cancel order
+  cancelOrder: async (orderId) => {
+    const response = await api.post('/orders/cancel', { orderId });
     return response.data;
   },
 };

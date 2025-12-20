@@ -154,6 +154,19 @@ public class CartService {
         }
         double unitPrice = ((Number) respMap.get("unitPrice")).doubleValue();
 
+        // Get name and imageUrl from Items service response
+        String itemName = (String) respMap.get("name");
+        String imageUrl = (String) respMap.get("imageUrl");
+
+        // Debug logging
+        System.out.println("=== DEBUG: Items Service Response ===");
+        System.out.println("Item ID: " + request.getItemId());
+        System.out.println("Unit Price: " + unitPrice);
+        System.out.println("Item Name: " + itemName);
+        System.out.println("Image URL: " + imageUrl);
+        System.out.println("Full Response Map: " + respMap);
+        System.out.println("===================================");
+
         if (!available) {
             throw new IllegalArgumentException("Item not available");
         }
@@ -162,12 +175,34 @@ public class CartService {
             throw new IllegalArgumentException("Not enough quantity available");
         }
 
-        return this.addItem(
+        return this.addItemWithDetails(
                 userId,
                 request.getItemId(),
                 request.getQuantity(),
-                unitPrice
+                unitPrice,
+                itemName,
+                imageUrl
         );
+    }
+
+    public Cart addItemWithDetails(Long userId, Long itemId, int quantity, Double unitPrice, String name, String imageUrl) {
+        Cart cart = getCartByUserId(userId);
+
+        CartItem existing = cart.getItems().stream()
+                .filter(ci -> ci.getItemId().equals(itemId))
+                .findFirst()
+                .orElse(null);
+
+        if (existing != null) {
+            existing.setQuantity(existing.getQuantity() + quantity);
+            if (unitPrice != null) existing.setUnitPrice(unitPrice);
+            if (name != null) existing.setName(name);
+            if (imageUrl != null) existing.setImageUrl(imageUrl);
+        } else {
+            cart.addItem(new CartItem(itemId, quantity, unitPrice, name, imageUrl));
+        }
+
+        return cartRepository.save(cart);
     }
 
     public void checkout(Long userId, String paymentMethod) {

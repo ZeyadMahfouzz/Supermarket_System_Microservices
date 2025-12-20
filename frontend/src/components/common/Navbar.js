@@ -5,9 +5,12 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useCart } from '../../contexts/CartContext';
 
 const Navbar = () => {
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, logout, isAuthenticated, isAdmin } = useAuth();
   const { cartItemCount } = useCart();
   const navigate = useNavigate();
+
+  // Debug log
+  console.log('Navbar - User:', user, 'isAdmin:', isAdmin);
 
   const handleLogout = () => {
     logout();
@@ -15,22 +18,21 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 shadow-xl sticky top-0 z-50">
+    <nav className="bg-blue-600 shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/home" className="flex items-center space-x-3 group">
-            <div className="relative w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-              <svg className="w-6 h-6 text-amber-600" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 18c-3.86-1.04-7-5.35-7-10V8.3l7-3.11 7 3.11V10c0 4.65-3.14 8.96-7 10z"/>
-                <path d="M12 6L6 9v4c0 3.31 2.23 6.37 5 7.24V6h2v14.24c2.77-.87 5-3.93 5-7.24V9l-6-3z"/>
+            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm group-hover:shadow-md transition">
+              <svg className="w-6 h-6 text-blue-600" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
               </svg>
             </div>
-            <div className="flex flex-col">
-              <span className="text-xl font-bold text-white drop-shadow-lg" style={{ fontFamily: 'Georgia, serif' }}>
-                بركة السوق
+            <div className="flex items-center space-x-2">
+              <span className="text-xl font-semibold text-white">
+                SpringMart
               </span>
-              <span className="text-xs text-white/90 -mt-1">Baraka Souq</span>
+              <span className="text-sm text-white/80">🍃</span>
             </div>
           </Link>
 
@@ -38,37 +40,53 @@ const Navbar = () => {
           <div className="flex items-center space-x-6">
             <Link
               to="/home"
-              className="text-white hover:text-yellow-200 transition-colors font-medium"
+              className="text-white hover:text-blue-100 transition font-medium"
             >
               Products
             </Link>
 
+            {isAuthenticated && (
+              <Link
+                to="/orders"
+                className="text-white hover:text-blue-100 transition font-medium"
+              >
+                Orders
+              </Link>
+            )}
+
             {isAuthenticated ? (
               <>
-                {/* Cart Icon with Badge */}
-                <Link
-                  to="/cart"
-                  className="relative text-white hover:text-yellow-200 transition-colors"
-                >
-                  <ShoppingCart className="h-6 w-6" />
-                  {cartItemCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-white text-amber-600 text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center animate-bounce-subtle shadow-lg">
-                      {cartItemCount}
-                    </span>
-                  )}
-                </Link>
+                {/* Cart Icon with Badge - Only for regular users */}
+                {!isAdmin && (
+                  <Link
+                    to="/cart"
+                    className="relative text-white hover:text-blue-100 transition"
+                  >
+                    <ShoppingCart className="h-6 w-6" />
+                    {cartItemCount > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-white text-blue-600 text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-sm">
+                        {cartItemCount}
+                      </span>
+                    )}
+                  </Link>
+                )}
 
                 {/* User Menu */}
                 <div className="flex items-center space-x-4">
-                  <div className="flex items-center space-x-2 bg-white/20 px-3 py-2 rounded-lg">
-                    <User className="h-5 w-5 text-white" />
-                    <span className="text-sm font-medium text-white">
-                      {user?.name || user?.email}
-                    </span>
+                  <div className="flex items-center space-x-2 text-white">
+                    <User className="h-5 w-5" />
+                    <div className="flex flex-col">
+                      <span className="text-sm font-medium">
+                        {user?.name || user?.email}
+                      </span>
+                      {isAdmin && (
+                        <span className="text-xs text-blue-200">👨‍💼 Admin</span>
+                      )}
+                    </div>
                   </div>
                   <button
                     onClick={handleLogout}
-                    className="flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition-all font-medium"
+                    className="flex items-center gap-2 bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg transition font-medium"
                   >
                     <LogOut className="h-4 w-4" />
                     Logout

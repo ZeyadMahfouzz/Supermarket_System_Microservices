@@ -42,6 +42,18 @@ public class ItemAvailabilityListener {
         resp.put("available", item.getQuantity() > 0);
         resp.put("availableQuantity", item.getQuantity());
         resp.put("unitPrice", item.getPrice());
+        resp.put("name", item.getName());
+        resp.put("imageUrl", item.getImageUrl());
+
+        // Debug logging
+        System.out.println("=== DEBUG: Items Service Sending ===");
+        System.out.println("Item ID: " + itemId);
+        System.out.println("Item Name: " + item.getName());
+        System.out.println("Image URL: " + item.getImageUrl());
+        System.out.println("Unit Price: " + item.getPrice());
+        System.out.println("Full Response: " + resp);
+        System.out.println("===================================");
+
         return resp;
     }
 }

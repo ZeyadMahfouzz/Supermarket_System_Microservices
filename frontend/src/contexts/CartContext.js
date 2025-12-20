@@ -32,8 +32,10 @@ export const CartProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    fetchCart();
-  }, [isAuthenticated]);
+    if (isAuthenticated) {
+      fetchCart();
+    }
+  }, [isAuthenticated]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const addItem = async (itemId, quantity = 1) => {
     try {

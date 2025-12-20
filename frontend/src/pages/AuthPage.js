@@ -21,7 +21,6 @@ const AuthPage = () => {
   const { login, register } = useAuth();
   const navigate = useNavigate();
 
-
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -67,71 +66,62 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 flex items-center justify-center p-4 overflow-hidden relative">
-      {/* Egyptian Pattern Background */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-0 left-0 w-64 h-64 border-8 border-amber-600 rotate-45 transform -translate-x-32 -translate-y-32"></div>
-        <div className="absolute bottom-0 right-0 w-64 h-64 border-8 border-amber-600 rotate-45 transform translate-x-32 translate-y-32"></div>
-      </div>
-
-      <div className="w-full max-w-5xl relative z-10">
-        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="w-full max-w-5xl">
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
           <div className="grid md:grid-cols-2">
             {/* Left Side - Branding */}
-            <div className="bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 p-12 flex flex-col justify-center items-center text-white relative overflow-hidden">
-              {/* Pyramids decoration */}
-              <div className="absolute bottom-0 left-0 right-0 flex justify-center items-end opacity-20">
-                <div className="w-0 h-0 border-l-[100px] border-r-[100px] border-b-[150px] border-l-transparent border-r-transparent border-b-white mr-4"></div>
-                <div className="w-0 h-0 border-l-[80px] border-r-[80px] border-b-[120px] border-l-transparent border-r-transparent border-b-white mr-4"></div>
-                <div className="w-0 h-0 border-l-[60px] border-r-[60px] border-b-[90px] border-l-transparent border-r-transparent border-b-white"></div>
-              </div>
+            <div className="bg-blue-600 p-12 flex flex-col justify-center items-center text-white relative">
+              {/* Simple decorative elements */}
+              <div className="absolute top-8 right-8 text-3xl opacity-20">🍃</div>
+              <div className="absolute bottom-8 left-8 text-3xl opacity-20">🌱</div>
 
-              <div className="relative z-10 text-center animate-fade-in">
+              <div className="text-center space-y-6">
                 {/* Logo */}
-                <div className="mb-6 flex justify-center">
-                  <div className="relative w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-xl animate-bounce-subtle">
-                    <svg className="w-20 h-20 text-amber-600" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 18c-3.86-1.04-7-5.35-7-10V8.3l7-3.11 7 3.11V10c0 4.65-3.14 8.96-7 10z"/>
-                      <path d="M12 6L6 9v4c0 3.31 2.23 6.37 5 7.24V6h2v14.24c2.77-.87 5-3.93 5-7.24V9l-6-3z"/>
+                <div className="mb-8 flex justify-center">
+                  <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center shadow-md">
+                    <svg className="w-14 h-14 text-blue-600" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
                     </svg>
                   </div>
                 </div>
 
                 {/* Brand Name */}
-                <h1 className="text-5xl font-bold mb-4 drop-shadow-lg" style={{ fontFamily: 'Georgia, serif' }}>
-                  بركة السوق
-                </h1>
-                <h2 className="text-3xl font-semibold mb-2">Baraka Souq</h2>
-                <p className="text-xl opacity-90 mb-8">Egyptian Fresh Market</p>
+                <div>
+                  <h1 className="text-5xl font-bold mb-3">
+                    SpringMart
+                  </h1>
+                  <p className="text-xl text-blue-100">Fresh groceries, delivered fast</p>
+                </div>
 
-                <div className="space-y-4">
-                  <p className="text-lg">🌾 Fresh from the Nile Valley</p>
-                  <p className="text-lg">⭐ Quality since 1990</p>
-                  <p className="text-lg">🛒 Delivering Tradition</p>
+                <div className="pt-8 space-y-3 text-blue-50">
+                  <p className="text-base">🛒 Easy online shopping</p>
+                  <p className="text-base">⚡ Quick delivery</p>
+                  <p className="text-base">🌟 Quality products</p>
                 </div>
               </div>
             </div>
 
             {/* Right Side - Auth Forms */}
-            <div className="p-12 relative">
+            <div className="p-12 relative bg-white">
               {/* Toggle Buttons */}
-              <div className="flex mb-8 bg-gray-100 rounded-full p-1">
+              <div className="flex gap-2 mb-8">
                 <button
                   onClick={() => setIsLogin(true)}
-                  className={`flex-1 py-3 rounded-full font-semibold transition-all duration-300 ${
+                  className={`flex-1 py-3 px-4 rounded-lg font-medium transition ${
                     isLogin
-                      ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg scale-105'
-                      : 'text-gray-600 hover:text-gray-800'
+                      ? 'bg-blue-600 text-white shadow-sm'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
                   Login
                 </button>
                 <button
                   onClick={() => setIsLogin(false)}
-                  className={`flex-1 py-3 rounded-full font-semibold transition-all duration-300 ${
+                  className={`flex-1 py-3 px-4 rounded-lg font-medium transition ${
                     !isLogin
-                      ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg scale-105'
-                      : 'text-gray-600 hover:text-gray-800'
+                      ? 'bg-blue-600 text-white shadow-sm'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
                   Sign Up
@@ -140,18 +130,20 @@ const AuthPage = () => {
 
               {/* Error Message */}
               {error && (
-                <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg animate-slide-down">
+                <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
                   {error}
                 </div>
               )}
 
               {/* Login Form */}
               <div
-                className={`transition-all duration-500 transform ${
-                  isLogin ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full absolute inset-0 pointer-events-none'
+                className={`transition-all duration-300 transform ${
+                  isLogin 
+                    ? 'opacity-100 translate-x-0 relative z-10' 
+                    : 'opacity-0 translate-x-full absolute inset-0 pointer-events-none z-0'
                 }`}
               >
-                <h2 className="text-3xl font-bold text-gray-800 mb-6">Welcome Back!</h2>
+                <h2 className="text-2xl font-semibold text-gray-900 mb-6">Welcome back</h2>
                 <form onSubmit={handleLoginSubmit} className="space-y-5">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
@@ -161,7 +153,7 @@ const AuthPage = () => {
                         type="email"
                         value={loginData.email}
                         onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
-                        className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all"
+                        className="w-full pl-12 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition"
                         placeholder="your@email.com"
                         required
                       />
@@ -176,7 +168,7 @@ const AuthPage = () => {
                         type="password"
                         value={loginData.password}
                         onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-                        className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all"
+                        className="w-full pl-12 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition"
                         placeholder="••••••••"
                         required
                       />
@@ -186,20 +178,28 @@ const AuthPage = () => {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white py-3 rounded-lg font-semibold hover:from-amber-600 hover:to-orange-600 transform hover:scale-105 transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-medium hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {loading ? 'Signing In...' : 'Sign In'}
+                    {loading ? 'Signing in...' : 'Sign in'}
                   </button>
+
+                  <div className="mt-4 text-center">
+                    <p className="text-xs text-gray-500">
+                      💡 Your account type (User/Admin) was set during signup
+                    </p>
+                  </div>
                 </form>
               </div>
 
               {/* Register Form */}
               <div
-                className={`transition-all duration-500 transform ${
-                  !isLogin ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-full absolute inset-0 pointer-events-none'
+                className={`transition-all duration-300 transform ${
+                  !isLogin 
+                    ? 'opacity-100 translate-x-0 relative z-10' 
+                    : 'opacity-0 -translate-x-full absolute inset-0 pointer-events-none z-0'
                 }`}
               >
-                <h2 className="text-3xl font-bold text-gray-800 mb-6">Create Account</h2>
+                <h2 className="text-2xl font-semibold text-gray-900 mb-6">Create an account</h2>
                 <form onSubmit={handleRegisterSubmit} className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
@@ -209,8 +209,8 @@ const AuthPage = () => {
                         type="text"
                         value={registerData.name}
                         onChange={(e) => setRegisterData({ ...registerData, name: e.target.value })}
-                        className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all"
-                        placeholder="Ahmed Mohamed"
+                        className="w-full pl-12 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition"
+                        placeholder="John Doe"
                         required
                       />
                     </div>
@@ -224,7 +224,7 @@ const AuthPage = () => {
                         type="email"
                         value={registerData.email}
                         onChange={(e) => setRegisterData({ ...registerData, email: e.target.value })}
-                        className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all"
+                        className="w-full pl-12 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition"
                         placeholder="your@email.com"
                         required
                       />
@@ -240,7 +240,7 @@ const AuthPage = () => {
                           type="password"
                           value={registerData.password}
                           onChange={(e) => setRegisterData({ ...registerData, password: e.target.value })}
-                          className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all"
+                          className="w-full pl-12 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition"
                           placeholder="••••••••"
                           required
                         />
@@ -255,7 +255,7 @@ const AuthPage = () => {
                           type="password"
                           value={registerData.confirmPassword}
                           onChange={(e) => setRegisterData({ ...registerData, confirmPassword: e.target.value })}
-                          className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all"
+                          className="w-full pl-12 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition"
                           placeholder="••••••••"
                           required
                         />
@@ -271,8 +271,8 @@ const AuthPage = () => {
                         type="tel"
                         value={registerData.phone}
                         onChange={(e) => setRegisterData({ ...registerData, phone: e.target.value })}
-                        className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all"
-                        placeholder="+20 1234567890"
+                        className="w-full pl-12 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition"
+                        placeholder="+1 (555) 123-4567"
                       />
                     </div>
                   </div>
@@ -285,18 +285,43 @@ const AuthPage = () => {
                         type="text"
                         value={registerData.address}
                         onChange={(e) => setRegisterData({ ...registerData, address: e.target.value })}
-                        className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all"
-                        placeholder="Cairo, Egypt"
+                        className="w-full pl-12 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition"
+                        placeholder="123 Main St, City, Country"
                       />
                     </div>
+                  </div>
+
+                  <div className="border-2 border-blue-200 rounded-lg p-4 bg-blue-50">
+                    <label className="block text-sm font-bold text-gray-900 mb-2">
+                      ⭐ Account Type
+                    </label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-600 w-5 h-5 z-10" />
+                      <select
+                        value={registerData.role}
+                        onChange={(e) => setRegisterData({ ...registerData, role: e.target.value })}
+                        className="w-full pl-12 pr-4 py-3 border-2 border-blue-300 rounded-lg focus:outline-none focus:border-blue-600 transition appearance-none bg-white font-medium text-gray-900 cursor-pointer"
+                      >
+                        <option value="USER">👤 Regular User - Shop & Buy</option>
+                        <option value="ADMIN">👨‍💼 Admin - Manage Products & Orders</option>
+                      </select>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </div>
+                    </div>
+                    <p className="text-xs text-blue-700 mt-2 font-medium">
+                      💡 <strong>Regular Users</strong> can shop. <strong>Admins</strong> can manage the store.
+                    </p>
                   </div>
 
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white py-3 rounded-lg font-semibold hover:from-amber-600 hover:to-orange-600 transform hover:scale-105 transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-medium hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {loading ? 'Creating Account...' : 'Create Account'}
+                    {loading ? 'Creating account...' : 'Create account'}
                   </button>
                 </form>
               </div>

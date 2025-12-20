@@ -5,39 +5,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="267d24eb-9f31-430b-9553-8719e849eedf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Gateway/src/main/java/com/supermarket/supermarket_system/config/CorsConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/frontend.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/postcss.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/api/axios.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/api/services.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/auth/LoginForm.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/auth/RegisterForm.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/cart/CartItem.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/cart/CartSummary.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/common/Button.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/common/Card.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/common/Input.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/common/Navbar.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/common/ProtectedRoute.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/common/Spinner.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/common/Toast.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/items/ItemCard.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/items/ItemList.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/contexts/AuthContext.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/contexts/CartContext.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/AuthPage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/CartPage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/HomePage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/LoginPage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/RegisterPage.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/tailwind.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/HUMANIZED_DESIGN_UPDATE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/REBRANDING_COMPLETE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/SPRINGMART_BRANDING.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/restart-clean.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/OrdersPage.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/start-fresh.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/verify-setup.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/controllers/ItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/controllers/ItemController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/models/CartItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/models/CartItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/services/CartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/services/CartService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/listeners/ItemAvailabilityListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/listeners/ItemAvailabilityListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/models/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/models/Item.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/axios.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/axios.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/services.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/services.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/cart/CartItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/cart/CartItem.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/Navbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/Navbar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/items/ItemCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/items/ItemCard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/contexts/AuthContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/contexts/AuthContext.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/contexts/CartContext.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/contexts/CartContext.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/AuthPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/AuthPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/CartPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/CartPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/HomePage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/HomePage.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +45,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="Frontend" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -88,49 +79,49 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Notification.DisplayName-DoNotAsk-DatabaseConfigFileWatcher.found": "New/updated database configurations found",
-    "Notification.DoNotAsk-DatabaseConfigFileWatcher.found": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Spring Boot.CartApplication (1).executor": "Run",
-    "Spring Boot.CartApplication.executor": "Run",
-    "Spring Boot.EurekaApplication.executor": "Run",
-    "Spring Boot.GatewayApplication.executor": "Run",
-    "Spring Boot.ItemsApplication (1).executor": "Run",
-    "Spring Boot.ItemsApplication.executor": "Run",
-    "Spring Boot.OrdersApplication (1).executor": "Run",
-    "Spring Boot.OrdersApplication.executor": "Run",
-    "Spring Boot.PaymentApplication (1).executor": "Run",
-    "Spring Boot.PaymentApplication.executor": "Run",
-    "Spring Boot.UsersApplication (1).executor": "Run",
-    "Spring Boot.UsersApplication.executor": "Run",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Zeyad/OneDrive - New Giza University/Desktop/NGU/DisS_Project/Supermarket_System_MicroServices/Eureka",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_interpreter_path": "node",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "SDKs",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.35402298",
-    "run.configurations.included.in.services": "true",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Notification.DisplayName-DoNotAsk-DatabaseConfigFileWatcher.found&quot;: &quot;New/updated database configurations found&quot;,
+    &quot;Notification.DoNotAsk-DatabaseConfigFileWatcher.found&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Spring Boot.CartApplication (1).executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.CartApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.EurekaApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.GatewayApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.ItemsApplication (1).executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.ItemsApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.OrdersApplication (1).executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.OrdersApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.PaymentApplication (1).executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.PaymentApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.UsersApplication (1).executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.UsersApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Zeyad/OneDrive - New Giza University/Desktop/NGU/DisS_Project/Supermarket_System_MicroServices/Eureka&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.35402298&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Zeyad\OneDrive - New Giza University\Desktop\NGU\DisS_Project\Supermarket_System_MicroServices\Eureka" />
@@ -162,7 +153,14 @@
         <entry key="SpringBootApplicationConfigurationType">
           <value>
             <map>
+              <entry key="CartApplication (1)" value="STOPPED" />
+              <entry key="EurekaApplication" value="STOPPED" />
+              <entry key="GatewayApplication" value="STOPPED" />
               <entry key="ItemsApplication (1)" value="STOPPED" />
+              <entry key="OrdersApplication (1)" value="FAILED" />
+              <entry key="PaymentApplication (1)" value="STOPPED" />
+              <entry key="UsersApplication" value="STOPPED" />
+              <entry key="UsersApplication (1)" value="STOPPED" />
             </map>
           </value>
         </entry>
@@ -184,7 +182,7 @@
       </method>
     </configuration>
     <configuration name="CartApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="Cart" />
+      <module name="supermarket_system (1)" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.CartApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -238,7 +236,7 @@
       </method>
     </configuration>
     <configuration name="OrdersApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="Orders" />
+      <module name="supermarket_system (3)" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.OrdersApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -292,10 +290,10 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.ItemsApplication (1)" />
+        <item itemvalue="Spring Boot.OrdersApplication (1)" />
         <item itemvalue="Spring Boot.PaymentApplication (1)" />
         <item itemvalue="Spring Boot.CartApplication (1)" />
-        <item itemvalue="Spring Boot.OrdersApplication (1)" />
+        <item itemvalue="Spring Boot.ItemsApplication (1)" />
         <item itemvalue="Spring Boot.UsersApplication (1)" />
       </list>
     </recent_temporary>
@@ -527,7 +525,7 @@
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/Gateway/src/main/java/com/supermarket/supermarket_system/services/JwtService.java</url>
           <line>12</line>
-          <properties class="com.supermarket.supermarket_system.services.JwtService" method="generateToken">
+          <properties class="com.supermarket.supermarket_system.services.JwtService">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>

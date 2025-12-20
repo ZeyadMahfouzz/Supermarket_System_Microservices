@@ -7,6 +7,7 @@ import ProtectedRoute from './components/common/ProtectedRoute';
 import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';
 import CartPage from './pages/CartPage';
+import OrdersPage from './pages/OrdersPage';
 
 function App() {
   return (
@@ -37,6 +38,17 @@ function App() {
                     <>
                       <Navbar />
                       <CartPage />
+                    </>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/orders"
+                element={
+                  <ProtectedRoute>
+                    <>
+                      <Navbar />
+                      <OrdersPage />
                     </>
                   </ProtectedRoute>
                 }

@@ -18,14 +18,18 @@ public class Item {
     private String category;
     private String description;
 
+    @Column(length = 500)
+    private String imageUrl;
+
     public Item() {}
 
-    public Item(String name, Double price, int quantity, String category, String description) {
+    public Item(String name, Double price, int quantity, String category, String description, String imageUrl) {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
         this.category = category;
         this.description = description;
+        this.imageUrl = imageUrl;
     }
 
     // Primary key (ID)
@@ -51,7 +55,7 @@ public class Item {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-
-
-
+    // Image URL
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 }
