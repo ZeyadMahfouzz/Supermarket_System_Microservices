@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="267d24eb-9f31-430b-9553-8719e849eedf" name="Changes" comment="added role constraints for items endpoints" />
+    <list default="true" id="267d24eb-9f31-430b-9553-8719e849eedf" name="Changes" comment="used dto for status update in orders">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/controller/OrderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/service/OrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Payment/src/main/java/com/supermarket/supermarket_system/controller/PaymentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Payment/src/main/java/com/supermarket/supermarket_system/controller/PaymentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Payment/src/main/java/com/supermarket/supermarket_system/model/Payment.java" beforeDir="false" afterPath="$PROJECT_DIR$/Payment/src/main/java/com/supermarket/supermarket_system/model/Payment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Payment/src/main/java/com/supermarket/supermarket_system/repository/PaymentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Payment/src/main/java/com/supermarket/supermarket_system/repository/PaymentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Payment/src/main/java/com/supermarket/supermarket_system/service/PaymentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Payment/src/main/java/com/supermarket/supermarket_system/service/PaymentService.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -266,7 +274,7 @@
       <workItem from="1766042460755" duration="94000" />
       <workItem from="1766047010303" duration="6002000" />
       <workItem from="1766056569383" duration="3389000" />
-      <workItem from="1766221894660" duration="4509000" />
+      <workItem from="1766221894660" duration="5590000" />
     </task>
     <task id="LOCAL-00001" summary="Users - Gateway - Eureka">
       <option name="closed" value="true" />
@@ -372,7 +380,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766228286107</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="used dto for status update in orders">
+      <option name="closed" value="true" />
+      <created>1766228395044</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1766228395044</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -400,7 +416,8 @@
     <MESSAGE value="Fixed Cart and checkout" />
     <MESSAGE value="minor order controller modification" />
     <MESSAGE value="added role constraints for items endpoints" />
-    <option name="LAST_COMMIT_MESSAGE" value="added role constraints for items endpoints" />
+    <MESSAGE value="used dto for status update in orders" />
+    <option name="LAST_COMMIT_MESSAGE" value="used dto for status update in orders" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

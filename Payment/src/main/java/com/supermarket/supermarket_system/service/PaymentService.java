@@ -39,6 +39,10 @@ public class PaymentService {
         return paymentRepository.findByOrderId(orderId);
     }
 
+    public List<Payment> getPaymentsByUserId(Long userId) {
+        return paymentRepository.findByUserId(userId);
+    }
+
     public Payment getPaymentByTransactionId(String transactionId) {
         return paymentRepository.findByTransactionId(transactionId)
                 .orElseThrow(() -> new RuntimeException("Payment not found with transaction id: " + transactionId));

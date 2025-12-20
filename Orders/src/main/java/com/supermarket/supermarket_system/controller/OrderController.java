@@ -24,9 +24,12 @@ public class OrderController {
     @Autowired
     private OrderMapper orderMapper;
 
-    // Get specific order by ID
+    // Get specific order by ID (OWNER or ADMIN only)
     @PostMapping("/details")
-    public ResponseEntity<?> getOrderById(@RequestBody Map<String, Long> body) {
+    public ResponseEntity<?> getOrderById(
+            @RequestHeader("X-User-Id") Long userId,
+            @RequestHeader("X-User-Role") String role,
+            @RequestBody Map<String, Long> body) {
 
         Long orderId = body.get("orderId");
         if (orderId == null) {
@@ -36,6 +39,16 @@ public class OrderController {
 
         try {
             Order order = orderService.getOrderById(orderId);
+
+            // Authorization check
+            boolean isAdmin = "ADMIN".equalsIgnoreCase(role);
+            boolean isOwner = order.getUserId().equals(userId);
+
+            if (!isAdmin && !isOwner) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(Map.of("error", "You are not allowed to view this order"));
+            }
+
             OrderResponseDto response = orderMapper.toResponseDto(order);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
@@ -43,6 +56,7 @@ public class OrderController {
                     .body(Map.of("error", e.getMessage()));
         }
     }
+
 
 
     // Get user's order history
@@ -80,18 +94,13 @@ public class OrderController {
     }
 
 
-    // Get orders by status (ADMIN ONLY)
+    // Get orders by status (Admins see all, Users see only their own)
     @PostMapping("/status")
     public ResponseEntity<?> getOrdersByStatus(
+            @RequestHeader("X-User-Id") Long userId,
             @RequestHeader("X-User-Role") String role,
             @RequestBody Map<String, String> body) {
 
-        // Admin check
-        if (!"ADMIN".equalsIgnoreCase(role)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(Map.of("error", "Access denied: Admins only"));
-        }
-
         String status = body.get("status");
         if (status == null || status.isBlank()) {
             return ResponseEntity.badRequest()
@@ -99,33 +108,20 @@ public class OrderController {
         }
 
         try {
-            List<Order> orders = orderService.getOrdersByStatus(status);
+            List<Order> orders;
+
+            // Admins see all orders with the given status
+            if ("ADMIN".equalsIgnoreCase(role)) {
+                orders = orderService.getOrdersByStatus(status);
+            }
+            // Regular users see only their own orders with the given status
+            else {
+                orders = orderService.getUserOrdersByStatus(userId, status);
+            }
+
             List<OrderResponseDto> response = orderMapper.toResponseDtoList(orders);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.badRequest()
-                    .body(Map.of("error", e.getMessage()));
-        }
-    }
-
-
-    // Get user's orders filtered by status
-    @PostMapping("/status/me")
-    public ResponseEntity<?> getUserOrdersByStatus(
-            @RequestHeader("X-User-Id") Long userId,
-            @RequestBody Map<String, String> body) {
-
-        String status = body.get("status");
-        if (status == null || status.isBlank()) {
-            return ResponseEntity.badRequest()
-                    .body(Map.of("error", "Status is required"));
-        }
-
-        try {
-            List<Order> orders = orderService.getUserOrdersByStatus(userId, status);
-            List<OrderResponseDto> response = orderMapper.toResponseDtoList(orders);
-            return ResponseEntity.ok(response);
-        } catch (RuntimeException e) {
             return ResponseEntity.badRequest()
                     .body(Map.of("error", e.getMessage()));
         }
