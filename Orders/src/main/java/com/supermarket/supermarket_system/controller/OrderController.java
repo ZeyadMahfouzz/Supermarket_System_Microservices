@@ -157,7 +157,7 @@ public class OrderController {
 
 
     // Cancel order (OWNER or ADMIN only)
-    @PostMapping("/cancel")
+    @DeleteMapping("/cancel")
     public ResponseEntity<?> cancelOrder(
             @RequestHeader("X-User-Id") Long userId,
             @RequestHeader("X-User-Role") String role,

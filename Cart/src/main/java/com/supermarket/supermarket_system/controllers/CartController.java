@@ -48,22 +48,21 @@ public class CartController {
         return ResponseEntity.ok(CartMapper.toDto(cart));
     }
 
-    @PutMapping("/items/{cartItemId}")
+    @PutMapping("/items")
     public CartResponseDto updateItemQuantity(
             @RequestHeader("X-User-Id") Long userId,
-            @PathVariable Long cartItemId,
             @Valid @RequestBody UpdateCartItemQuantityRequestDto request) {
 
-        Cart cart = cartService.updateItemQuantity(userId, cartItemId, request.getQuantity());
+        Cart cart = cartService.updateItemQuantity(userId, request.getCartItemId(), request.getQuantity());
         return CartMapper.toDto(cart);
     }
 
-    @DeleteMapping("/items/{cartItemId}")
+    @DeleteMapping("/items")
     public CartResponseDto removeItem(
             @RequestHeader("X-User-Id") Long userId,
-            @PathVariable Long cartItemId) {
+            @Valid @RequestBody UpdateCartItemQuantityRequestDto request) {
 
-        Cart cart = cartService.removeItem(userId, cartItemId);
+        Cart cart = cartService.removeItem(userId, request.getCartItemId());
         return CartMapper.toDto(cart);
     }
 
