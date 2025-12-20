@@ -6,12 +6,18 @@ import com.supermarket.supermarket_system.dto.cart.CartCheckoutEvent;
 import com.supermarket.supermarket_system.models.Cart;
 import com.supermarket.supermarket_system.models.CartItem;
 import com.supermarket.supermarket_system.repositories.CartRepository;
-import jakarta.ws.rs.ServiceUnavailableException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,14 +37,17 @@ public class CartService {
     @Autowired
     private CartPublisher cartPublisher;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     @Value("${app.rabbitmq.item-exchange:items.exchange}")
     private String itemExchange;
 
     @Value("${app.rabbitmq.item-routing-key:items.routingkey}")
     private String itemRoutingKey;
 
-    @Value("${app.rabbitmq.item-deduct-routing-key:items.deduct.routingkey}")
-    private String itemDeductRoutingKey;
+    @Value("${app.items.service.url:http://items}")
+    private String itemsServiceUrl;
 
     @Autowired
     public CartService(CartRepository cartRepository) {
@@ -118,7 +127,10 @@ public class CartService {
         );
 
         if (respObj == null) {
-            throw new ServiceUnavailableException("Items service did not respond");
+            throw new ResponseStatusException(
+                    HttpStatus.SERVICE_UNAVAILABLE,
+                    "Items service did not respond for deduction"
+            );
         }
 
         Map<String, Object> respMap;
@@ -165,38 +177,46 @@ public class CartService {
             throw new IllegalStateException("Cart is empty");
         }
 
-        // Step 1: Deduct quantities from Items service for each cart item
+        // Step 1: Deduct quantities from Items service via HTTP for each cart item
         for (CartItem item : cart.getItems()) {
             Map<String, Object> deductRequest = new HashMap<>();
             deductRequest.put("itemId", item.getItemId());
             deductRequest.put("quantity", item.getQuantity());
 
-            // RPC call to deduct quantity
-            Object respObj = rabbitTemplate.convertSendAndReceive(
-                    itemExchange,
-                    itemDeductRoutingKey,
-                    deductRequest
-            );
+            try {
+                // HTTP POST call to Items service
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                HttpEntity<Map<String, Object>> entity = new HttpEntity<>(deductRequest, headers);
 
-            if (respObj == null) {
-                throw new ServiceUnavailableException("Items service did not respond for deduction");
-            }
+                ResponseEntity<Map> response = restTemplate.postForEntity(
+                        itemsServiceUrl + "/items/deduct",
+                        entity,
+                        Map.class
+                );
 
-            Map<String, Object> respMap;
-            if (respObj instanceof Map<?, ?> map) {
-                respMap = (Map<String, Object>) map;
-            } else {
-                try {
-                    respMap = objectMapper.convertValue(respObj, Map.class);
-                } catch (Exception e) {
-                    throw new IllegalStateException("Invalid response from Items service");
+                if (response.getStatusCode() != HttpStatus.OK || response.getBody() == null) {
+                    throw new ResponseStatusException(
+                            HttpStatus.SERVICE_UNAVAILABLE,
+                            "Items service did not respond properly for deduction"
+                    );
                 }
-            }
 
-            boolean success = Boolean.TRUE.equals(respMap.get("success"));
-            if (!success) {
-                String message = (String) respMap.getOrDefault("message", "Failed to deduct item quantity");
-                throw new IllegalStateException(message);
+                Map<String, Object> respMap = response.getBody();
+                boolean success = Boolean.TRUE.equals(respMap.get("success"));
+
+                if (!success) {
+                    String message = (String) respMap.getOrDefault("message", "Failed to deduct item quantity");
+                    throw new IllegalStateException(message);
+                }
+            } catch (Exception e) {
+                if (e instanceof IllegalStateException) {
+                    throw e;
+                }
+                throw new ResponseStatusException(
+                        HttpStatus.SERVICE_UNAVAILABLE,
+                        "Failed to communicate with Items service: " + e.getMessage()
+                );
             }
         }
 
@@ -205,24 +225,29 @@ public class CartService {
                 .mapToDouble(ci -> (ci.getUnitPrice() == null ? 0.0 : ci.getUnitPrice()) * ci.getQuantity())
                 .sum();
 
-        // Step 3: Build and publish checkout event
+        // Step 3: Build checkout event with ALL data needed by Orders service
         CartCheckoutEvent event = new CartCheckoutEvent();
         event.setUserId(userId);
-
-        // Convert itemId to String keys for safe JSON map keys
-        Map<String, Integer> itemsMap = new HashMap<>();
-        for (CartItem ci : cart.getItems()) {
-            itemsMap.put(String.valueOf(ci.getItemId()), ci.getQuantity());
-        }
-
-        event.setItems(itemsMap);
         event.setPaymentMethod(paymentMethod);
         event.setTotalPrice(totalPrice);
 
-        // Publish event to Orders service
+        // Include complete item data with prices
+        Map<String, Integer> itemsMap = new HashMap<>();
+        Map<String, Double> itemPricesMap = new HashMap<>();
+
+        for (CartItem ci : cart.getItems()) {
+            String itemIdStr = String.valueOf(ci.getItemId());
+            itemsMap.put(itemIdStr, ci.getQuantity());
+            itemPricesMap.put(itemIdStr, ci.getUnitPrice());
+        }
+
+        event.setItems(itemsMap);
+        event.setItemPrices(itemPricesMap);
+
+        // Step 4: Publish event to Orders service via RabbitMQ
         cartPublisher.publishCheckout(event);
 
-        // Step 4: Clear the cart after successful checkout
+        // Step 5: Clear the cart after successful checkout
         clearCart(userId);
     }
 }

@@ -12,6 +12,13 @@ import com.supermarket.supermarket_system.models.Item;
 import com.supermarket.supermarket_system.repositories.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
 
 import java.util.List;
 
@@ -75,5 +82,76 @@ public class ItemController {
             return itemRepository.save(item);
         }).orElse(null);// If not found, return null
     }
+
+    @PostMapping("/deduct")
+    @Transactional
+    public ResponseEntity<Map<String, Object>> deductItemQuantity(@RequestBody Map<String, Object> request) {
+        System.out.println("=== HTTP DEDUCTION REQUEST RECEIVED ===");
+        System.out.println("Request: " + request);
+
+        Map<String, Object> response = new HashMap<>();
+
+        // Validate request
+        if (request == null || request.get("itemId") == null || request.get("quantity") == null) {
+            System.out.println("ERROR: Invalid request - missing itemId or quantity");
+            response.put("success", false);
+            response.put("message", "Invalid request: missing itemId or quantity");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // Parse itemId
+        Number itemIdNum = (Number) request.get("itemId");
+        Long itemId = itemIdNum == null ? null : itemIdNum.longValue();
+        System.out.println("Parsed itemId: " + itemId);
+
+        // Parse quantity
+        Number quantityNum = (Number) request.get("quantity");
+        int quantity = quantityNum == null ? 0 : quantityNum.intValue();
+        System.out.println("Parsed quantity: " + quantity);
+
+        if (itemId == null || quantity <= 0) {
+            System.out.println("ERROR: Invalid itemId or quantity");
+            response.put("success", false);
+            response.put("message", "Invalid itemId or quantity");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // Find item
+        Item item = itemRepository.findById(itemId).orElse(null);
+        System.out.println("Item found: " + (item != null ? item.getName() : "NULL"));
+
+        if (item == null) {
+            System.out.println("ERROR: Item not found with ID: " + itemId);
+            response.put("success", false);
+            response.put("message", "Item not found");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // Check if enough quantity available
+        System.out.println("Item current quantity: " + item.getQuantity());
+        if (item.getQuantity() < quantity) {
+            System.out.println("ERROR: Not enough quantity. Requested: " + quantity + ", Available: " + item.getQuantity());
+            response.put("success", false);
+            response.put("message", "Not enough quantity available. Available: " + item.getQuantity());
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // Deduct quantity
+        int newQuantity = item.getQuantity() - quantity;
+        item.setQuantity(newQuantity);
+        itemRepository.save(item);
+        System.out.println("SUCCESS: Quantity deducted. New quantity: " + newQuantity);
+
+        // Return success response
+        response.put("success", true);
+        response.put("message", "Quantity deducted successfully");
+        response.put("remainingQuantity", newQuantity);
+
+        System.out.println("Response: " + response);
+        System.out.println("=== END HTTP DEDUCTION REQUEST ===");
+
+        return ResponseEntity.ok(response);
+    }
+
 }
 

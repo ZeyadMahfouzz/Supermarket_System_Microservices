@@ -27,7 +27,7 @@ public class CartController {
     @PostMapping("/checkout")
     public ResponseEntity<?> checkout(
             @RequestHeader("X-User-Id") Long userId,
-            @RequestParam String paymentMethod) {
+            @RequestBody String paymentMethod) {
 
         try {
             cartService.checkout(userId, paymentMethod);

@@ -1,5 +1,6 @@
 package com.supermarket.supermarket_system.service;
 
+import com.supermarket.supermarket_system.dto.cart.CartCheckoutEvent;
 import com.supermarket.supermarket_system.model.Order;
 import com.supermarket.supermarket_system.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -269,4 +272,31 @@ public class OrderService {
 
         log.debug("Status transition validated successfully");
     }
+
+    // Add this method to your OrderService class
+
+    public Order createOrderFromCheckoutEvent(CartCheckoutEvent event) {
+        log.info("Creating order from checkout event for user {}", event.getUserId());
+
+        // Convert String keys back to Long for the Order model
+        Map<Long, Integer> itemsMap = new HashMap<>();
+        for (Map.Entry<String, Integer> entry : event.getItems().entrySet()) {
+            Long itemId = Long.parseLong(entry.getKey());
+            itemsMap.put(itemId, entry.getValue());
+        }
+
+        // Create new order with the converted map
+        Order order = new Order(event.getUserId(), itemsMap);
+        order.setPaymentMethod(event.getPaymentMethod());
+        order.setStatus("PENDING"); // or "SHIPPING" based on your business logic
+        order.setOrderDate(LocalDateTime.now());
+
+        // Save order
+        Order savedOrder = orderRepository.save(order);
+        log.info("Order {} created successfully for user {} with total price {}",
+                savedOrder.getId(), event.getUserId(), event.getTotalPrice());
+
+        return savedOrder;
+    }
+
 }

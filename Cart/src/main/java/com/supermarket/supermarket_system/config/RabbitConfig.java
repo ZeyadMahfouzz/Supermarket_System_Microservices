@@ -17,28 +17,31 @@ import org.springframework.context.annotation.Configuration;
 @EnableRabbit
 public class RabbitConfig {
 
-    @Value("${app.rabbitmq.cart-queue:cart.queue}")
-    private String cartQueue;
+    @Value("${app.rabbitmq.order-queue:orders.queue}")
+    private String orderQueue;
 
-    @Value("${app.rabbitmq.cart-exchange:cart.exchange}")
-    private String cartExchange;
+    @Value("${app.rabbitmq.order-exchange:orders.exchange}")
+    private String orderExchange;
 
-    @Value("${app.rabbitmq.cart-routing-key:cart.routingkey}")
-    private String cartRoutingKey;
+    @Value("${app.rabbitmq.order-routing-key:orders.routingkey}")
+    private String orderRoutingKey;
 
+    // Declare the queue (durable = true means it survives broker restart)
     @Bean
-    public Queue cartQueue() {
-        return new Queue(cartQueue, true);
+    public Queue orderQueue() {
+        return new Queue(orderQueue, true);
     }
 
+    // Declare the exchange
     @Bean
-    public DirectExchange cartExchange() {
-        return new DirectExchange(cartExchange);
+    public DirectExchange orderExchange() {
+        return new DirectExchange(orderExchange);
     }
 
+    // Bind queue to exchange with routing key
     @Bean
-    public Binding cartBinding() {
-        return BindingBuilder.bind(cartQueue()).to(cartExchange()).with(cartRoutingKey);
+    public Binding orderBinding() {
+        return BindingBuilder.bind(orderQueue()).to(orderExchange()).with(orderRoutingKey);
     }
 
     @Bean

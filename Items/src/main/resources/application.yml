@@ -41,3 +41,5 @@ app:
     item-exchange: items.exchange
     item-queue: items.queue
     item-routing-key: items.routingkey
+    item-deduct-queue: items.deduct.queue
+    item-deduct-routing-key: items.deduct.routingkey
