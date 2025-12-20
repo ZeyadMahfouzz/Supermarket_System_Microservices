@@ -133,10 +133,10 @@ public class OrderController {
 
 
     // Update order status (ADMIN ONLY)
-    @PatchMapping("/status")
+    @PostMapping("/status/update")
     public ResponseEntity<?> updateOrderStatus(
             @RequestHeader("X-User-Role") String role,
-            @Valid @RequestBody UpdateStatusRequestDto request) {
+            @RequestBody Map<String, Object> body) {
 
         // Admin check
         if (!"ADMIN".equalsIgnoreCase(role)) {
@@ -144,12 +144,31 @@ public class OrderController {
                     .body(Map.of("error", "Access denied: Admins only"));
         }
 
-        try {
-            Order order = orderService.updateOrderStatus(
-                    request.getOrderId(),   // see note below
-                    request.getStatus()
-            );
+        Object orderIdObj = body.get("orderId");
+        String status = (String) body.get("status");
 
+        if (orderIdObj == null) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", "orderId is required"));
+        }
+
+        if (status == null || status.isBlank()) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", "status is required"));
+        }
+
+        Long orderId;
+        try {
+            orderId = orderIdObj instanceof Number ?
+                    ((Number) orderIdObj).longValue() :
+                    Long.parseLong(orderIdObj.toString());
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", "orderId must be a valid number"));
+        }
+
+        try {
+            Order order = orderService.updateOrderStatus(orderId, status);
             OrderResponseDto response = orderMapper.toResponseDto(order);
             return ResponseEntity.ok(response);
 
@@ -162,16 +181,27 @@ public class OrderController {
 
 
     // Cancel order (OWNER or ADMIN only)
-    @DeleteMapping("/cancel")
+    @PostMapping("/cancel")
     public ResponseEntity<?> cancelOrder(
             @RequestHeader("X-User-Id") Long userId,
             @RequestHeader("X-User-Role") String role,
-            @RequestBody Map<String, Long> body) {
+            @RequestBody Map<String, Object> body) {
 
-        Long orderId = body.get("orderId");
-        if (orderId == null) {
+        Object orderIdObj = body.get("orderId");
+
+        if (orderIdObj == null) {
             return ResponseEntity.badRequest()
                     .body(Map.of("error", "orderId is required"));
+        }
+
+        Long orderId;
+        try {
+            orderId = orderIdObj instanceof Number ?
+                    ((Number) orderIdObj).longValue() :
+                    Long.parseLong(orderIdObj.toString());
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", "orderId must be a valid number"));
         }
 
         try {

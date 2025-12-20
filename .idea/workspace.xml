@@ -4,28 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="267d24eb-9f31-430b-9553-8719e849eedf" name="Changes" comment="made payment api compatible with gateway">
-      <change afterPath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/config/RestTemplateConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/listeners/ItemDeductionListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/dto/cart/CartCheckoutEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="267d24eb-9f31-430b-9553-8719e849eedf" name="Changes" comment="Fixed Cart and checkout">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/config/RabbitConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/config/RabbitConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/controllers/CartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/controllers/CartController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/dto/cart/CartCheckoutEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/dto/cart/CartCheckoutEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/services/CartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/services/CartService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cart/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Cart/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/config/RabbitConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/config/RabbitConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/controllers/ItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/controllers/ItemController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Items/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Items/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Orders/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Orders/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/controller/OrderController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/dto/CheckoutRequestDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/dto/UpdateStatusRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/dto/UpdateStatusRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/listeners/CheckoutListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/listeners/CheckoutListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/service/OrderService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Payment/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Payment/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -288,7 +269,7 @@
       <workItem from="1766042460755" duration="94000" />
       <workItem from="1766047010303" duration="6002000" />
       <workItem from="1766056569383" duration="3389000" />
-      <workItem from="1766221894660" duration="3340000" />
+      <workItem from="1766221894660" duration="4042000" />
     </task>
     <task id="LOCAL-00001" summary="Users - Gateway - Eureka">
       <option name="closed" value="true" />
@@ -370,7 +351,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766001086025</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Fixed Cart and checkout">
+      <option name="closed" value="true" />
+      <created>1766226336959</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1766226336959</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -395,7 +384,8 @@
     <MESSAGE value="Tried configuring rabbit mq, add &quot;add item&quot; to cart and fixed token issue" />
     <MESSAGE value="." />
     <MESSAGE value="made payment api compatible with gateway" />
-    <option name="LAST_COMMIT_MESSAGE" value="made payment api compatible with gateway" />
+    <MESSAGE value="Fixed Cart and checkout" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed Cart and checkout" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
