@@ -101,7 +101,7 @@ public class ItemController {
     }
 
     // Modify existing item (ADMIN ONLY)
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<?> updateItem(
             @RequestHeader("X-User-Role") String role,
             @RequestBody Map<String, Object> body) {
