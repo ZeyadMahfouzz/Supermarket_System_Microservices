@@ -12,11 +12,12 @@ import java.util.Map;
 @AllArgsConstructor
 public class CartCheckoutEvent implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private Long userId;
-    private Map<String, Integer> items;  // itemId -> quantity
+    private Map<String, Integer> items;              // itemId -> quantity
+    private Map<String, Double> itemPrices;          // itemId -> unitPrice
+    private Map<String, ItemDetailsDto> itemDetails; // ✅ ADDED: itemId -> full details (name, image, etc.)
     private String paymentMethod;
     private Double totalPrice;
-
-    // Optional: Add item prices if you want to avoid fetching from Items service
-    private Map<String, Double> itemPrices;  // itemId -> unitPrice
 }

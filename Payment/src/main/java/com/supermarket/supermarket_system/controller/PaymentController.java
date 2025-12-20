@@ -1,5 +1,7 @@
 package com.supermarket.supermarket_system.controller;
 
+import com.supermarket.supermarket_system.dto.PaymentRequestDto;
+import com.supermarket.supermarket_system.dto.PaymentResponseDto;
 import com.supermarket.supermarket_system.model.Payment;
 import com.supermarket.supermarket_system.service.PaymentService;
 import jakarta.validation.Valid;
@@ -19,16 +21,30 @@ public class PaymentController {
     private PaymentService paymentService;
 
     // Process a new payment
-    @PostMapping
-    public ResponseEntity<?> processPayment(
+    @PostMapping("/process")
+    public ResponseEntity<?> processPaymentFromCart(
             @RequestHeader("X-User-Id") Long userId,
-            @Valid @RequestBody Payment payment) {
+            @Valid @RequestBody PaymentRequestDto request) {
         try {
             // Ensure the payment is for the requesting user
-            payment.setUserId(userId);
+            if (!request.getUserId().equals(userId)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(Map.of("error", "User ID mismatch"));
+            }
 
-            Payment processedPayment = paymentService.processPayment(payment);
-            return ResponseEntity.status(HttpStatus.CREATED).body(processedPayment);
+            Payment payment = paymentService.processPaymentWithDetails(request);
+
+            PaymentResponseDto response = new PaymentResponseDto(
+                    payment.getId(),
+                    payment.getTransactionId(),
+                    payment.getStatus(),
+                    "Payment processed successfully"
+            );
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("error", e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", "Failed to process payment: " + e.getMessage()));

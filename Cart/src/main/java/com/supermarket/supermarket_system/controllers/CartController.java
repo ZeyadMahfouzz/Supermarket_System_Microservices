@@ -3,6 +3,8 @@ package com.supermarket.supermarket_system.controllers;
 import com.supermarket.supermarket_system.dto.cart.CartResponseDto;
 import com.supermarket.supermarket_system.dto.cart.UpdateCartItemQuantityRequestDto;
 import com.supermarket.supermarket_system.dto.cart.AddCartItemRequestDto;
+import com.supermarket.supermarket_system.dto.payment.CheckoutRequestDto;
+import com.supermarket.supermarket_system.dto.payment.CheckoutResponseDto;
 import com.supermarket.supermarket_system.mappers.CartMapper;
 import com.supermarket.supermarket_system.models.Cart;
 import com.supermarket.supermarket_system.services.CartService;
@@ -27,11 +29,11 @@ public class CartController {
     @PostMapping("/checkout")
     public ResponseEntity<?> checkout(
             @RequestHeader("X-User-Id") Long userId,
-            @RequestBody String paymentMethod) {
+            @Valid @RequestBody CheckoutRequestDto request) {
 
         try {
-            cartService.checkout(userId, paymentMethod);
-            return ResponseEntity.ok("Checkout completed successfully");
+            CheckoutResponseDto response = cartService.checkout(userId, request);
+            return ResponseEntity.ok(response);
         } catch (IllegalStateException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {

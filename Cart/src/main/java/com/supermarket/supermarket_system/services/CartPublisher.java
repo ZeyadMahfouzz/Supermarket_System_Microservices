@@ -1,6 +1,6 @@
 package com.supermarket.supermarket_system.services;
 
-import com.supermarket.supermarket_system.dto.cart.CartCheckoutEvent;
+import com.supermarket.supermarket_system.dto.payment.CartCheckoutEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;

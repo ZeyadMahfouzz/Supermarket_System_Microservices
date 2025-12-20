@@ -2,23 +2,23 @@ package com.supermarket.supermarket_system.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.supermarket.supermarket_system.dto.cart.AddCartItemRequestDto;
-import com.supermarket.supermarket_system.dto.cart.CartCheckoutEvent;
+import com.supermarket.supermarket_system.dto.payment.CartCheckoutEvent;
+import com.supermarket.supermarket_system.dto.payment.*;
 import com.supermarket.supermarket_system.models.Cart;
 import com.supermarket.supermarket_system.models.CartItem;
+import com.supermarket.supermarket_system.models.PaymentMethod;
 import com.supermarket.supermarket_system.repositories.CartRepository;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +49,9 @@ public class CartService {
     @Value("${app.items.service.url:http://items}")
     private String itemsServiceUrl;
 
+    @Value("${app.payment.service.url:lb://Payment}")
+    private String paymentServiceUrl;
+
     @Autowired
     public CartService(CartRepository cartRepository) {
         this.cartRepository = cartRepository;
@@ -59,23 +62,6 @@ public class CartService {
                 .orElseGet(() -> cartRepository.save(new Cart(userId)));
     }
 
-    public Cart addItem(Long userId, Long itemId, int quantity, Double unitPrice) {
-        Cart cart = getCartByUserId(userId);
-
-        CartItem existing = cart.getItems().stream()
-                .filter(ci -> ci.getItemId().equals(itemId))
-                .findFirst()
-                .orElse(null);
-
-        if (existing != null) {
-            existing.setQuantity(existing.getQuantity() + quantity);
-            if (unitPrice != null) existing.setUnitPrice(unitPrice);
-        } else {
-            cart.addItem(new CartItem(itemId, quantity, unitPrice));
-        }
-
-        return cartRepository.save(cart);
-    }
 
     public Cart updateItemQuantity(Long userId, Long cartItemId, int quantity) {
         Cart cart = getCartByUserId(userId);
@@ -205,21 +191,32 @@ public class CartService {
         return cartRepository.save(cart);
     }
 
-    public void checkout(Long userId, String paymentMethod) {
+    // NEW checkout method with payment details
+    @Transactional
+    public CheckoutResponseDto checkout(Long userId, CheckoutRequestDto request) {
+        // 1. Get user's cart
         Cart cart = getCartByUserId(userId);
 
         if (cart == null || cart.getItems().isEmpty()) {
             throw new IllegalStateException("Cart is empty");
         }
 
-        // Step 1: Deduct quantities from Items service via HTTP for each cart item
+        // 2. Validate payment method specific data
+        validatePaymentMethodData(request);
+
+        // 3. Validate expiry date for card payments
+        if (request.getPaymentMethod() == PaymentMethod.CREDIT_CARD ||
+                request.getPaymentMethod() == PaymentMethod.DEBIT_CARD) {
+            validateExpiryDate(request);
+        }
+
+        // 4. Deduct quantities from Items service via HTTP for each cart item
         for (CartItem item : cart.getItems()) {
             Map<String, Object> deductRequest = new HashMap<>();
             deductRequest.put("itemId", item.getItemId());
             deductRequest.put("quantity", item.getQuantity());
 
             try {
-                // HTTP POST call to Items service
                 HttpHeaders headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
                 HttpEntity<Map<String, Object>> entity = new HttpEntity<>(deductRequest, headers);
@@ -255,15 +252,15 @@ public class CartService {
             }
         }
 
-        // Step 2: Calculate total price
+        // 5. Calculate total price
         double totalPrice = cart.getItems().stream()
                 .mapToDouble(ci -> (ci.getUnitPrice() == null ? 0.0 : ci.getUnitPrice()) * ci.getQuantity())
                 .sum();
 
-        // Step 3: Build checkout event with ALL data needed by Orders service
+        // 6. Build checkout event for Orders service
         CartCheckoutEvent event = new CartCheckoutEvent();
         event.setUserId(userId);
-        event.setPaymentMethod(paymentMethod);
+        event.setPaymentMethod(request.getPaymentMethod().name());
         event.setTotalPrice(totalPrice);
 
         // Include complete item data with prices
@@ -279,10 +276,160 @@ public class CartService {
         event.setItems(itemsMap);
         event.setItemPrices(itemPricesMap);
 
-        // Step 4: Publish event to Orders service via RabbitMQ
+        Map<String, ItemDetailsDto> itemDetails = new HashMap<>();
+
+        for (CartItem ci : cart.getItems()) {
+            ItemDetailsDto dto = new ItemDetailsDto();
+            dto.setName(ci.getName());
+            dto.setImageUrl(ci.getImageUrl());
+            dto.setUnitPrice(ci.getUnitPrice());
+            dto.setQuantity(ci.getQuantity());
+            dto.setSubtotal(ci.getUnitPrice() * ci.getQuantity());
+
+            itemDetails.put(String.valueOf(ci.getItemId()), dto);
+        }
+
+        event.setItemDetails(itemDetails);
+
+
+        // 7. Publish event to Orders service via RabbitMQ
         cartPublisher.publishCheckout(event);
 
-        // Step 5: Clear the cart after successful checkout
+        // Note: In a real scenario, you'd wait for order creation confirmation
+        // For now, we'll simulate an orderId based on timestamp
+        Long orderId = System.currentTimeMillis();
+
+        // 8. Call Payment Service to process payment
+        PaymentRequestDto paymentRequest = buildPaymentRequest(userId, orderId, totalPrice, request);
+        PaymentResponseDto paymentResponse = callPaymentService(paymentRequest);
+
+        // 9. Clear cart after successful payment
         clearCart(userId);
+
+        // 10. Return response
+        return new CheckoutResponseDto(
+                "Checkout completed successfully",
+                orderId,
+                paymentResponse.getPaymentId(),
+                paymentResponse.getTransactionId(),
+                paymentResponse.getStatus(),
+                totalPrice
+        );
+    }
+
+    private PaymentRequestDto buildPaymentRequest(Long userId, Long orderId, Double amount, CheckoutRequestDto request) {
+        PaymentRequestDto paymentRequest = new PaymentRequestDto();
+        paymentRequest.setUserId(userId);
+        paymentRequest.setOrderId(orderId);
+        paymentRequest.setAmount(amount);
+        paymentRequest.setPaymentMethod(request.getPaymentMethod());
+
+        // Set payment method specific details
+        switch (request.getPaymentMethod()) {
+            case CREDIT_CARD:
+                paymentRequest.setCreditCardPayment(request.getCreditCardPayment());
+                break;
+            case DEBIT_CARD:
+                paymentRequest.setDebitCardPayment(request.getDebitCardPayment());
+                break;
+            case MOBILE_PAYMENT:
+                paymentRequest.setMobilePayment(request.getMobilePayment());
+                break;
+            case BANK_TRANSFER:
+                paymentRequest.setBankTransfer(request.getBankTransfer());
+                break;
+            case CASH:
+                paymentRequest.setCashPayment(request.getCashPayment());
+                break;
+        }
+
+        return paymentRequest;
+    }
+
+    private PaymentResponseDto callPaymentService(PaymentRequestDto paymentRequest) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("X-User-Id", String.valueOf(paymentRequest.getUserId()));
+
+            HttpEntity<PaymentRequestDto> entity = new HttpEntity<>(paymentRequest, headers);
+
+            ResponseEntity<PaymentResponseDto> response = restTemplate.postForEntity(
+                    paymentServiceUrl + "/payment/process",
+                    entity,
+                    PaymentResponseDto.class
+            );
+
+            if (response.getStatusCode() == HttpStatus.OK || response.getStatusCode() == HttpStatus.CREATED) {
+                return response.getBody();
+            } else {
+                throw new RuntimeException("Payment service returned error: " + response.getStatusCode());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to process payment: " + e.getMessage(), e);
+        }
+    }
+
+    private void validatePaymentMethodData(CheckoutRequestDto request) {
+        switch (request.getPaymentMethod()) {
+            case CREDIT_CARD:
+                if (request.getCreditCardPayment() == null) {
+                    throw new IllegalArgumentException("Credit card payment details are required");
+                }
+                break;
+            case DEBIT_CARD:
+                if (request.getDebitCardPayment() == null) {
+                    throw new IllegalArgumentException("Debit card payment details are required");
+                }
+                break;
+            case MOBILE_PAYMENT:
+                if (request.getMobilePayment() == null) {
+                    throw new IllegalArgumentException("Mobile payment details are required");
+                }
+                break;
+            case BANK_TRANSFER:
+                if (request.getBankTransfer() == null) {
+                    throw new IllegalArgumentException("Bank transfer details are required");
+                }
+                break;
+            case CASH:
+                // Auto-create and confirm cash payment if missing
+                if (request.getCashPayment() == null) {
+                    request.setCashPayment(new CashPaymentDto());
+                }
+                if (request.getCashPayment().getConfirmed() == null || !request.getCashPayment().getConfirmed()) {
+                    request.getCashPayment().setConfirmed(true);
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid payment method");
+        }
+    }
+
+    private void validateExpiryDate(CheckoutRequestDto request) {
+        String expiryDate = null;
+
+        if (request.getPaymentMethod() == PaymentMethod.CREDIT_CARD) {
+            expiryDate = request.getCreditCardPayment().getExpiryDate();
+        } else if (request.getPaymentMethod() == PaymentMethod.DEBIT_CARD) {
+            expiryDate = request.getDebitCardPayment().getExpiryDate();
+        }
+
+        if (expiryDate == null) {
+            throw new IllegalArgumentException("Expiry date is required");
+        }
+
+        try {
+            // Parse MM/YY format
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/yy");
+            YearMonth cardExpiry = YearMonth.parse(expiryDate, formatter);
+            YearMonth currentMonth = YearMonth.now();
+
+            if (cardExpiry.isBefore(currentMonth)) {
+                throw new IllegalArgumentException("Card has expired");
+            }
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid expiry date format or expired card");
+        }
     }
 }
