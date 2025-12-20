@@ -1,5 +1,6 @@
 package com.supermarket.supermarket_system.dto;
 
+import com.supermarket.supermarket_system.dto.cart.ItemDetailsDto;
 import com.supermarket.supermarket_system.model.Order;
 import org.springframework.stereotype.Component;
 
@@ -19,11 +20,11 @@ public class OrderMapper {
                 .id(order.getId())
                 .userId(order.getUserId())
                 .items(order.getItems())
-                .itemDetails(order.getItemDetails())
+                .itemDetails(order.getItemDetails()) // Now Map<String, ItemDetailsDto>
                 .orderDate(order.getOrderDate())
                 .status(order.getStatus())
                 .paymentMethod(order.getPaymentMethod())
-                .totalAmount(calculateTotalAmount(order.getItemDetails()))
+                .totalAmount(calculateTotalAmount(order))
                 .build();
     }
 
@@ -37,35 +38,24 @@ public class OrderMapper {
     }
 
     /**
-     * Calculate total amount from item details
+     * Calculate total amount from order
+     * Priority: 1) order.totalAmount, 2) sum of itemDetails subtotals, 3) zero
      */
-    private BigDecimal calculateTotalAmount(Map<String, Object> itemDetails) {
-        if (itemDetails == null || itemDetails.isEmpty()) {
-            return BigDecimal.ZERO;
+    private BigDecimal calculateTotalAmount(Order order) {
+        // First priority: use the totalAmount field if available
+        if (order.getTotalAmount() != null && order.getTotalAmount() > 0) {
+            return BigDecimal.valueOf(order.getTotalAmount());
         }
 
-        // Try to extract total from itemDetails
-        Object total = itemDetails.get("total");
-        if (total instanceof BigDecimal) {
-            return (BigDecimal) total;
-        } else if (total instanceof Number) {
-            return BigDecimal.valueOf(((Number) total).doubleValue());
+        // Second priority: calculate from itemDetails if available
+        if (order.getItemDetails() != null && !order.getItemDetails().isEmpty()) {
+            return order.getItemDetails().values().stream()
+                    .filter(details -> details != null && details.getSubtotal() != null)
+                    .map(details -> BigDecimal.valueOf(details.getSubtotal()))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
         }
 
-        // If no total, calculate from subtotals
-        return itemDetails.values().stream()
-                .filter(value -> value instanceof Map)
-                .map(value -> {
-                    Map<String, Object> details = (Map<String, Object>) value;
-                    Object subtotal = details.get("subtotal");
-                    if (subtotal instanceof BigDecimal) {
-                        return (BigDecimal) subtotal;
-                    } else if (subtotal instanceof Number) {
-                        return BigDecimal.valueOf(((Number) subtotal).doubleValue());
-                    }
-                    return BigDecimal.ZERO;
-                })
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        // Fallback: return zero
+        return BigDecimal.ZERO;
     }
 }
-

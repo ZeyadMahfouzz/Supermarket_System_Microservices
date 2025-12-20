@@ -1,6 +1,7 @@
 package com.supermarket.supermarket_system.service;
 
 import com.supermarket.supermarket_system.dto.cart.CartCheckoutEvent;
+import com.supermarket.supermarket_system.dto.cart.ItemDetailsDto;
 import com.supermarket.supermarket_system.model.Order;
 import com.supermarket.supermarket_system.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +53,7 @@ public class OrderService {
         }
 
         // Validate stock availability and decrease quantities
-        Map<Long, Integer> items = (Map<Long, Integer>) cartItems.get("items");
+        Map<String, Integer> items = (Map<String, Integer>) cartItems.get("items");
         validateAndUpdateStock(items, false);
 
         // Create order
@@ -91,7 +92,12 @@ public class OrderService {
         log.debug("Fetching order with ID: {}", id);
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Order not found with id: " + id));
-        enrichOrderWithItemDetails(order);
+
+        // Only enrich if itemDetails is empty (for old orders)
+        if (order.getItemDetails() == null || order.getItemDetails().isEmpty()) {
+            enrichOrderWithItemDetails(order);
+        }
+
         return order;
     }
 
@@ -99,7 +105,14 @@ public class OrderService {
     public List<Order> getUserOrders(Long userId) {
         log.debug("Fetching all orders for user: {}", userId);
         List<Order> orders = orderRepository.findByUserIdOrderByOrderDateDesc(userId);
-        orders.forEach(this::enrichOrderWithItemDetails);
+
+        // Only enrich orders that don't have itemDetails
+        orders.forEach(order -> {
+            if (order.getItemDetails() == null || order.getItemDetails().isEmpty()) {
+                enrichOrderWithItemDetails(order);
+            }
+        });
+
         return orders;
     }
 
@@ -112,7 +125,14 @@ public class OrderService {
     public List<Order> getAllOrders() {
         log.debug("Fetching all orders");
         List<Order> orders = orderRepository.findAllByOrderByOrderDateDesc();
-        orders.forEach(this::enrichOrderWithItemDetails);
+
+        // Only enrich orders that don't have itemDetails
+        orders.forEach(order -> {
+            if (order.getItemDetails() == null || order.getItemDetails().isEmpty()) {
+                enrichOrderWithItemDetails(order);
+            }
+        });
+
         return orders;
     }
 
@@ -120,7 +140,14 @@ public class OrderService {
     public List<Order> getOrdersByStatus(String status) {
         log.debug("Fetching orders with status: {}", status);
         List<Order> orders = orderRepository.findByStatusOrderByOrderDateDesc(status);
-        orders.forEach(this::enrichOrderWithItemDetails);
+
+        // Only enrich orders that don't have itemDetails
+        orders.forEach(order -> {
+            if (order.getItemDetails() == null || order.getItemDetails().isEmpty()) {
+                enrichOrderWithItemDetails(order);
+            }
+        });
+
         return orders;
     }
 
@@ -128,7 +155,14 @@ public class OrderService {
     public List<Order> getUserOrdersByStatus(Long userId, String status) {
         log.debug("Fetching orders for user: {} with status: {}", userId, status);
         List<Order> orders = orderRepository.findByUserIdAndStatusOrderByOrderDateDesc(userId, status);
-        orders.forEach(this::enrichOrderWithItemDetails);
+
+        // Only enrich orders that don't have itemDetails
+        orders.forEach(order -> {
+            if (order.getItemDetails() == null || order.getItemDetails().isEmpty()) {
+                enrichOrderWithItemDetails(order);
+            }
+        });
+
         return orders;
     }
 
@@ -183,31 +217,40 @@ public class OrderService {
         return cancelledOrder;
     }
 
-    // 9. Enrich Order with Item Details (Helper)
+    // 9. Enrich Order with Item Details (Helper) - For old orders without itemDetails
     private void enrichOrderWithItemDetails(Order order) {
-        Map<String, Object> details = new HashMap<>();
+        Map<String, ItemDetailsDto> details = new HashMap<>();
+
         order.getItems().forEach((itemId, quantity) -> {
             try {
                 Map itemData = restTemplate.getForObject(itemServiceUrl() + "/" + itemId, Map.class);
                 if (itemData != null) {
-                    Map<String, Object> itemInfo = new HashMap<>();
-                    itemInfo.put("quantity", quantity);
-                    itemInfo.put("price", itemData.get("price"));
-                    itemInfo.put("subtotal", ((Number) itemData.get("price")).doubleValue() * quantity);
-                    details.put((String) itemData.get("name"), itemInfo);
+                    ItemDetailsDto dto = new ItemDetailsDto();
+                    dto.setName((String) itemData.get("name"));
+                    dto.setImageUrl((String) itemData.get("imageUrl"));
+                    dto.setQuantity(quantity);
+
+                    Double price = itemData.get("price") != null
+                            ? ((Number) itemData.get("price")).doubleValue()
+                            : 0.0;
+                    dto.setUnitPrice(price);
+                    dto.setSubtotal(price * quantity);
+
+                    details.put(itemId, dto);
                 }
             } catch (Exception e) {
                 log.error("Failed to fetch item details for item ID: {}", itemId, e);
             }
         });
+
         order.setItemDetails(details);
     }
 
-    // Replace the updateItemQuantities method in OrderService.java with this:
-
-    private void updateItemQuantities(Map<Long, Integer> items, boolean restore) {
-        items.forEach((itemId, quantity) -> {
+    private void updateItemQuantities(Map<String, Integer> items, boolean restore) {
+        items.forEach((itemIdStr, quantity) -> {
             try {
+                Long itemId = Long.parseLong(itemIdStr);
+
                 if (restore) {
                     // Restore quantities by calling the /items/restore endpoint
                     Map<String, Object> restoreRequest = new HashMap<>();
@@ -268,17 +311,18 @@ public class OrderService {
                     log.debug("Deducted quantity for item {}: -{}", itemId, quantity);
                 }
             } catch (Exception e) {
-                log.error("Failed to update quantity for item ID: {}, restore: {}", itemId, restore, e);
-                throw new RuntimeException("Failed to update item quantity for item: " + itemId + ". " + e.getMessage());
+                log.error("Failed to update quantity for item ID: {}, restore: {}", itemIdStr, restore, e);
+                throw new RuntimeException("Failed to update item quantity for item: " + itemIdStr + ". " + e.getMessage());
             }
         });
     }
 
-
     // Helper: Validate stock availability and update quantities
-    private void validateAndUpdateStock(Map<Long, Integer> items, boolean restore) {
-        items.forEach((itemId, quantity) -> {
+    private void validateAndUpdateStock(Map<String, Integer> items, boolean restore) {
+        items.forEach((itemIdStr, quantity) -> {
             try {
+                Long itemId = Long.parseLong(itemIdStr);
+
                 // Check stock availability before ordering
                 if (!restore) {
                     Map itemData = restTemplate.getForObject(itemServiceUrl() + "/" + itemId, Map.class);
@@ -297,8 +341,8 @@ public class OrderService {
                 restTemplate.put(itemServiceUrl() + "/" + itemId + "/quantity?adjustment=" + adjustment, null);
                 log.debug("Stock validated and updated for item {}: adjustment {}", itemId, adjustment);
             } catch (Exception e) {
-                log.error("Failed to validate/update stock for item ID: {}", itemId, e);
-                throw new RuntimeException("Failed to process item: " + itemId + ". " + e.getMessage());
+                log.error("Failed to validate/update stock for item ID: {}", itemIdStr, e);
+                throw new RuntimeException("Failed to process item: " + itemIdStr + ". " + e.getMessage());
             }
         });
     }
@@ -336,30 +380,46 @@ public class OrderService {
         log.debug("Status transition validated successfully");
     }
 
-    // Add this method to your OrderService class
-
+    // ✅ FIXED: Create order from checkout event with itemDetails
     public Order createOrderFromCheckoutEvent(CartCheckoutEvent event) {
-        log.info("Creating order from checkout event for user {}", event.getUserId());
+        log.info("========== CREATING ORDER FROM CHECKOUT EVENT ==========");
+        log.info("User ID: {}", event.getUserId());
+        log.info("Payment Method: {}", event.getPaymentMethod());
+        log.info("Total Price: {}", event.getTotalPrice());
+        log.info("Items count: {}", event.getItems() != null ? event.getItems().size() : "NULL");
+        log.info("ItemDetails count: {}", event.getItemDetails() != null ? event.getItemDetails().size() : "NULL");
 
-        // Convert String keys back to Long for the Order model
-        Map<Long, Integer> itemsMap = new HashMap<>();
-        for (Map.Entry<String, Integer> entry : event.getItems().entrySet()) {
-            Long itemId = Long.parseLong(entry.getKey());
-            itemsMap.put(itemId, entry.getValue());
+        // Debug: Log itemDetails content
+        if (event.getItemDetails() != null && !event.getItemDetails().isEmpty()) {
+            event.getItemDetails().forEach((itemId, details) -> {
+                log.info("  Item {}: name={}, qty={}, price={}, subtotal={}",
+                        itemId, details.getName(), details.getQuantity(),
+                        details.getUnitPrice(), details.getSubtotal());
+            });
+        } else {
+            log.warn("⚠️ WARNING: ItemDetails is NULL or EMPTY in checkout event!");
         }
 
-        // Create new order with the converted map
-        Order order = new Order(event.getUserId(), itemsMap);
+        // Create new order
+        Order order = new Order();
+        order.setUserId(event.getUserId());
+        order.setItems(event.getItems()); // Already Map<String, Integer>
+        order.setItemDetails(event.getItemDetails()); // ✅ THIS IS THE FIX
         order.setPaymentMethod(event.getPaymentMethod());
-        order.setStatus("PENDING"); // or "SHIPPING" based on your business logic
+        order.setTotalAmount(event.getTotalPrice()); // ✅ Set total amount
+        order.setStatus("PENDING");
         order.setOrderDate(LocalDateTime.now());
 
         // Save order
         Order savedOrder = orderRepository.save(order);
-        log.info("Order {} created successfully for user {} with total price {}",
-                savedOrder.getId(), event.getUserId(), event.getTotalPrice());
+
+        log.info("✅ Order {} created successfully", savedOrder.getId());
+        log.info("   - User: {}", savedOrder.getUserId());
+        log.info("   - Total: {}", savedOrder.getTotalAmount());
+        log.info("   - ItemDetails saved: {}",
+                savedOrder.getItemDetails() != null ? savedOrder.getItemDetails().size() : "NULL");
+        log.info("========================================================");
 
         return savedOrder;
     }
-
 }
