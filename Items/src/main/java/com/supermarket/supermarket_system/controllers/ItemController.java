@@ -83,7 +83,7 @@ public class ItemController {
     }
 
     // Get a single item by ID (PUBLIC)
-    @PostMapping("/details")
+    @GetMapping("/details")
     public ResponseEntity<?> getItemsById(@RequestBody Map<String, Long> body) {
         Long id = body.get("id");
         if (id == null) {

@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Supermarket_System_MicroServices.iml" filepath="$PROJECT_DIR$/.idea/Supermarket_System_MicroServices.iml" />
-      <module fileurl="file://$PROJECT_DIR$/frontend/frontend.iml" filepath="$PROJECT_DIR$/frontend/frontend.iml" />
       <module fileurl="file://$PROJECT_DIR$/Payment/supermarket_system (4).iml" filepath="$PROJECT_DIR$/Payment/supermarket_system (4).iml" />
     </modules>
   </component>
