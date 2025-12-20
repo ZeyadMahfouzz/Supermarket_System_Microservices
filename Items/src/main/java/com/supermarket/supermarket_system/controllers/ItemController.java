@@ -13,13 +13,11 @@ import com.supermarket.supermarket_system.repositories.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-
-
 import java.util.List;
 
 // ========================
@@ -34,53 +32,129 @@ public class ItemController {
     @Autowired
     private ItemRepository itemRepository;
 
-    // Create a new item
+    // Create a new item (ADMIN ONLY)
     @PostMapping
-    public Item createItem(@RequestBody Item item) {
-        return itemRepository.save(item);
+    public ResponseEntity<?> createItem(
+            @RequestHeader("X-User-Role") String role,
+            @RequestBody Item item) {
+
+        // Admin check
+        if (!"ADMIN".equalsIgnoreCase(role)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("error", "Access denied: Admins only"));
+        }
+
+        Item savedItem = itemRepository.save(item);
+        return ResponseEntity.ok(savedItem);
     }
 
 
-    // Delete an item
-    @DeleteMapping("/{id}")
-    public String deleteItem(@PathVariable Long id) {
-        itemRepository.deleteById(id);
-        return "Item deleted successfully!";
+    // Delete an item (ADMIN ONLY)
+    @DeleteMapping
+    public ResponseEntity<?> deleteItem(
+            @RequestHeader("X-User-Role") String role,
+            @RequestBody Map<String, Long> body) {
+
+        // Admin check
+        if (!"ADMIN".equalsIgnoreCase(role)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("error", "Access denied: Admins only"));
+        }
+
+        Long id = body.get("id");
+        if (id == null) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", "id is required"));
+        }
+
+        try {
+            itemRepository.deleteById(id);
+            return ResponseEntity.ok(Map.of("message", "Item deleted successfully"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", "Failed to delete item: " + e.getMessage()));
+        }
     }
 
-    // Get all items
+    // Get all items (PUBLIC)
     @GetMapping
     public List<Item> getAllItems() {
         return itemRepository.findAll();
     }
 
-    // Get a single item by ID
-    @GetMapping("/{id}")
-    public Item getItemsById(@PathVariable Long id) {
-        return itemRepository.findById(id).orElse(null);
+    // Get a single item by ID (PUBLIC)
+    @PostMapping("/details")
+    public ResponseEntity<?> getItemsById(@RequestBody Map<String, Long> body) {
+        Long id = body.get("id");
+        if (id == null) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", "id is required"));
+        }
+
+        Item item = itemRepository.findById(id).orElse(null);
+        if (item == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", "Item not found"));
+        }
+
+        return ResponseEntity.ok(item);
     }
 
-    // Modify existing item
-    @PutMapping("/{id}")
-    public Item updateItem(@PathVariable Long id, @RequestBody Item updatedItem) {
-        return itemRepository.findById(id).map(item -> {
-            if (updatedItem.getName() != null) {
-                item.setName(updatedItem.getName());
+    // Modify existing item (ADMIN ONLY)
+    @PostMapping("/update")
+    public ResponseEntity<?> updateItem(
+            @RequestHeader("X-User-Role") String role,
+            @RequestBody Map<String, Object> body) {
+
+        // Admin check
+        if (!"ADMIN".equalsIgnoreCase(role)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("error", "Access denied: Admins only"));
+        }
+
+        Object idObj = body.get("id");
+        if (idObj == null) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", "id is required"));
+        }
+
+        Long id;
+        try {
+            id = idObj instanceof Number ?
+                    ((Number) idObj).longValue() :
+                    Long.parseLong(idObj.toString());
+        } catch (NumberFormatException e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", "id must be a valid number"));
+        }
+
+        Item updatedItem = itemRepository.findById(id).map(item -> {
+            if (body.containsKey("name") && body.get("name") != null) {
+                item.setName((String) body.get("name"));
             }
-            if (updatedItem.getPrice() != null) {
-                item.setPrice(updatedItem.getPrice());
+            if (body.containsKey("price") && body.get("price") != null) {
+                Number priceNum = (Number) body.get("price");
+                item.setPrice(priceNum.doubleValue());
             }
-            if (updatedItem.getQuantity() != 0) {
-                item.setQuantity(updatedItem.getQuantity());
+            if (body.containsKey("quantity") && body.get("quantity") != null) {
+                Number quantityNum = (Number) body.get("quantity");
+                item.setQuantity(quantityNum.intValue());
             }
-            if (updatedItem.getCategory() != null) {
-                item.setCategory(updatedItem.getCategory());
+            if (body.containsKey("category") && body.get("category") != null) {
+                item.setCategory((String) body.get("category"));
             }
-            if (updatedItem.getDescription() != null) {
-                item.setDescription(updatedItem.getDescription());
+            if (body.containsKey("description") && body.get("description") != null) {
+                item.setDescription((String) body.get("description"));
             }
             return itemRepository.save(item);
-        }).orElse(null);// If not found, return null
+        }).orElse(null);
+
+        if (updatedItem == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", "Item not found"));
+        }
+
+        return ResponseEntity.ok(updatedItem);
     }
 
     @PostMapping("/deduct")
@@ -154,4 +228,3 @@ public class ItemController {
     }
 
 }
-
