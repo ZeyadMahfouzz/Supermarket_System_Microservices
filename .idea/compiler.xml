@@ -6,25 +6,37 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="supermarket_system (3)" />
-        <module name="supermarket_system (4)" />
+        <module name="Orders" />
+        <module name="Payment" />
+        <module name="Gateway" />
         <module name="supermarket_system (1)" />
-        <module name="gateway" />
-        <module name="supermarket_system" />
         <module name="supermarket_system (2)" />
+        <module name="Items" />
+        <module name="Users" />
+        <module name="Eureka" />
+        <module name="gateway" />
+        <module name="Cart" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Gateway" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Cart" options="-parameters" />
       <module name="Eureka" options="-parameters" />
+      <module name="Gateway" options="-parameters" />
+      <module name="Items" options="-parameters" />
+      <module name="Orders" options="-parameters" />
+      <module name="Payment" options="-parameters" />
+      <module name="Users" options="-parameters" />
       <module name="gateway" options="-parameters" />
-      <module name="supermarket_system" options="-parameters" />
       <module name="supermarket_system (1)" options="-parameters" />
       <module name="supermarket_system (2)" options="-parameters" />
       <module name="supermarket_system (3)" options="-parameters" />
       <module name="supermarket_system (4)" options="-parameters" />
-      <module name="supermarket_system (5)" options="-parameters" />
+      <module name="users" options="-parameters" />
     </option>
   </component>
 </project>

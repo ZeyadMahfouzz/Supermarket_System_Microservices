@@ -1,13 +1,16 @@
 package com.supermarket.supermarket_system.controllers;
 
-import com.supermarket.supermarket_system.dto.cart.AddCartItemRequestDto;
 import com.supermarket.supermarket_system.dto.cart.CartResponseDto;
 import com.supermarket.supermarket_system.dto.cart.UpdateCartItemQuantityRequestDto;
+import com.supermarket.supermarket_system.dto.cart.AddCartItemRequestDto;
+import com.supermarket.supermarket_system.dto.payment.CheckoutRequestDto;
+import com.supermarket.supermarket_system.dto.payment.CheckoutResponseDto;
 import com.supermarket.supermarket_system.mappers.CartMapper;
 import com.supermarket.supermarket_system.models.Cart;
 import com.supermarket.supermarket_system.services.CartService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,30 +26,45 @@ public class CartController {
         return CartMapper.toDto(cart);
     }
 
+    @PostMapping("/checkout")
+    public ResponseEntity<?> checkout(
+            @RequestHeader("X-User-Id") Long userId,
+            @Valid @RequestBody CheckoutRequestDto request) {
+
+        try {
+            CheckoutResponseDto response = cartService.checkout(userId, request);
+            return ResponseEntity.ok(response);
+        } catch (IllegalStateException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Checkout failed: " + e.getMessage());
+        }
+    }
+
     @PostMapping("/items")
-    public CartResponseDto addItem(@RequestHeader("X-User-Id") Long userId,
-                                   @Valid @RequestBody AddCartItemRequestDto request) {
-        Cart cart = cartService.addItem(
-                userId,
-                request.getItemId(),
-                request.getQuantity(),
-                request.getUnitPrice()
-        );
+    public ResponseEntity<?> addItemToCart(
+            @RequestHeader("X-User-Id") Long userId,
+            @Valid @RequestBody AddCartItemRequestDto request) {
+
+        Cart cart = cartService.addItemToCart(userId, request);
+        return ResponseEntity.ok(CartMapper.toDto(cart));
+    }
+
+    @PutMapping("/items")
+    public CartResponseDto updateItemQuantity(
+            @RequestHeader("X-User-Id") Long userId,
+            @Valid @RequestBody UpdateCartItemQuantityRequestDto request) {
+
+        Cart cart = cartService.updateItemQuantity(userId, request.getCartItemId(), request.getQuantity());
         return CartMapper.toDto(cart);
     }
 
-    @PutMapping("/items/{cartItemId}")
-    public CartResponseDto updateItemQuantity(@RequestHeader("X-User-Id") Long userId,
-                                              @PathVariable Long cartItemId,
-                                              @Valid @RequestBody UpdateCartItemQuantityRequestDto request) {
-        Cart cart = cartService.updateItemQuantity(userId, cartItemId, request.getQuantity());
-        return CartMapper.toDto(cart);
-    }
+    @DeleteMapping("/items")
+    public CartResponseDto removeItem(
+            @RequestHeader("X-User-Id") Long userId,
+            @Valid @RequestBody UpdateCartItemQuantityRequestDto request) {
 
-    @DeleteMapping("/items/{cartItemId}")
-    public CartResponseDto removeItem(@RequestHeader("X-User-Id") Long userId,
-                                      @PathVariable Long cartItemId) {
-        Cart cart = cartService.removeItem(userId, cartItemId);
+        Cart cart = cartService.removeItem(userId, request.getCartItemId());
         return CartMapper.toDto(cart);
     }
 

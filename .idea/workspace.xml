@@ -5,11 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="267d24eb-9f31-430b-9553-8719e849eedf" name="Changes" comment="Fixed Gateway">
-      <change afterPath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/models/ItemDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Items/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Items/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Orders/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Orders/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,12 +35,12 @@
     &quot;assignee&quot;: &quot;ZeyadMahfouzz&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/ZeyadMahfouzz/Supermarket_System_Microservices",
-    "accountId": "ce86cbcd-3df3-4ed6-90a4-24170895b2b6"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/ZeyadMahfouzz/Supermarket_System_Microservices&quot;,
+    &quot;accountId&quot;: &quot;3e85b830-09ac-427e-bf0f-edde7157da3f&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -54,9 +52,6 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;Application.GatewayApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.ItemsApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.UsersApplication.executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;Notification.DisplayName-DoNotAsk-DatabaseConfigFileWatcher.found&quot;: &quot;New/updated database configurations found&quot;,
     &quot;Notification.DoNotAsk-DatabaseConfigFileWatcher.found&quot;: &quot;true&quot;,
@@ -74,7 +69,7 @@
     &quot;Spring Boot.OrdersApplication (1).executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.OrdersApplication.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.UsersApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Nayer-Items&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;D:/Zeyad/OneDrive - New Giza University/Desktop/NGU/DisS_Project/Supermarket_System_MicroServices/Eureka&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -100,10 +95,10 @@
       <recent name="D:\Zeyad\OneDrive - New Giza University\Desktop\NGU\DisS_Project\Supermarket_System_MicroServices" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.supermarket.supermarket_system.config" />
       <recent name="com.supermarket.supermarket_system.utils" />
       <recent name="com.supermarket.supermarket_system.services" />
       <recent name="com.supermarket.supermarket_system.filter" />
+      <recent name="com.supermarket.supermarket_system.config" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -115,8 +110,23 @@
         <option value="SpringBootApplicationConfigurationType" />
       </set>
     </option>
+    <option name="configurationStatuses">
+      <map>
+        <entry key="SpringBootApplicationConfigurationType">
+          <value>
+            <map>
+              <entry key="EurekaApplication" value="STOPPED" />
+              <entry key="GatewayApplication" value="STOPPED" />
+              <entry key="ItemsApplication" value="STOPPED" />
+              <entry key="OrdersApplication (1)" value="STOPPED" />
+              <entry key="UsersApplication" value="STOPPED" />
+            </map>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Spring Boot.UsersApplication">
     <configuration name="CartApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="Cart" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.CartApplication" />
@@ -191,11 +201,29 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Spring Boot.OrdersApplication" />
+      <item itemvalue="Spring Boot.EurekaApplication" />
+      <item itemvalue="Spring Boot.CartApplication" />
+      <item itemvalue="Spring Boot.GatewayApplication" />
+      <item itemvalue="Spring Boot.ItemsApplication" />
+      <item itemvalue="Spring Boot.PaymentApplication" />
+      <item itemvalue="Spring Boot.OrdersApplication (1)" />
+      <item itemvalue="Spring Boot.UsersApplication" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.UsersApplication" />
+        <item itemvalue="Spring Boot.OrdersApplication (1)" />
+        <item itemvalue="Spring Boot.UsersApplication" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26830.84" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.27397.103" />
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.27397.103" />
       </set>
     </attachedChunks>
   </component>
