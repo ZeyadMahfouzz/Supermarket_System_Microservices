@@ -129,7 +129,7 @@ public class OrderController {
 
 
     // Update order status (ADMIN ONLY)
-    @PostMapping("/status/update")
+    @PatchMapping("/status/update")
     public ResponseEntity<?> updateOrderStatus(
             @RequestHeader("X-User-Role") String role,
             @Valid @RequestBody UpdateStatusRequestDto request) {
