@@ -6,27 +6,21 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="supermarket_system (5)" />
         <module name="supermarket_system (3)" />
         <module name="supermarket_system (4)" />
         <module name="supermarket_system (1)" />
-        <module name="supermarket_system (2)" />
-        <module name="Eureka" />
-        <module name="gateway" />
         <module name="supermarket_system" />
+        <module name="supermarket_system (2)" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="Eureka" options="-parameters" />
-      <module name="gateway" options="-parameters" />
       <module name="supermarket_system" options="-parameters" />
       <module name="supermarket_system (1)" options="-parameters" />
       <module name="supermarket_system (2)" options="-parameters" />
       <module name="supermarket_system (3)" options="-parameters" />
       <module name="supermarket_system (4)" options="-parameters" />
-      <module name="supermarket_system (5)" options="-parameters" />
     </option>
   </component>
 </project>
