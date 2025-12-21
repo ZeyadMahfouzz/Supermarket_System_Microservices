@@ -1,18 +1,19 @@
 package com.supermarket.supermarket_system.dto;
 
+import com.supermarket.supermarket_system.dto.cart.ItemDetailsDto;
 import java.util.Map;
 
 public class CheckoutEventDto {
     private Long userId;
-    private Map<String, Integer> items;
+    private Map<String, ItemDetailsDto> itemDetails;
     private String paymentMethod;
     private Double totalPrice;
 
     public CheckoutEventDto() {}
 
-    public CheckoutEventDto(Long userId, Map<String, Integer> items, String paymentMethod, Double totalPrice) {
+    public CheckoutEventDto(Long userId, Map<String, ItemDetailsDto> itemDetails, String paymentMethod, Double totalPrice) {
         this.userId = userId;
-        this.items = items;
+        this.itemDetails = itemDetails;
         this.paymentMethod = paymentMethod;
         this.totalPrice = totalPrice;
     }
@@ -20,8 +21,8 @@ public class CheckoutEventDto {
     public Long getUserId() { return userId; }
     public void setUserId(Long userId) { this.userId = userId; }
 
-    public Map<String, Integer> getItems() { return items; }
-    public void setItems(Map<String, Integer> items) { this.items = items; }
+    public Map<String, ItemDetailsDto> getItemDetails() { return itemDetails; }
+    public void setItemDetails(Map<String, ItemDetailsDto> itemDetails) { this.itemDetails = itemDetails; }
 
     public String getPaymentMethod() { return paymentMethod; }
     public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }

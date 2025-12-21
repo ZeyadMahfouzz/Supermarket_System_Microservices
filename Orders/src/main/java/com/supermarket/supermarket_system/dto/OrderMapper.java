@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -19,8 +18,7 @@ public class OrderMapper {
         return OrderResponseDto.builder()
                 .id(order.getId())
                 .userId(order.getUserId())
-                .items(order.getItems())
-                .itemDetails(order.getItemDetails()) // Now Map<String, ItemDetailsDto>
+                .itemDetails(order.getItemDetails())
                 .orderDate(order.getOrderDate())
                 .status(order.getStatus())
                 .paymentMethod(order.getPaymentMethod())

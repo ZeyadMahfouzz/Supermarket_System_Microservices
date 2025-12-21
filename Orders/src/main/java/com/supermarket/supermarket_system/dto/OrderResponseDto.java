@@ -20,10 +20,7 @@ public class OrderResponseDto {
     private Long id;
     private Long userId;
 
-    // Items map: itemId (as String) -> quantity
-    private Map<String, Integer> items;
-
-    // Item details: itemId (as String) -> ItemDetailsDto (name, image, price, etc.)
+    // Item details: itemId (as String) -> ItemDetailsDto (name, image, price, quantity, subtotal)
     private Map<String, ItemDetailsDto> itemDetails;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")

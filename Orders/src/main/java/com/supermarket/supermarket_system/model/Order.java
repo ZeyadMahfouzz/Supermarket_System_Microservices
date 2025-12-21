@@ -22,12 +22,7 @@ public class Order {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    // Changed to Map<String, Integer> to match CartCheckoutEvent
-    @Convert(converter = ItemsMapConverter.class)
-    @Column(columnDefinition = "TEXT")
-    private Map<String, Integer> items = new HashMap<>(); // itemId (as String) -> quantity
-
-    // Changed to Map<String, ItemDetailsDto> and added converter
+    // Single field for item details: itemId (as String) -> ItemDetailsDto
     @Convert(converter = ItemsMapConverter.class)
     @Column(name = "item_details", columnDefinition = "TEXT")
     private Map<String, ItemDetailsDto> itemDetails = new HashMap<>();
@@ -51,9 +46,9 @@ public class Order {
         this.totalAmount = 0.0;
     }
 
-    public Order(Long userId, Map<String, Integer> items) {
+    public Order(Long userId, Map<String, ItemDetailsDto> itemDetails) {
         this.userId = userId;
-        this.items = items;
+        this.itemDetails = itemDetails;
         this.orderDate = LocalDateTime.now();
         this.status = "PENDING";
         this.totalAmount = 0.0;
@@ -67,5 +62,18 @@ public class Order {
         return itemDetails.values().stream()
                 .mapToDouble(details -> details.getSubtotal() != null ? details.getSubtotal() : 0.0)
                 .sum();
+    }
+
+    // Helper method to get items map for backwards compatibility
+    public Map<String, Integer> getItemsMap() {
+        Map<String, Integer> items = new HashMap<>();
+        if (itemDetails != null) {
+            itemDetails.forEach((itemId, details) -> {
+                if (details.getQuantity() != null) {
+                    items.put(itemId, details.getQuantity());
+                }
+            });
+        }
+        return items;
     }
 }

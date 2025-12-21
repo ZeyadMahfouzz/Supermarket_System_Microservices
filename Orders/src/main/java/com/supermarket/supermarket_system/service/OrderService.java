@@ -41,10 +41,10 @@ public class OrderService {
         log.info("Creating order from cart for user: {}", userId);
 
         // Fetch cart items
-        Map cartItems;
+        Map cartResponse;
         try {
-            cartItems = restTemplate.getForObject(cartServiceUrl() + "/" + userId, Map.class);
-            if (cartItems == null || ((Map) cartItems.get("items")).isEmpty()) {
+            cartResponse = restTemplate.getForObject(cartServiceUrl() + "/" + userId, Map.class);
+            if (cartResponse == null || ((Map) cartResponse.get("items")).isEmpty()) {
                 throw new RuntimeException("Cart is empty for user: " + userId);
             }
         } catch (Exception e) {
@@ -52,16 +52,19 @@ public class OrderService {
             throw new RuntimeException("Could not retrieve cart for user: " + userId);
         }
 
+        // Extract itemDetails from cart response
+        Map<String, ItemDetailsDto> itemDetails = extractItemDetailsFromCart(cartResponse);
+
         // Validate stock availability and decrease quantities
-        Map<String, Integer> items = (Map<String, Integer>) cartItems.get("items");
-        validateAndUpdateStock(items, false);
+        validateAndUpdateStock(itemDetails, false);
 
         // Create order
         Order order = new Order();
         order.setUserId(userId);
-        order.setItems(items);
+        order.setItemDetails(itemDetails);
         order.setPaymentMethod(paymentMethod);
         order.setStatus("PENDING");
+        order.setTotalAmount(calculateTotalFromDetails(itemDetails));
 
         Order savedOrder = orderRepository.save(order);
         log.info("Order created successfully with ID: {}", savedOrder.getId());
@@ -80,8 +83,11 @@ public class OrderService {
     public Order createOrder(Order order) {
         log.info("Creating order for user: {}", order.getUserId());
         // Validate stock and update item quantities via REST call to Item Service
-        validateAndUpdateStock(order.getItems(), false);
+        validateAndUpdateStock(order.getItemDetails(), false);
         order.setStatus("PENDING");
+        if (order.getTotalAmount() == null || order.getTotalAmount() == 0.0) {
+            order.setTotalAmount(calculateTotalFromDetails(order.getItemDetails()));
+        }
         Order savedOrder = orderRepository.save(order);
         log.info("Order created successfully with ID: {}", savedOrder.getId());
         return savedOrder;
@@ -90,30 +96,14 @@ public class OrderService {
     // 2. Get Order by ID
     public Order getOrderById(Long id) {
         log.debug("Fetching order with ID: {}", id);
-        Order order = orderRepository.findById(id)
+        return orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Order not found with id: " + id));
-
-        // Only enrich if itemDetails is empty (for old orders)
-        if (order.getItemDetails() == null || order.getItemDetails().isEmpty()) {
-            enrichOrderWithItemDetails(order);
-        }
-
-        return order;
     }
 
     // 3. Get User Orders (sorted by date, newest first)
     public List<Order> getUserOrders(Long userId) {
         log.debug("Fetching all orders for user: {}", userId);
-        List<Order> orders = orderRepository.findByUserIdOrderByOrderDateDesc(userId);
-
-        // Only enrich orders that don't have itemDetails
-        orders.forEach(order -> {
-            if (order.getItemDetails() == null || order.getItemDetails().isEmpty()) {
-                enrichOrderWithItemDetails(order);
-            }
-        });
-
-        return orders;
+        return orderRepository.findByUserIdOrderByOrderDateDesc(userId);
     }
 
     // Legacy method - keeping for backward compatibility
@@ -124,46 +114,19 @@ public class OrderService {
     // 4. Get All Orders (sorted by date, newest first)
     public List<Order> getAllOrders() {
         log.debug("Fetching all orders");
-        List<Order> orders = orderRepository.findAllByOrderByOrderDateDesc();
-
-        // Only enrich orders that don't have itemDetails
-        orders.forEach(order -> {
-            if (order.getItemDetails() == null || order.getItemDetails().isEmpty()) {
-                enrichOrderWithItemDetails(order);
-            }
-        });
-
-        return orders;
+        return orderRepository.findAllByOrderByOrderDateDesc();
     }
 
     // 5. Get Orders by Status (sorted by date)
     public List<Order> getOrdersByStatus(String status) {
         log.debug("Fetching orders with status: {}", status);
-        List<Order> orders = orderRepository.findByStatusOrderByOrderDateDesc(status);
-
-        // Only enrich orders that don't have itemDetails
-        orders.forEach(order -> {
-            if (order.getItemDetails() == null || order.getItemDetails().isEmpty()) {
-                enrichOrderWithItemDetails(order);
-            }
-        });
-
-        return orders;
+        return orderRepository.findByStatusOrderByOrderDateDesc(status);
     }
 
     // 6. Get User Orders by Status (sorted by date)
     public List<Order> getUserOrdersByStatus(Long userId, String status) {
         log.debug("Fetching orders for user: {} with status: {}", userId, status);
-        List<Order> orders = orderRepository.findByUserIdAndStatusOrderByOrderDateDesc(userId, status);
-
-        // Only enrich orders that don't have itemDetails
-        orders.forEach(order -> {
-            if (order.getItemDetails() == null || order.getItemDetails().isEmpty()) {
-                enrichOrderWithItemDetails(order);
-            }
-        });
-
-        return orders;
+        return orderRepository.findByUserIdAndStatusOrderByOrderDateDesc(userId, status);
     }
 
     // 7. Update Order Status
@@ -181,7 +144,7 @@ public class OrderService {
 
         // If order is cancelled, restore item quantities
         if ("CANCELLED".equalsIgnoreCase(status) && !"CANCELLED".equalsIgnoreCase(oldStatus)) {
-            updateItemQuantities(order.getItems(), true);
+            updateItemQuantities(order.getItemDetails(), true);
         }
 
         Order updatedOrder = orderRepository.save(order);
@@ -207,7 +170,7 @@ public class OrderService {
         }
 
         // Restore item quantities back to inventory
-        updateItemQuantities(order.getItems(), true);
+        updateItemQuantities(order.getItemDetails(), true);
 
         // Set status to CANCELLED
         order.setStatus("CANCELLED");
@@ -217,39 +180,45 @@ public class OrderService {
         return cancelledOrder;
     }
 
-    // 9. Enrich Order with Item Details (Helper) - For old orders without itemDetails
-    private void enrichOrderWithItemDetails(Order order) {
-        Map<String, ItemDetailsDto> details = new HashMap<>();
+    // Helper: Extract ItemDetailsDto map from cart response
+    private Map<String, ItemDetailsDto> extractItemDetailsFromCart(Map cartResponse) {
+        Map<String, ItemDetailsDto> itemDetails = new HashMap<>();
 
-        order.getItems().forEach((itemId, quantity) -> {
-            try {
-                Map itemData = restTemplate.getForObject(itemServiceUrl() + "/" + itemId, Map.class);
-                if (itemData != null) {
-                    ItemDetailsDto dto = new ItemDetailsDto();
-                    dto.setName((String) itemData.get("name"));
-                    dto.setImageUrl((String) itemData.get("imageUrl"));
-                    dto.setQuantity(quantity);
+        // Assuming cart response has itemDetails
+        if (cartResponse.containsKey("itemDetails")) {
+            Map<String, Map<String, Object>> itemDetailsMap =
+                    (Map<String, Map<String, Object>>) cartResponse.get("itemDetails");
 
-                    Double price = itemData.get("price") != null
-                            ? ((Number) itemData.get("price")).doubleValue()
-                            : 0.0;
-                    dto.setUnitPrice(price);
-                    dto.setSubtotal(price * quantity);
+            itemDetailsMap.forEach((itemId, detailsMap) -> {
+                ItemDetailsDto dto = new ItemDetailsDto();
+                dto.setName((String) detailsMap.get("name"));
+                dto.setImageUrl((String) detailsMap.get("imageUrl"));
+                dto.setUnitPrice(((Number) detailsMap.get("unitPrice")).doubleValue());
+                dto.setQuantity(((Number) detailsMap.get("quantity")).intValue());
+                dto.setSubtotal(((Number) detailsMap.get("subtotal")).doubleValue());
 
-                    details.put(itemId, dto);
-                }
-            } catch (Exception e) {
-                log.error("Failed to fetch item details for item ID: {}", itemId, e);
-            }
-        });
+                itemDetails.put(itemId, dto);
+            });
+        }
 
-        order.setItemDetails(details);
+        return itemDetails;
     }
 
-    private void updateItemQuantities(Map<String, Integer> items, boolean restore) {
-        items.forEach((itemIdStr, quantity) -> {
+    // Helper: Calculate total from item details
+    private Double calculateTotalFromDetails(Map<String, ItemDetailsDto> itemDetails) {
+        if (itemDetails == null || itemDetails.isEmpty()) {
+            return 0.0;
+        }
+        return itemDetails.values().stream()
+                .mapToDouble(details -> details.getSubtotal() != null ? details.getSubtotal() : 0.0)
+                .sum();
+    }
+
+    private void updateItemQuantities(Map<String, ItemDetailsDto> itemDetails, boolean restore) {
+        itemDetails.forEach((itemIdStr, details) -> {
             try {
                 Long itemId = Long.parseLong(itemIdStr);
+                int quantity = details.getQuantity();
 
                 if (restore) {
                     // Restore quantities by calling the /items/restore endpoint
@@ -318,10 +287,11 @@ public class OrderService {
     }
 
     // Helper: Validate stock availability and update quantities
-    private void validateAndUpdateStock(Map<String, Integer> items, boolean restore) {
-        items.forEach((itemIdStr, quantity) -> {
+    private void validateAndUpdateStock(Map<String, ItemDetailsDto> itemDetails, boolean restore) {
+        itemDetails.forEach((itemIdStr, details) -> {
             try {
                 Long itemId = Long.parseLong(itemIdStr);
+                int quantity = details.getQuantity();
 
                 // Check stock availability before ordering
                 if (!restore) {
@@ -380,13 +350,12 @@ public class OrderService {
         log.debug("Status transition validated successfully");
     }
 
-    // ✅ FIXED: Create order from checkout event with itemDetails
+    // Create order from checkout event with itemDetails
     public Order createOrderFromCheckoutEvent(CartCheckoutEvent event) {
         log.info("========== CREATING ORDER FROM CHECKOUT EVENT ==========");
         log.info("User ID: {}", event.getUserId());
         log.info("Payment Method: {}", event.getPaymentMethod());
         log.info("Total Price: {}", event.getTotalPrice());
-        log.info("Items count: {}", event.getItems() != null ? event.getItems().size() : "NULL");
         log.info("ItemDetails count: {}", event.getItemDetails() != null ? event.getItemDetails().size() : "NULL");
 
         // Debug: Log itemDetails content
@@ -403,10 +372,9 @@ public class OrderService {
         // Create new order
         Order order = new Order();
         order.setUserId(event.getUserId());
-        order.setItems(event.getItems()); // Already Map<String, Integer>
-        order.setItemDetails(event.getItemDetails()); // ✅ THIS IS THE FIX
+        order.setItemDetails(event.getItemDetails());
         order.setPaymentMethod(event.getPaymentMethod());
-        order.setTotalAmount(event.getTotalPrice()); // ✅ Set total amount
+        order.setTotalAmount(event.getTotalPrice());
         order.setStatus("PENDING");
         order.setOrderDate(LocalDateTime.now());
 
