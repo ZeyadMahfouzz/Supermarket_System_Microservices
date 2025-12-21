@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="267d24eb-9f31-430b-9553-8719e849eedf" name="Changes" comment="fixed order model">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/controller/OrderController.java" afterDir="false" />
+    <list default="true" id="267d24eb-9f31-430b-9553-8719e849eedf" name="Changes" comment="modifications in order">
+      <change beforePath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/repository/OrderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/repository/OrderRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -277,7 +276,7 @@
       <workItem from="1766255344885" duration="8477000" />
       <workItem from="1766301538553" duration="1086000" />
       <workItem from="1766310002094" duration="637000" />
-      <workItem from="1766315074901" duration="538000" />
+      <workItem from="1766315074901" duration="850000" />
     </task>
     <task id="LOCAL-00001" summary="Users - Gateway - Eureka">
       <option name="closed" value="true" />
@@ -439,7 +438,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766302490461</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="modifications in order">
+      <option name="closed" value="true" />
+      <created>1766316305606</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1766316305606</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -488,7 +495,8 @@
     <MESSAGE value="Added payment integration, need a minor fix in order service regarding order details" />
     <MESSAGE value="fixede order model" />
     <MESSAGE value="fixed order model" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed order model" />
+    <MESSAGE value="modifications in order" />
+    <option name="LAST_COMMIT_MESSAGE" value="modifications in order" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
