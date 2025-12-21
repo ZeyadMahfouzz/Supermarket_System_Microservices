@@ -46,4 +46,34 @@ public class Order {
         this.totalAmount = 0.0;
     }
 
+    public Order(Long userId, Map<String, ItemDetailsDto> itemDetails) {
+        this.userId = userId;
+        this.itemDetails = itemDetails;
+        this.orderDate = LocalDateTime.now();
+        this.status = "PENDING";
+        this.totalAmount = 0.0;
+    }
+
+    // Calculate total from itemDetails
+    public Double calculateTotal() {
+        if (itemDetails == null || itemDetails.isEmpty()) {
+            return totalAmount != null ? totalAmount : 0.0;
+        }
+        return itemDetails.values().stream()
+                .mapToDouble(details -> details.getSubtotal() != null ? details.getSubtotal() : 0.0)
+                .sum();
+    }
+
+    // Helper method to get items map for backwards compatibility
+    public Map<String, Integer> getItemsMap() {
+        Map<String, Integer> items = new HashMap<>();
+        if (itemDetails != null) {
+            itemDetails.forEach((itemId, details) -> {
+                if (details.getQuantity() != null) {
+                    items.put(itemId, details.getQuantity());
+                }
+            });
+        }
+        return items;
+    }
 }
