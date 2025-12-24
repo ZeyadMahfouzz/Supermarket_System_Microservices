@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="267d24eb-9f31-430b-9553-8719e849eedf" name="Changes" comment="modifications in order">
+      <change beforePath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/repository/OrderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/repository/OrderRepository.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;ZeyadMahfouzz&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/ZeyadMahfouzz/Supermarket_System_Microservices&quot;,
+    &quot;accountId&quot;: &quot;3e85b830-09ac-427e-bf0f-edde7157da3f&quot;
+  }
+}</component>
+  <component name="HttpClientEndpointsTabState">
+    <option name="cachedRequestData" value="&lt;CachedHttpClientTabRequests&gt;&#10;  &lt;entry key=&quot;9fe2afb1d1805a6a474301e8014fa3bb5a9c0b52&quot; value=&quot;###&amp;#10;GET http://localhost/payment&quot; /&gt;&#10;&lt;/CachedHttpClientTabRequests&gt;" />
+  </component>
+  <component name="HttpClientOnboardingState">{
+  &quot;isOnboardingCommentShown&quot;: true
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="36KCA1cO70Vm1UsNSRY6b4a4oDP" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Notification.DisplayName-DoNotAsk-DatabaseConfigFileWatcher.found&quot;: &quot;New/updated database configurations found&quot;,
+    &quot;Notification.DoNotAsk-DatabaseConfigFileWatcher.found&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Spring Boot.CartApplication (1).executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.CartApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.EurekaApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.GatewayApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.ItemsApplication (1).executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.ItemsApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.OrdersApplication (1).executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.OrdersApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.PaymentApplication (1).executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.PaymentApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.UsersApplication (1).executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.UsersApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Zeyad/OneDrive - New Giza University/Desktop/NGU/DisS_Project/Supermarket_System_MicroServices/Cart/src/main/java/com/supermarket/supermarket_system/models&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.35402298&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Zeyad\OneDrive - New Giza University\Desktop\NGU\DisS_Project\Supermarket_System_MicroServices\Cart\src\main\java\com\supermarket\supermarket_system\models" />
+      <recent name="D:\Zeyad\OneDrive - New Giza University\Desktop\NGU\DisS_Project\Supermarket_System_MicroServices\Eureka" />
+      <recent name="D:\Zeyad\OneDrive - New Giza University\Desktop\NGU\DisS_Project\Supermarket_System_MicroServices\Eureka\src\main\java\com\supermarket\supermarket_system" />
+      <recent name="D:\Zeyad\OneDrive - New Giza University\Desktop\NGU\DisS_Project\Supermarket_System_MicroServices\Eureka\src\main\resources" />
+      <recent name="D:\Zeyad\OneDrive - New Giza University\Desktop\NGU\DisS_Project\Supermarket_System_MicroServices\Users\src\main\java\com\supermarket\supermarket_system" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Zeyad\OneDrive - New Giza University\Desktop\NGU\DisS_Project\Supermarket_System_MicroServices" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.supermarket.supermarket_system.dto.cart" />
+      <recent name="com.supermarket.supermarket_system.config" />
+      <recent name="com.supermarket.supermarket_system.utils" />
+      <recent name="com.supermarket.supermarket_system.services" />
+      <recent name="com.supermarket.supermarket_system.filter" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="KtorApplicationConfigurationType" />
+        <option value="MicronautRunConfigurationType" />
+        <option value="QuarkusRunConfigurationType" />
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+    <option name="configurationStatuses">
+      <map>
+        <entry key="SpringBootApplicationConfigurationType">
+          <value>
+            <map>
+              <entry key="CartApplication" value="STOPPED" />
+              <entry key="EurekaApplication" value="STOPPED" />
+              <entry key="GatewayApplication" value="STOPPED" />
+              <entry key="ItemsApplication" value="STOPPED" />
+              <entry key="OrdersApplication" value="STOPPED" />
+              <entry key="PaymentApplication" value="STOPPED" />
+              <entry key="UsersApplication" value="STOPPED" />
+            </map>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="RunManager" selected="Spring Boot.UsersApplication">
+    <configuration name="CartApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="Cart" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.CartApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EurekaApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="Eureka" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.EurekaApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GatewayApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="gateway" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.GatewayApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ItemsApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="Items" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.ItemsApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrdersApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="Orders" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.OrdersApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PaymentApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="Payment" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.PaymentApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UsersApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="Users" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.UsersApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.supermarket.supermarket_system.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Spring Boot.OrdersApplication" />
+      <item itemvalue="Spring Boot.EurekaApplication" />
+      <item itemvalue="Spring Boot.CartApplication" />
+      <item itemvalue="Spring Boot.GatewayApplication" />
+      <item itemvalue="Spring Boot.ItemsApplication" />
+      <item itemvalue="Spring Boot.PaymentApplication" />
+      <item itemvalue="Spring Boot.UsersApplication" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.UsersApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.27397.103" />
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.27397.103" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="267d24eb-9f31-430b-9553-8719e849eedf" name="Changes" comment="" />
+      <created>1764745730874</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1764745730874</updated>
+      <workItem from="1764745734342" duration="563000" />
+      <workItem from="1764752426160" duration="1956000" />
+      <workItem from="1764786470650" duration="3075000" />
+      <workItem from="1765014098319" duration="1234000" />
+      <workItem from="1765015764468" duration="3182000" />
+      <workItem from="1765018988477" duration="3367000" />
+      <workItem from="1765022415216" duration="74000" />
+      <workItem from="1765022517359" duration="397000" />
+      <workItem from="1765022970328" duration="542000" />
+      <workItem from="1765023528721" duration="145000" />
+      <workItem from="1765023688347" duration="758000" />
+      <workItem from="1765024474266" duration="830000" />
+      <workItem from="1765025361482" duration="445000" />
+      <workItem from="1765025821731" duration="53000" />
+      <workItem from="1765025891034" duration="1733000" />
+      <workItem from="1765027669262" duration="987000" />
+      <workItem from="1765028679361" duration="575000" />
+      <workItem from="1765040035696" duration="226000" />
+      <workItem from="1765106778524" duration="490000" />
+      <workItem from="1765108669332" duration="751000" />
+      <workItem from="1765193759725" duration="3026000" />
+      <workItem from="1765197755235" duration="628000" />
+      <workItem from="1765628344526" duration="26000" />
+      <workItem from="1765633644407" duration="425000" />
+      <workItem from="1765635509391" duration="105000" />
+      <workItem from="1765799217162" duration="1187000" />
+      <workItem from="1765806654770" duration="2651000" />
+      <workItem from="1765817935178" duration="300000" />
+      <workItem from="1765979788516" duration="5873000" />
+      <workItem from="1765985715134" duration="3663000" />
+      <workItem from="1765991564462" duration="510000" />
+      <workItem from="1766000035151" duration="2150000" />
+      <workItem from="1766002487136" duration="197000" />
+      <workItem from="1766042460755" duration="94000" />
+      <workItem from="1766047010303" duration="6002000" />
+      <workItem from="1766056569383" duration="3389000" />
+      <workItem from="1766221894660" duration="8423000" />
+      <workItem from="1766234798788" duration="309000" />
+      <workItem from="1766241199824" duration="70000" />
+      <workItem from="1766255344885" duration="8477000" />
+      <workItem from="1766301538553" duration="1086000" />
+      <workItem from="1766310002094" duration="637000" />
+      <workItem from="1766315074901" duration="850000" />
+    </task>
+    <task id="LOCAL-00001" summary="Users - Gateway - Eureka">
+      <option name="closed" value="true" />
+      <created>1765022792529</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1765022792529</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Users - Gateway - Eureka">
+      <option name="closed" value="true" />
+      <created>1765026218826</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1765026218826</updated>
+    </task>
+    <task id="LOCAL-00003" summary="compiler.xml changes">
+      <option name="closed" value="true" />
+      <created>1765026388708</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1765026388708</updated>
+    </task>
+    <task id="LOCAL-00004" summary="compiler.xml changes">
+      <option name="closed" value="true" />
+      <created>1765026460391</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1765026460391</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Fixed Eureka">
+      <option name="closed" value="true" />
+      <created>1765028434813</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1765028434813</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Fixed Gateway">
+      <option name="closed" value="true" />
+      <created>1765197239213</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1765197239213</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Fixed Gateway">
+      <option name="closed" value="true" />
+      <created>1765810436868</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1765810436868</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Tried configuring rabbit mq, add &quot;add item&quot; to cart and fixed token issue">
+      <option name="closed" value="true" />
+      <created>1765992052978</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1765992052978</updated>
+    </task>
+    <task id="LOCAL-00009" summary=".">
+      <option name="closed" value="true" />
+      <created>1766000339924</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1766000339924</updated>
+    </task>
+    <task id="LOCAL-00010" summary="made payment api compatible with gateway">
+      <option name="closed" value="true" />
+      <created>1766001086025</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1766001086025</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Fixed Cart and checkout">
+      <option name="closed" value="true" />
+      <created>1766226336959</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1766226336959</updated>
+    </task>
+    <task id="LOCAL-00012" summary="minor order controller modification">
+      <option name="closed" value="true" />
+      <created>1766226752059</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1766226752059</updated>
+    </task>
+    <task id="LOCAL-00013" summary="added role constraints for items endpoints">
+      <option name="closed" value="true" />
+      <created>1766228286107</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1766228286107</updated>
+    </task>
+    <task id="LOCAL-00014" summary="used dto for status update in orders">
+      <option name="closed" value="true" />
+      <created>1766228395044</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1766228395044</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Fixed payment and modified OrderController.java">
+      <option name="closed" value="true" />
+      <created>1766229725890</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1766229725890</updated>
+    </task>
+    <task id="LOCAL-00016" summary="cancellation returns quantity">
+      <option name="closed" value="true" />
+      <created>1766240514501</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1766240514501</updated>
+    </task>
+    <task id="LOCAL-00017" summary=".">
+      <option name="closed" value="true" />
+      <created>1766241242688</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1766241242688</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Added payment integration, need a minor fix in order service regarding order details">
+      <option name="closed" value="true" />
+      <created>1766263423649</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1766263423649</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Added payment integration, need a minor fix in order service regarding order details">
+      <option name="closed" value="true" />
+      <created>1766263437150</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1766263437150</updated>
+    </task>
+    <task id="LOCAL-00020" summary="fixed order model">
+      <option name="closed" value="true" />
+      <created>1766302490461</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1766302490461</updated>
+    </task>
+    <task id="LOCAL-00021" summary="modifications in order">
+      <option name="closed" value="true" />
+      <created>1766316305606</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1766316305606</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="User">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="*" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Users - Gateway - Eureka" />
+    <MESSAGE value="compiler.xml changes" />
+    <MESSAGE value="Fixed Eureka" />
+    <MESSAGE value="Fixed Gateway" />
+    <MESSAGE value="Tried configuring rabbit mq, add &quot;add item&quot; to cart and fixed token issue" />
+    <MESSAGE value="made payment api compatible with gateway" />
+    <MESSAGE value="Fixed Cart and checkout" />
+    <MESSAGE value="minor order controller modification" />
+    <MESSAGE value="added role constraints for items endpoints" />
+    <MESSAGE value="used dto for status update in orders" />
+    <MESSAGE value="Fixed payment and modified OrderController.java" />
+    <MESSAGE value="cancellation returns quantity" />
+    <MESSAGE value="." />
+    <MESSAGE value="Added payment integration, need a minor fix in order service regarding order details" />
+    <MESSAGE value="fixede order model" />
+    <MESSAGE value="fixed order model" />
+    <MESSAGE value="modifications in order" />
+    <option name="LAST_COMMIT_MESSAGE" value="modifications in order" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/Gateway/src/main/java/com/supermarket/supermarket_system/services/JwtService.java</url>
+          <line>12</line>
+          <properties class="com.supermarket.supermarket_system.services.JwtService" method="generateToken">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>

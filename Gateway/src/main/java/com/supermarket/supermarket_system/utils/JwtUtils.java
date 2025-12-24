@@ -64,10 +64,11 @@ public class JwtUtils {
      * @param role The user’s role (stored as a custom claim)
      * @return A compact JWT string (Header.Payload.Signature)
      */
-    public String generateToken(String email, String role) {
+    public String generateToken(String email, String role, long userId) {
         return Jwts.builder()
                 .setSubject(email) // Standard claim: "sub"
                 .claim("role", role)  // Custom claim: "role"
+                .claim("userId", userId)
                 .setIssuedAt(new Date()) // "iat": issued at
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) // "exp"
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256) // HMAC-SHA256 signing
@@ -95,6 +96,10 @@ public class JwtUtils {
     // ----------------------
     // DATA EXTRACTION METHODS
     // ----------------------
+
+    public Long getUserId(String token) {
+        return parseToken(token).getBody().get("userId", Long.class);
+    }
 
     /**
      * Extracts the username (stored as the standard "sub" claim)

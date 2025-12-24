@@ -62,6 +62,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         // Extract user information from token
         String email = jwtUtils.getEmail(token);
         String role = jwtUtils.getRole(token);
+        Long userId = jwtUtils.getUserId(token);
 
         // Check role-based authorization
         if (requiresAdminRole(path, method) && !"ADMIN".equals(role)) {
@@ -72,6 +73,7 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         ServerHttpRequest modifiedRequest = request.mutate()
                 .header("X-User-Email", email)
                 .header("X-User-Role", role)
+                .header("X-User-Id", String.valueOf(userId))
                 .build();
 
         return chain.filter(exchange.mutate().request(modifiedRequest).build());

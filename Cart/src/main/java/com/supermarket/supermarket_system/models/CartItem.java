@@ -1,6 +1,7 @@
 package com.supermarket.supermarket_system.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 @Entity
@@ -25,12 +26,27 @@ public class CartItem {
     @Column(nullable = false)
     private Double unitPrice;
 
+    @JsonProperty("name")
+    private String name;
+
+    @Column(length = 500)
+    @JsonProperty("imageUrl")
+    private String imageUrl;
+
     public CartItem() {}
 
     public CartItem(Long itemId, int quantity, Double unitPrice) {
         this.itemId = itemId;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
+    }
+
+    public CartItem(Long itemId, int quantity, Double unitPrice, String name, String imageUrl) {
+        this.itemId = itemId;
+        this.quantity = quantity;
+        this.unitPrice = unitPrice;
+        this.name = name;
+        this.imageUrl = imageUrl;
     }
 
     @Transient
@@ -52,4 +68,10 @@ public class CartItem {
 
     public Double getUnitPrice() { return unitPrice; }
     public void setUnitPrice(Double unitPrice) { this.unitPrice = unitPrice; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 }

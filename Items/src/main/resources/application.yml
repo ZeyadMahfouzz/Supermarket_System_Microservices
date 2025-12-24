@@ -2,12 +2,10 @@ spring:
   application:
     name: Items
 
-
-
   datasource:
     url: jdbc:mysql://localhost:3306/items
     username: root
-    password: dumbPassword
+    password: 123456
 
   jpa:
     hibernate:
@@ -17,14 +15,31 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
 server:
-  port: 8083
+  port: 8083 #8083
 
 
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
-#   DISABLE EUREKA FOR NOW
-    register-with-eureka: false
-    fetch-registry: false
+##   DISABLE EUREKA FOR NOW
+#    register-with-eureka: false
+#    fetch-registry: false
+  instance:
+    instance-id: ${spring.application.name}:${random.uuid}
+    prefer-ip-address: true
+
+app:
+  rabbitmq:
+    item-exchange: items.exchange
+    item-queue: items.queue
+    item-routing-key: items.routingkey
+    item-deduct-queue: items.deduct.queue
+    item-deduct-routing-key: items.deduct.routingkey

@@ -13,6 +13,10 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "User ID is required")
+    @Column(nullable = false, name = "user_id")
+    private Long userId;
+
     @NotNull(message = "Order ID is required")
     @Column(nullable = false)
     private Long orderId;
@@ -48,8 +52,9 @@ public class Payment {
         this.status = PaymentStatus.PENDING;
     }
 
-    public Payment(Long orderId, Double amount, PaymentMethod paymentMethod) {
+    public Payment(Long userId, Long orderId, Double amount, PaymentMethod paymentMethod) {
         this();
+        this.userId = userId;
         this.orderId = orderId;
         this.amount = amount;
         this.paymentMethod = paymentMethod;
@@ -62,6 +67,14 @@ public class Payment {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Long getOrderId() {

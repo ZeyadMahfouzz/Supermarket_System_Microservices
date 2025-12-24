@@ -1,5 +1,6 @@
 package com.supermarket.supermarket_system.service;
 
+import com.supermarket.supermarket_system.dto.PaymentRequestDto;
 import com.supermarket.supermarket_system.model.Payment;
 import com.supermarket.supermarket_system.model.PaymentStatus;
 import com.supermarket.supermarket_system.repository.PaymentRepository;
@@ -15,12 +16,67 @@ public class PaymentService {
     @Autowired
     private PaymentRepository paymentRepository;
 
+    // NEW: Process payment with detailed payment method information
+    public Payment processPaymentWithDetails(PaymentRequestDto request) {
+        // Validate payment method specific data
+        validatePaymentMethodDetails(request);
+
+        // Create payment entity
+        Payment payment = new Payment();
+        payment.setUserId(request.getUserId());
+        payment.setOrderId(request.getOrderId());
+        payment.setAmount(request.getAmount());
+        payment.setPaymentMethod(request.getPaymentMethod());
+        payment.setTransactionId(UUID.randomUUID().toString());
+
+        // Instant approval - all valid payments are COMPLETED immediately
+        payment.setStatus(PaymentStatus.COMPLETED);
+
+        return paymentRepository.save(payment);
+    }
+
+    private void validatePaymentMethodDetails(PaymentRequestDto request) {
+        switch (request.getPaymentMethod()) {
+            case CREDIT_CARD:
+                if (request.getCreditCardPayment() == null) {
+                    throw new IllegalArgumentException("Credit card payment details are required");
+                }
+                // All required fields are validated by DTO annotations
+                break;
+            case DEBIT_CARD:
+                if (request.getDebitCardPayment() == null) {
+                    throw new IllegalArgumentException("Debit card payment details are required");
+                }
+                // All required fields are validated by DTO annotations
+                break;
+            case MOBILE_PAYMENT:
+                if (request.getMobilePayment() == null) {
+                    throw new IllegalArgumentException("Mobile payment details are required");
+                }
+                // All required fields are validated by DTO annotations
+                break;
+            case BANK_TRANSFER:
+                if (request.getBankTransfer() == null) {
+                    throw new IllegalArgumentException("Bank transfer details are required");
+                }
+                // All required fields are validated by DTO annotations
+                break;
+            case CASH:
+                if (request.getCashPayment() == null || !request.getCashPayment().getConfirmed()) {
+                    throw new IllegalArgumentException("Cash payment must be confirmed");
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid payment method");
+        }
+    }
+
+    // EXISTING METHODS
     public Payment processPayment(Payment payment) {
         // Generate a unique transaction ID
         payment.setTransactionId(UUID.randomUUID().toString());
 
-        // Simulate payment processing logic
-        // In a real application, this would integrate with a payment gateway
+        // Instant approval
         payment.setStatus(PaymentStatus.COMPLETED);
 
         return paymentRepository.save(payment);
@@ -37,6 +93,10 @@ public class PaymentService {
 
     public List<Payment> getPaymentsByOrderId(Long orderId) {
         return paymentRepository.findByOrderId(orderId);
+    }
+
+    public List<Payment> getPaymentsByUserId(Long userId) {
+        return paymentRepository.findByUserId(userId);
     }
 
     public Payment getPaymentByTransactionId(String transactionId) {

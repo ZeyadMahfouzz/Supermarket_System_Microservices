@@ -10,8 +10,8 @@ public class JwtService {
     @Autowired
     private JwtUtils jwtUtils;
 
-    public String generateToken(String email, String role) {
-        return jwtUtils.generateToken(email, role);
+    public String generateToken(String email, String role, long userId) {
+        return jwtUtils.generateToken(email, role, userId);
     }
 
     public boolean validateToken(String token) {

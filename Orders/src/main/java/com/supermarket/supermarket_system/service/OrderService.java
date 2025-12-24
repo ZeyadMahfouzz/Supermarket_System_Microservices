@@ -1,0 +1,393 @@
+package com.supermarket.supermarket_system.service;
+
+import com.supermarket.supermarket_system.dto.cart.CartCheckoutEvent;
+import com.supermarket.supermarket_system.dto.cart.ItemDetailsDto;
+import com.supermarket.supermarket_system.model.Order;
+import com.supermarket.supermarket_system.repository.OrderRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class OrderService {
+
+    private final OrderRepository orderRepository;
+    private final RestTemplate restTemplate;
+
+    // Use Eureka service names (LoadBalanced RestTemplate) to call Cart and Items
+    private String itemServiceUrl() {
+        return "http://Items/items";
+    }
+
+    private String cartServiceUrl() {
+        return "http://Cart/cart";
+    }
+
+    // 1. Create Order from Cart
+    public Order createOrderFromCart(Long userId, String paymentMethod) {
+        log.info("Creating order from cart for user: {}", userId);
+
+        // Fetch cart items
+        Map cartResponse;
+        try {
+            cartResponse = restTemplate.getForObject(cartServiceUrl() + "/" + userId, Map.class);
+            if (cartResponse == null || ((Map) cartResponse.get("items")).isEmpty()) {
+                throw new RuntimeException("Cart is empty for user: " + userId);
+            }
+        } catch (Exception e) {
+            log.error("Failed to fetch cart for user: {}", userId, e);
+            throw new RuntimeException("Could not retrieve cart for user: " + userId);
+        }
+
+        // Extract itemDetails from cart response
+        Map<String, ItemDetailsDto> itemDetails = extractItemDetailsFromCart(cartResponse);
+
+        // Validate stock availability and decrease quantities
+        validateAndUpdateStock(itemDetails, false);
+
+        // Create order
+        Order order = new Order();
+        order.setUserId(userId);
+        order.setItemDetails(itemDetails);
+        order.setPaymentMethod(paymentMethod);
+        order.setStatus("PENDING");
+        order.setTotalAmount(calculateTotalFromDetails(itemDetails));
+
+        Order savedOrder = orderRepository.save(order);
+        log.info("Order created successfully with ID: {}", savedOrder.getId());
+
+        // Clear cart after successful order
+        try {
+            restTemplate.delete(cartServiceUrl() + "/" + userId);
+            log.info("Cart cleared for user: {}", userId);
+        } catch (Exception e) {
+            log.warn("Failed to clear cart for user: {}, but order was created", userId, e);
+        }
+
+        return savedOrder;
+    }
+
+    public Order createOrder(Order order) {
+        log.info("Creating order for user: {}", order.getUserId());
+        // Validate stock and update item quantities via REST call to Item Service
+        validateAndUpdateStock(order.getItemDetails(), false);
+        order.setStatus("PENDING");
+        if (order.getTotalAmount() == null || order.getTotalAmount() == 0.0) {
+            order.setTotalAmount(calculateTotalFromDetails(order.getItemDetails()));
+        }
+        Order savedOrder = orderRepository.save(order);
+        log.info("Order created successfully with ID: {}", savedOrder.getId());
+        return savedOrder;
+    }
+
+    // 2. Get Order by ID
+    public Order getOrderById(Long id) {
+        log.debug("Fetching order with ID: {}", id);
+        return orderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Order not found with id: " + id));
+    }
+
+    // 3. Get User Orders (sorted by date, newest first)
+    public List<Order> getUserOrders(Long userId) {
+        log.debug("Fetching all orders for user: {}", userId);
+        return orderRepository.findByUserIdOrderByOrderDateDesc(userId);
+    }
+
+    // Legacy method - keeping for backward compatibility
+    public List<Order> getOrdersByUserId(Long userId) {
+        return getUserOrders(userId);
+    }
+
+    // 4. Get All Orders (sorted by date, newest first)
+    public List<Order> getAllOrders() {
+        log.debug("Fetching all orders");
+        return orderRepository.findAllByOrderByOrderDateDesc();
+    }
+
+    // 5. Get Orders by Status (sorted by date)
+    public List<Order> getOrdersByStatus(String status) {
+        log.debug("Fetching orders with status: {}", status);
+        return orderRepository.findByStatusOrderByOrderDateDesc(status);
+    }
+
+    // 6. Get User Orders by Status (sorted by date)
+    public List<Order> getUserOrdersByStatus(Long userId, String status) {
+        log.debug("Fetching orders for user: {} with status: {}", userId, status);
+        return orderRepository.findByUserIdAndStatusOrderByOrderDateDesc(userId, status);
+    }
+
+    // 7. Update Order Status
+    public Order updateOrderStatus(Long id, String status) {
+        log.info("Updating order {} status to: {}", id, status);
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Order not found with id: " + id));
+
+        String oldStatus = order.getStatus();
+
+        // Validate status transition
+        validateStatusTransition(oldStatus, status);
+
+        order.setStatus(status);
+
+        // If order is cancelled, restore item quantities
+        if ("CANCELLED".equalsIgnoreCase(status) && !"CANCELLED".equalsIgnoreCase(oldStatus)) {
+            updateItemQuantities(order.getItemDetails(), true);
+        }
+
+        Order updatedOrder = orderRepository.save(order);
+        log.info("Order status updated successfully from {} to {}", oldStatus, status);
+        return updatedOrder;
+    }
+
+    // 8. Cancel Order
+    public Order cancelOrder(Long orderId) {
+        log.info("Cancelling order: {}", orderId);
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
+
+        String currentStatus = order.getStatus();
+
+        // Prevent cancelling delivered or already cancelled orders
+        if ("DELIVERED".equalsIgnoreCase(currentStatus)) {
+            throw new RuntimeException("Cannot cancel order that has already been delivered");
+        }
+
+        if ("CANCELLED".equalsIgnoreCase(currentStatus)) {
+            throw new RuntimeException("Order is already cancelled");
+        }
+
+        // Restore item quantities back to inventory
+        updateItemQuantities(order.getItemDetails(), true);
+
+        // Set status to CANCELLED
+        order.setStatus("CANCELLED");
+        Order cancelledOrder = orderRepository.save(order);
+
+        log.info("Order {} cancelled successfully, items restored to inventory", orderId);
+        return cancelledOrder;
+    }
+
+    // Helper: Extract ItemDetailsDto map from cart response
+    private Map<String, ItemDetailsDto> extractItemDetailsFromCart(Map cartResponse) {
+        Map<String, ItemDetailsDto> itemDetails = new HashMap<>();
+
+        // Assuming cart response has itemDetails
+        if (cartResponse.containsKey("itemDetails")) {
+            Map<String, Map<String, Object>> itemDetailsMap =
+                    (Map<String, Map<String, Object>>) cartResponse.get("itemDetails");
+
+            itemDetailsMap.forEach((itemId, detailsMap) -> {
+                ItemDetailsDto dto = new ItemDetailsDto();
+                dto.setName((String) detailsMap.get("name"));
+                dto.setImageUrl((String) detailsMap.get("imageUrl"));
+                dto.setUnitPrice(((Number) detailsMap.get("unitPrice")).doubleValue());
+                dto.setQuantity(((Number) detailsMap.get("quantity")).intValue());
+                dto.setSubtotal(((Number) detailsMap.get("subtotal")).doubleValue());
+
+                itemDetails.put(itemId, dto);
+            });
+        }
+
+        return itemDetails;
+    }
+
+    // Helper: Calculate total from item details
+    private Double calculateTotalFromDetails(Map<String, ItemDetailsDto> itemDetails) {
+        if (itemDetails == null || itemDetails.isEmpty()) {
+            return 0.0;
+        }
+        return itemDetails.values().stream()
+                .mapToDouble(details -> details.getSubtotal() != null ? details.getSubtotal() : 0.0)
+                .sum();
+    }
+
+    private void updateItemQuantities(Map<String, ItemDetailsDto> itemDetails, boolean restore) {
+        itemDetails.forEach((itemIdStr, details) -> {
+            try {
+                Long itemId = Long.parseLong(itemIdStr);
+                int quantity = details.getQuantity();
+
+                if (restore) {
+                    // Restore quantities by calling the /items/restore endpoint
+                    Map<String, Object> restoreRequest = new HashMap<>();
+                    restoreRequest.put("itemId", itemId);
+                    restoreRequest.put("quantity", quantity);
+
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                    HttpEntity<Map<String, Object>> entity = new HttpEntity<>(restoreRequest, headers);
+
+                    ResponseEntity<Map> response = restTemplate.postForEntity(
+                            itemServiceUrl() + "/restore",
+                            entity,
+                            Map.class
+                    );
+
+                    if (response.getStatusCode() != HttpStatus.OK || response.getBody() == null) {
+                        throw new RuntimeException("Items service did not respond properly for restoration");
+                    }
+
+                    Map<String, Object> respMap = response.getBody();
+                    boolean success = Boolean.TRUE.equals(respMap.get("success"));
+
+                    if (!success) {
+                        String message = (String) respMap.getOrDefault("message", "Failed to restore item quantity");
+                        throw new RuntimeException(message);
+                    }
+
+                    log.debug("Restored quantity for item {}: +{}", itemId, quantity);
+                } else {
+                    // Deduct quantities by calling the /items/deduct endpoint
+                    Map<String, Object> deductRequest = new HashMap<>();
+                    deductRequest.put("itemId", itemId);
+                    deductRequest.put("quantity", quantity);
+
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                    HttpEntity<Map<String, Object>> entity = new HttpEntity<>(deductRequest, headers);
+
+                    ResponseEntity<Map> response = restTemplate.postForEntity(
+                            itemServiceUrl() + "/deduct",
+                            entity,
+                            Map.class
+                    );
+
+                    if (response.getStatusCode() != HttpStatus.OK || response.getBody() == null) {
+                        throw new RuntimeException("Items service did not respond properly for deduction");
+                    }
+
+                    Map<String, Object> respMap = response.getBody();
+                    boolean success = Boolean.TRUE.equals(respMap.get("success"));
+
+                    if (!success) {
+                        String message = (String) respMap.getOrDefault("message", "Failed to deduct item quantity");
+                        throw new RuntimeException(message);
+                    }
+
+                    log.debug("Deducted quantity for item {}: -{}", itemId, quantity);
+                }
+            } catch (Exception e) {
+                log.error("Failed to update quantity for item ID: {}, restore: {}", itemIdStr, restore, e);
+                throw new RuntimeException("Failed to update item quantity for item: " + itemIdStr + ". " + e.getMessage());
+            }
+        });
+    }
+
+    // Helper: Validate stock availability and update quantities
+    private void validateAndUpdateStock(Map<String, ItemDetailsDto> itemDetails, boolean restore) {
+        itemDetails.forEach((itemIdStr, details) -> {
+            try {
+                Long itemId = Long.parseLong(itemIdStr);
+                int quantity = details.getQuantity();
+
+                // Check stock availability before ordering
+                if (!restore) {
+                    Map itemData = restTemplate.getForObject(itemServiceUrl() + "/" + itemId, Map.class);
+                    if (itemData == null) {
+                        throw new RuntimeException("Item not found: " + itemId);
+                    }
+                    Integer availableQuantity = (Integer) itemData.get("quantity");
+                    if (availableQuantity == null || availableQuantity < quantity) {
+                        throw new RuntimeException("Insufficient stock for item: " + itemId +
+                                ". Available: " + availableQuantity + ", Requested: " + quantity);
+                    }
+                }
+
+                // Update quantities
+                int adjustment = restore ? quantity : -quantity;
+                restTemplate.put(itemServiceUrl() + "/" + itemId + "/quantity?adjustment=" + adjustment, null);
+                log.debug("Stock validated and updated for item {}: adjustment {}", itemId, adjustment);
+            } catch (Exception e) {
+                log.error("Failed to validate/update stock for item ID: {}", itemIdStr, e);
+                throw new RuntimeException("Failed to process item: " + itemIdStr + ". " + e.getMessage());
+            }
+        });
+    }
+
+    // 10. Validate Status Transition (Helper)
+    private void validateStatusTransition(String currentStatus, String newStatus) {
+        log.debug("Validating status transition from {} to {}", currentStatus, newStatus);
+
+        // Cannot change delivered orders
+        if ("DELIVERED".equalsIgnoreCase(currentStatus)) {
+            throw new RuntimeException("Cannot change status of delivered order");
+        }
+
+        // Cannot change cancelled orders
+        if ("CANCELLED".equalsIgnoreCase(currentStatus)) {
+            throw new RuntimeException("Cannot change status of cancelled order");
+        }
+
+        // Valid status progression: PENDING -> PROCESSING -> SHIPPING -> DELIVERED
+        // Can cancel from PENDING, PROCESSING, or SHIPPING
+        if ("PENDING".equalsIgnoreCase(currentStatus)) {
+            if (!("PROCESSING".equalsIgnoreCase(newStatus) || "CANCELLED".equalsIgnoreCase(newStatus))) {
+                throw new RuntimeException("Invalid status transition from PENDING to " + newStatus);
+            }
+        } else if ("PROCESSING".equalsIgnoreCase(currentStatus)) {
+            if (!("SHIPPING".equalsIgnoreCase(newStatus) || "CANCELLED".equalsIgnoreCase(newStatus))) {
+                throw new RuntimeException("Invalid status transition from PROCESSING to " + newStatus);
+            }
+        } else if ("SHIPPING".equalsIgnoreCase(currentStatus)) {
+            if (!("DELIVERED".equalsIgnoreCase(newStatus) || "CANCELLED".equalsIgnoreCase(newStatus))) {
+                throw new RuntimeException("Invalid status transition from SHIPPING to " + newStatus);
+            }
+        }
+
+        log.debug("Status transition validated successfully");
+    }
+
+    // Create order from checkout event with itemDetails
+    public Order createOrderFromCheckoutEvent(CartCheckoutEvent event) {
+        log.info("========== CREATING ORDER FROM CHECKOUT EVENT ==========");
+        log.info("User ID: {}", event.getUserId());
+        log.info("Payment Method: {}", event.getPaymentMethod());
+        log.info("Total Price: {}", event.getTotalPrice());
+        log.info("ItemDetails count: {}", event.getItemDetails() != null ? event.getItemDetails().size() : "NULL");
+
+        // Debug: Log itemDetails content
+        if (event.getItemDetails() != null && !event.getItemDetails().isEmpty()) {
+            event.getItemDetails().forEach((itemId, details) -> {
+                log.info("  Item {}: name={}, qty={}, price={}, subtotal={}",
+                        itemId, details.getName(), details.getQuantity(),
+                        details.getUnitPrice(), details.getSubtotal());
+            });
+        } else {
+            log.warn("⚠️ WARNING: ItemDetails is NULL or EMPTY in checkout event!");
+        }
+
+        // Create new order
+        Order order = new Order();
+        order.setUserId(event.getUserId());
+        order.setItemDetails(event.getItemDetails());
+        order.setPaymentMethod(event.getPaymentMethod());
+        order.setTotalAmount(event.getTotalPrice());
+        order.setStatus("PENDING");
+        order.setOrderDate(LocalDateTime.now());
+
+        // Save order
+        Order savedOrder = orderRepository.save(order);
+
+        log.info("✅ Order {} created successfully", savedOrder.getId());
+        log.info("   - User: {}", savedOrder.getUserId());
+        log.info("   - Total: {}", savedOrder.getTotalAmount());
+        log.info("   - ItemDetails saved: {}",
+                savedOrder.getItemDetails() != null ? savedOrder.getItemDetails().size() : "NULL");
+        log.info("========================================================");
+
+        return savedOrder;
+    }
+}
