@@ -5,12 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="267d24eb-9f31-430b-9553-8719e849eedf" name="Changes" comment="Fixed Gateway">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Items/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Items/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/controllers/ItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/controllers/ItemController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/repositories/ItemRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/repositories/ItemRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/utils/JwtUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/Items/src/main/java/com/supermarket/supermarket_system/utils/JwtUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,8 +52,11 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "Application.CartApplication.executor": "Run",
     "Application.GatewayApplication.executor": "Run",
     "Application.ItemsApplication.executor": "Run",
+    "Application.OrdersApplication.executor": "Run",
+    "Application.PaymentApplication.executor": "Run",
     "Application.UsersApplication.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "Notification.DisplayName-DoNotAsk-DatabaseConfigFileWatcher.found": "New/updated database configurations found",

@@ -368,6 +368,9 @@ public class ItemController {
             if (updatedItem.getDescription() != null) {
                 item.setDescription(updatedItem.getDescription());
             }
+            if (updatedItem.getImageUrl() != null) {
+                item.setImageUrl(updatedItem.getImageUrl());
+            }
             return itemRepository.save(item);
         }).orElse(null);// If not found, return null
     }
