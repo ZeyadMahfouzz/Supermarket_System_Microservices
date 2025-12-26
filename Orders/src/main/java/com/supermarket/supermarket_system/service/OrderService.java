@@ -27,7 +27,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final RestTemplate restTemplate;
 
-    // Eureka service names (LoadBalanced RestTemplate) to call Cart and Items
+    // Use Eureka service names (LoadBalanced RestTemplate) to call Cart and Items
     private String itemServiceUrl() {
         return "http://Items/items";
     }
@@ -37,43 +37,59 @@ public class OrderService {
     }
 
     // 1. Create Order from Cart
-    public Order createOrderFromCheckoutEvent(CartCheckoutEvent event) {
-        log.info("========== CREATING ORDER FROM CHECKOUT EVENT ==========");
-        log.info("User ID: {}", event.getUserId());
-        log.info("Payment Method: {}", event.getPaymentMethod());
-        log.info("Total Price: {}", event.getTotalPrice());
-        log.info("ItemDetails count: {}", event.getItemDetails() != null ? event.getItemDetails().size() : "NULL");
+    public Order createOrderFromCart(Long userId, String paymentMethod) {
+        log.info("Creating order from cart for user: {}", userId);
 
-        // Debug: Log itemDetails content
-        if (event.getItemDetails() != null && !event.getItemDetails().isEmpty()) {
-            event.getItemDetails().forEach((itemId, details) -> {
-                log.info("  Item {}: name={}, qty={}, price={}, subtotal={}",
-                        itemId, details.getName(), details.getQuantity(),
-                        details.getUnitPrice(), details.getSubtotal());
-            });
-        } else {
-            log.warn("⚠️ WARNING: ItemDetails is NULL or EMPTY in checkout event!");
+        // Fetch cart items
+        Map cartResponse;
+        try {
+            cartResponse = restTemplate.getForObject(cartServiceUrl() + "/" + userId, Map.class);
+            if (cartResponse == null || ((Map) cartResponse.get("items")).isEmpty()) {
+                throw new RuntimeException("Cart is empty for user: " + userId);
+            }
+        } catch (Exception e) {
+            log.error("Failed to fetch cart for user: {}", userId, e);
+            throw new RuntimeException("Could not retrieve cart for user: " + userId);
         }
 
-        // Create new order
+        // Extract itemDetails from cart response
+        Map<String, ItemDetailsDto> itemDetails = extractItemDetailsFromCart(cartResponse);
+
+        // Validate stock availability and decrease quantities
+        validateAndUpdateStock(itemDetails, false);
+
+        // Create order
         Order order = new Order();
-        order.setUserId(event.getUserId());
-        order.setItemDetails(event.getItemDetails());
-        order.setPaymentMethod(event.getPaymentMethod());
-        order.setTotalAmount(event.getTotalPrice());
+        order.setUserId(userId);
+        order.setItemDetails(itemDetails);
+        order.setPaymentMethod(paymentMethod);
         order.setStatus("PENDING");
-        order.setOrderDate(LocalDateTime.now());
+        order.setTotalAmount(calculateTotalFromDetails(itemDetails));
 
-        // Save order
         Order savedOrder = orderRepository.save(order);
+        log.info("Order created successfully with ID: {}", savedOrder.getId());
 
-        log.info("✅ Order {} created successfully", savedOrder.getId());
-        log.info("   - User: {}", savedOrder.getUserId());
-        log.info("   - Total: {}", savedOrder.getTotalAmount());
-        log.info("   - ItemDetails saved: {}",
-                savedOrder.getItemDetails() != null ? savedOrder.getItemDetails().size() : "NULL");
-        log.info("========================================================");
+        // Clear cart after successful order
+        try {
+            restTemplate.delete(cartServiceUrl() + "/" + userId);
+            log.info("Cart cleared for user: {}", userId);
+        } catch (Exception e) {
+            log.warn("Failed to clear cart for user: {}, but order was created", userId, e);
+        }
 
+        return savedOrder;
+    }
+
+    public Order createOrder(Order order) {
+        log.info("Creating order for user: {}", order.getUserId());
+        // Validate stock and update item quantities via REST call to Item Service
+        validateAndUpdateStock(order.getItemDetails(), false);
+        order.setStatus("PENDING");
+        if (order.getTotalAmount() == null || order.getTotalAmount() == 0.0) {
+            order.setTotalAmount(calculateTotalFromDetails(order.getItemDetails()));
+        }
+        Order savedOrder = orderRepository.save(order);
+        log.info("Order created successfully with ID: {}", savedOrder.getId());
         return savedOrder;
     }
 
@@ -88,6 +104,11 @@ public class OrderService {
     public List<Order> getUserOrders(Long userId) {
         log.debug("Fetching all orders for user: {}", userId);
         return orderRepository.findByUserIdOrderByOrderDateDesc(userId);
+    }
+
+    // Legacy method - keeping for backward compatibility
+    public List<Order> getOrdersByUserId(Long userId) {
+        return getUserOrders(userId);
     }
 
     // 4. Get All Orders (sorted by date, newest first)
@@ -159,7 +180,40 @@ public class OrderService {
         return cancelledOrder;
     }
 
-    // 9. Update Item Quantities (Deduct or Restore)
+    // Helper: Extract ItemDetailsDto map from cart response
+    private Map<String, ItemDetailsDto> extractItemDetailsFromCart(Map cartResponse) {
+        Map<String, ItemDetailsDto> itemDetails = new HashMap<>();
+
+        // Assuming cart response has itemDetails
+        if (cartResponse.containsKey("itemDetails")) {
+            Map<String, Map<String, Object>> itemDetailsMap =
+                    (Map<String, Map<String, Object>>) cartResponse.get("itemDetails");
+
+            itemDetailsMap.forEach((itemId, detailsMap) -> {
+                ItemDetailsDto dto = new ItemDetailsDto();
+                dto.setName((String) detailsMap.get("name"));
+                dto.setImageUrl((String) detailsMap.get("imageUrl"));
+                dto.setUnitPrice(((Number) detailsMap.get("unitPrice")).doubleValue());
+                dto.setQuantity(((Number) detailsMap.get("quantity")).intValue());
+                dto.setSubtotal(((Number) detailsMap.get("subtotal")).doubleValue());
+
+                itemDetails.put(itemId, dto);
+            });
+        }
+
+        return itemDetails;
+    }
+
+    // Helper: Calculate total from item details
+    private Double calculateTotalFromDetails(Map<String, ItemDetailsDto> itemDetails) {
+        if (itemDetails == null || itemDetails.isEmpty()) {
+            return 0.0;
+        }
+        return itemDetails.values().stream()
+                .mapToDouble(details -> details.getSubtotal() != null ? details.getSubtotal() : 0.0)
+                .sum();
+    }
+
     private void updateItemQuantities(Map<String, ItemDetailsDto> itemDetails, boolean restore) {
         itemDetails.forEach((itemIdStr, details) -> {
             try {
@@ -232,6 +286,37 @@ public class OrderService {
         });
     }
 
+    // Helper: Validate stock availability and update quantities
+    private void validateAndUpdateStock(Map<String, ItemDetailsDto> itemDetails, boolean restore) {
+        itemDetails.forEach((itemIdStr, details) -> {
+            try {
+                Long itemId = Long.parseLong(itemIdStr);
+                int quantity = details.getQuantity();
+
+                // Check stock availability before ordering
+                if (!restore) {
+                    Map itemData = restTemplate.getForObject(itemServiceUrl() + "/" + itemId, Map.class);
+                    if (itemData == null) {
+                        throw new RuntimeException("Item not found: " + itemId);
+                    }
+                    Integer availableQuantity = (Integer) itemData.get("quantity");
+                    if (availableQuantity == null || availableQuantity < quantity) {
+                        throw new RuntimeException("Insufficient stock for item: " + itemId +
+                                ". Available: " + availableQuantity + ", Requested: " + quantity);
+                    }
+                }
+
+                // Update quantities
+                int adjustment = restore ? quantity : -quantity;
+                restTemplate.put(itemServiceUrl() + "/" + itemId + "/quantity?adjustment=" + adjustment, null);
+                log.debug("Stock validated and updated for item {}: adjustment {}", itemId, adjustment);
+            } catch (Exception e) {
+                log.error("Failed to validate/update stock for item ID: {}", itemIdStr, e);
+                throw new RuntimeException("Failed to process item: " + itemIdStr + ". " + e.getMessage());
+            }
+        });
+    }
+
     // 10. Validate Status Transition (Helper)
     private void validateStatusTransition(String currentStatus, String newStatus) {
         log.debug("Validating status transition from {} to {}", currentStatus, newStatus);
@@ -265,5 +350,44 @@ public class OrderService {
         log.debug("Status transition validated successfully");
     }
 
+    // Create order from checkout event with itemDetails
+    public Order createOrderFromCheckoutEvent(CartCheckoutEvent event) {
+        log.info("========== CREATING ORDER FROM CHECKOUT EVENT ==========");
+        log.info("User ID: {}", event.getUserId());
+        log.info("Payment Method: {}", event.getPaymentMethod());
+        log.info("Total Price: {}", event.getTotalPrice());
+        log.info("ItemDetails count: {}", event.getItemDetails() != null ? event.getItemDetails().size() : "NULL");
 
+        // Debug: Log itemDetails content
+        if (event.getItemDetails() != null && !event.getItemDetails().isEmpty()) {
+            event.getItemDetails().forEach((itemId, details) -> {
+                log.info("  Item {}: name={}, qty={}, price={}, subtotal={}",
+                        itemId, details.getName(), details.getQuantity(),
+                        details.getUnitPrice(), details.getSubtotal());
+            });
+        } else {
+            log.warn("⚠️ WARNING: ItemDetails is NULL or EMPTY in checkout event!");
+        }
+
+        // Create new order
+        Order order = new Order();
+        order.setUserId(event.getUserId());
+        order.setItemDetails(event.getItemDetails());
+        order.setPaymentMethod(event.getPaymentMethod());
+        order.setTotalAmount(event.getTotalPrice());
+        order.setStatus("PENDING");
+        order.setOrderDate(LocalDateTime.now());
+
+        // Save order
+        Order savedOrder = orderRepository.save(order);
+
+        log.info("✅ Order {} created successfully", savedOrder.getId());
+        log.info("   - User: {}", savedOrder.getUserId());
+        log.info("   - Total: {}", savedOrder.getTotalAmount());
+        log.info("   - ItemDetails saved: {}",
+                savedOrder.getItemDetails() != null ? savedOrder.getItemDetails().size() : "NULL");
+        log.info("========================================================");
+
+        return savedOrder;
+    }
 }
