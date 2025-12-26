@@ -1,3 +1,6 @@
+// Central DTO that represents a payment request.
+// Holds common payment fields + optional payment-method-specific DTOs.
+
 package com.supermarket.supermarket_system.dto;
 
 import com.supermarket.supermarket_system.model.PaymentMethod;
