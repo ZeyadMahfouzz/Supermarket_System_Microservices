@@ -1,6 +1,5 @@
 package com.supermarket.supermarket_system.dto;
 
-import com.supermarket.supermarket_system.dto.cart.ItemDetailsDto;
 import com.supermarket.supermarket_system.model.Order;
 import org.springframework.stereotype.Component;
 
