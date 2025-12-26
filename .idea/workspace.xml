@@ -4,19 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="267d24eb-9f31-430b-9553-8719e849eedf" name="Changes" comment="modifications in order">
+    <list default="true" id="267d24eb-9f31-430b-9553-8719e849eedf" name="Changes" comment="Added comments">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/dto/cart/AddCartItemRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/dto/cart/AddCartItemRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/dto/cart/CartItemResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/dto/cart/CartItemResponseDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/dto/cart/UpdateCartItemQuantityRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/dto/cart/UpdateCartItemQuantityRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Payment/src/main/java/com/supermarket/supermarket_system/PaymentApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/Payment/src/main/java/com/supermarket/supermarket_system/PaymentApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Payment/src/main/java/com/supermarket/supermarket_system/controller/PaymentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Payment/src/main/java/com/supermarket/supermarket_system/controller/PaymentController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Payment/src/main/java/com/supermarket/supermarket_system/dto/CreditCardPaymentDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/Payment/src/main/java/com/supermarket/supermarket_system/dto/CreditCardPaymentDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Payment/src/main/java/com/supermarket/supermarket_system/dto/PaymentRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/Payment/src/main/java/com/supermarket/supermarket_system/dto/PaymentRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Payment/src/main/java/com/supermarket/supermarket_system/model/Payment.java" beforeDir="false" afterPath="$PROJECT_DIR$/Payment/src/main/java/com/supermarket/supermarket_system/model/Payment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Payment/src/main/java/com/supermarket/supermarket_system/service/PaymentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Payment/src/main/java/com/supermarket/supermarket_system/service/PaymentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Payment/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/Payment/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Payment/src/test/java/com/supermarket/supermarket_system/PaymentApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/Payment/src/test/java/com/supermarket/supermarket_system/PaymentApplicationTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,12 +34,12 @@
     &quot;assignee&quot;: &quot;ZeyadMahfouzz&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/ZeyadMahfouzz/Supermarket_System_Microservices.git",
-    "accountId": "0eedb571-7f59-4818-82d4-6bb5767b004a"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/ZeyadMahfouzz/Supermarket_System_Microservices.git&quot;,
+    &quot;accountId&quot;: &quot;0eedb571-7f59-4818-82d4-6bb5767b004a&quot;
   }
-}]]></component>
+}</component>
   <component name="HttpClientEndpointsTabState">
     <option name="cachedRequestData" value="&lt;CachedHttpClientTabRequests&gt;&#10;  &lt;entry key=&quot;9fe2afb1d1805a6a474301e8014fa3bb5a9c0b52&quot; value=&quot;###&amp;#10;GET http://localhost/payment&quot; /&gt;&#10;&lt;/CachedHttpClientTabRequests&gt;" />
   </component>
@@ -425,7 +415,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766316305606</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Added comments">
+      <option name="closed" value="true" />
+      <created>1766773829308</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1766773829308</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -475,7 +473,8 @@
     <MESSAGE value="fixede order model" />
     <MESSAGE value="fixed order model" />
     <MESSAGE value="modifications in order" />
-    <option name="LAST_COMMIT_MESSAGE" value="modifications in order" />
+    <MESSAGE value="Added comments" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added comments" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
