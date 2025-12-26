@@ -2,37 +2,26 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
-      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Orders" />
-        <module name="Payment" />
+        <module name="supermarket_system (5)" />
         <module name="supermarket_system (3)" />
-        <module name="Gateway" />
+        <module name="supermarket_system (4)" />
         <module name="supermarket_system (1)" />
-        <module name="Items" />
-        <module name="Users" />
+        <module name="supermarket_system (2)" />
         <module name="Eureka" />
         <module name="gateway" />
-        <module name="Cart" />
+        <module name="supermarket_system" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Gateway" target="17" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="Cart" options="-parameters" />
       <module name="Eureka" options="-parameters" />
-      <module name="Gateway" options="-parameters" />
-      <module name="Items" options="-parameters" />
-      <module name="Orders" options="-parameters" />
-      <module name="Payment" options="-parameters" />
-      <module name="Users" options="-parameters" />
       <module name="gateway" options="-parameters" />
+      <module name="supermarket_system" options="-parameters" />
       <module name="supermarket_system (1)" options="-parameters" />
       <module name="supermarket_system (2)" options="-parameters" />
       <module name="supermarket_system (3)" options="-parameters" />
