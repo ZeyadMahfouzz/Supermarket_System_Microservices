@@ -1,3 +1,4 @@
+//Data Transfer Object for returning cart item information to the client.
 package com.supermarket.supermarket_system.dto.cart;
 
 public class CartItemResponseDto {

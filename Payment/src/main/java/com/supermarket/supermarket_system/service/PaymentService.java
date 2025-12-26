@@ -16,7 +16,7 @@ public class PaymentService {
     @Autowired
     private PaymentRepository paymentRepository;
 
-    // NEW: Process payment with detailed payment method information
+    // Process payment with detailed payment method information
     public Payment processPaymentWithDetails(PaymentRequestDto request) {
         // Validate payment method specific data
         validatePaymentMethodDetails(request);
@@ -62,7 +62,12 @@ public class PaymentService {
                 // All required fields are validated by DTO annotations
                 break;
             case CASH:
-                if (request.getCashPayment() == null || !request.getCashPayment().getConfirmed()) {
+                if (request.getCashPayment() == null) {
+                    throw new IllegalArgumentException("Cash payment details are required");
+                }
+                // Check if confirmed is null or false
+                Boolean confirmed = request.getCashPayment().getConfirmed();
+                if (confirmed == null || !confirmed) {
                     throw new IllegalArgumentException("Cash payment must be confirmed");
                 }
                 break;
@@ -71,7 +76,7 @@ public class PaymentService {
         }
     }
 
-    // EXISTING METHODS
+    // Process payment (legacy method)
     public Payment processPayment(Payment payment) {
         // Generate a unique transaction ID
         payment.setTransactionId(UUID.randomUUID().toString());
