@@ -31,7 +31,10 @@ export const itemsAPI = {
   },
 
   updateItem: async (id, itemData) => {
-    const response = await api.put(`/items/${id}`, itemData);
+    const response = await api.put('/items/update', {
+      id,
+      ...itemData
+    });
     return response.data;
   },
 
@@ -59,7 +62,9 @@ export const cartAPI = {
   },
 
   removeCartItem: async (cartItemId) => {
-    const response = await api.delete(`/cart/items/${cartItemId}`);
+    const response = await api.delete('/cart/items', {
+      data: { cartItemId }
+    });
     return response.data;
   },
 
@@ -68,10 +73,8 @@ export const cartAPI = {
     return response.data;
   },
 
-  checkout: async (paymentMethod) => {
-    const response = await api.post('/cart/checkout', null, {
-      params: { paymentMethod }
-    });
+  checkout: async (checkoutRequest) => {
+    const response = await api.post('/cart/checkout', checkoutRequest);
     return response.data;
   },
 };
@@ -96,21 +99,23 @@ export const ordersAPI = {
     return response.data;
   },
 
-  // Get orders by status
+  // Get orders by status (using POST for better compatibility with body)
   getOrdersByStatus: async (status) => {
     const response = await api.post('/orders/status', { status });
     return response.data;
   },
 
-  // Update order status (ADMIN only)
+  // Update order status (ADMIN only) - uses PATCH
   updateOrderStatus: async (orderId, status) => {
-    const response = await api.post('/orders/status/update', { orderId, status });
+    const response = await api.patch('/orders/status/update', { orderId, status });
     return response.data;
   },
 
-  // Cancel order
+  // Cancel order - uses DELETE
   cancelOrder: async (orderId) => {
-    const response = await api.post('/orders/cancel', { orderId });
+    const response = await api.delete('/orders/cancel', {
+      data: { orderId }
+    });
     return response.data;
   },
 };

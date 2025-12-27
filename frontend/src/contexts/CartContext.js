@@ -67,14 +67,17 @@ export const CartProvider = ({ children }) => {
 
   const removeItem = async (cartItemId) => {
     try {
+      console.log('Removing cart item with ID:', cartItemId);
       const updatedCart = await cartAPI.removeCartItem(cartItemId);
+      console.log('Cart after removing item:', updatedCart);
       setCart(updatedCart);
       return { success: true };
     } catch (error) {
       console.error('Error removing item:', error);
+      console.error('Error response:', error.response?.data);
       return {
         success: false,
-        message: error.response?.data?.message || 'Failed to remove item'
+        message: error.response?.data?.message || error.response?.data?.error || 'Failed to remove item'
       };
     }
   };
@@ -93,16 +96,26 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  const checkout = async (paymentMethod) => {
+  const checkout = async (checkoutRequest) => {
     try {
-      await cartAPI.checkout(paymentMethod);
+      console.log('Starting checkout with request:', checkoutRequest);
+      const response = await cartAPI.checkout(checkoutRequest);
+      console.log('Checkout response:', response);
+
       await fetchCart(); // Refresh cart after checkout
-      return { success: true };
+      return {
+        success: true,
+        orderId: response.orderId,
+        message: response.message
+      };
     } catch (error) {
       console.error('Error during checkout:', error);
+      console.error('Error response data:', error.response?.data);
+      console.error('Error status:', error.response?.status);
+
       return {
         success: false,
-        message: error.response?.data || 'Checkout failed'
+        message: error.response?.data?.error || error.response?.data?.message || error.response?.data || 'Checkout failed. Please try again.'
       };
     }
   };

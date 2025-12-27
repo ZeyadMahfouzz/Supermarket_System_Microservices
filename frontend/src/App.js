@@ -8,6 +8,10 @@ import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';
 import CartPage from './pages/CartPage';
 import OrdersPage from './pages/OrdersPage';
+import ProfilePage from './pages/ProfilePage';
+import PaymentPage from './pages/PaymentPage';
+import OrderSuccessPage from './pages/OrderSuccessPage';
+import OrderDetailsPage from './pages/OrderDetailsPage';
 
 function App() {
   return (
@@ -49,6 +53,50 @@ function App() {
                     <>
                       <Navbar />
                       <OrdersPage />
+                    </>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <>
+                      <Navbar />
+                      <ProfilePage />
+                    </>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/payment"
+                element={
+                  <ProtectedRoute>
+                    <>
+                      <Navbar />
+                      <PaymentPage />
+                    </>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/order-success"
+                element={
+                  <ProtectedRoute>
+                    <>
+                      <Navbar />
+                      <OrderSuccessPage />
+                    </>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/order-details/:orderId"
+                element={
+                  <ProtectedRoute>
+                    <>
+                      <Navbar />
+                      <OrderDetailsPage />
                     </>
                   </ProtectedRoute>
                 }

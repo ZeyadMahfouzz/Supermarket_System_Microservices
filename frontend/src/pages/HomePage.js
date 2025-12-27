@@ -9,7 +9,7 @@ const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl font-semibold mb-3">
-              Welcome to SpringMart 🍃
+              Welcome to SpringMart
             </h1>
             <p className="text-lg text-blue-100">Fresh groceries delivered to your door</p>
           </div>

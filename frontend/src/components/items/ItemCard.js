@@ -93,7 +93,7 @@ const ItemCard = ({ item }) => {
         <div className="flex items-center justify-between mb-4">
           <div className="flex-1">
             <p className="text-2xl font-bold text-blue-600">
-              ${item.price?.toFixed(2)}
+              EGP {item.price?.toFixed(2)}
             </p>
             {/* Admin sees actual stock count */}
             {isAdmin ? (
@@ -101,20 +101,18 @@ const ItemCard = ({ item }) => {
                 Stock: {item.quantity > 0 ? item.quantity : 'Out of stock'}
               </p>
             ) : (
-              /* Regular users see low stock warning or availability */
+              /* Regular users see warnings only for low/out of stock */
               item.quantity === 0 ? (
-                <p className="text-xs text-red-600 font-medium">❌ Out of stock</p>
+                <p className="text-xs text-red-600 font-medium">Out of stock</p>
               ) : item.quantity <= 5 ? (
                 <p className="text-xs text-orange-600 font-medium animate-pulse">
-                  🔥 Hurry! Only {item.quantity} left
+                  Only {item.quantity} left!
                 </p>
               ) : item.quantity <= 10 ? (
                 <p className="text-xs text-yellow-600 font-medium">
-                  ⚠️ Low stock - {item.quantity} remaining
+                  Low stock - {item.quantity} remaining
                 </p>
-              ) : (
-                <p className="text-xs text-green-600 font-medium">✅ In stock</p>
-              )
+              ) : null
             )}
           </div>
 
@@ -163,7 +161,7 @@ const ItemCard = ({ item }) => {
           </Button>
         ) : (
           <div className="text-center py-2 text-sm text-gray-500">
-            👨‍💼 Admin View - Use edit/delete buttons above
+            Admin View - Use edit/delete buttons above
           </div>
         )}
       </div>

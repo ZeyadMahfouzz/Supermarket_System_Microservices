@@ -23,8 +23,17 @@ const CartItem = ({ item }) => {
   };
 
   const handleRemove = async () => {
+    if (!window.confirm('Remove this item from cart?')) return;
+
+    console.log('Attempting to remove cart item:', item.cartItemId);
     setUpdating(true);
-    await removeItem(item.cartItemId);
+
+    const result = await removeItem(item.cartItemId);
+
+    if (!result.success) {
+      alert(`Failed to remove item: ${result.message || 'Please try again'}`);
+    }
+
     setUpdating(false);
   };
 
@@ -39,12 +48,12 @@ const CartItem = ({ item }) => {
             className="w-full h-full object-cover"
             onError={(e) => {
               e.target.onerror = null;
-              e.target.parentElement.innerHTML = '<div class="w-full h-full flex items-center justify-center"><span class="text-2xl text-gray-400">📦</span></div>';
+              e.target.parentElement.innerHTML = '<div class="w-full h-full flex items-center justify-center bg-gray-100"><span class="text-sm text-gray-400">No Image</span></div>';
             }}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
-            <span className="text-2xl text-gray-400">📦</span>
+            <span className="text-sm text-gray-400">No Image</span>
           </div>
         )}
       </div>
@@ -52,7 +61,7 @@ const CartItem = ({ item }) => {
       {/* Item Details */}
       <div className="flex-1 min-w-0">
         <h3 className="font-semibold text-gray-800 truncate">{item.name || `Item #${item.itemId}`}</h3>
-        <p className="text-sm text-gray-600">${item.unitPrice?.toFixed(2)} each</p>
+        <p className="text-sm text-gray-600">EGP {item.unitPrice?.toFixed(2)} each</p>
       </div>
 
       {/* Quantity Controls */}
@@ -77,7 +86,7 @@ const CartItem = ({ item }) => {
       {/* Subtotal */}
       <div className="text-right min-w-[100px]">
         <p className="font-bold text-lg text-blue-600">
-          ${item.subtotal?.toFixed(2)}
+          EGP {item.subtotal?.toFixed(2)}
         </p>
       </div>
 

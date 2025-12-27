@@ -32,7 +32,6 @@ const Navbar = () => {
               <span className="text-xl font-semibold text-white">
                 SpringMart
               </span>
-              <span className="text-sm text-white/80">🍃</span>
             </div>
           </Link>
 
@@ -46,12 +45,20 @@ const Navbar = () => {
             </Link>
 
             {isAuthenticated && (
-              <Link
-                to="/orders"
-                className="text-white hover:text-blue-100 transition font-medium"
-              >
-                Orders
-              </Link>
+              <>
+                <Link
+                  to="/orders"
+                  className="text-white hover:text-blue-100 transition font-medium"
+                >
+                  Orders
+                </Link>
+                <Link
+                  to="/profile"
+                  className="text-white hover:text-blue-100 transition font-medium"
+                >
+                  Profile
+                </Link>
+              </>
             )}
 
             {isAuthenticated ? (
@@ -80,7 +87,7 @@ const Navbar = () => {
                         {user?.name || user?.email}
                       </span>
                       {isAdmin && (
-                        <span className="text-xs text-blue-200">👨‍💼 Admin</span>
+                        <span className="text-xs text-blue-200">Admin</span>
                       )}
                     </div>
                   </div>

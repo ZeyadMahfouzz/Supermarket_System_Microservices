@@ -73,8 +73,8 @@ const AuthPage = () => {
             {/* Left Side - Branding */}
             <div className="bg-blue-600 p-12 flex flex-col justify-center items-center text-white relative">
               {/* Simple decorative elements */}
-              <div className="absolute top-8 right-8 text-3xl opacity-20">🍃</div>
-              <div className="absolute bottom-8 left-8 text-3xl opacity-20">🌱</div>
+              <div className="absolute top-8 right-8 text-3xl opacity-20"></div>
+              <div className="absolute bottom-8 left-8 text-3xl opacity-20"></div>
 
               <div className="text-center space-y-6">
                 {/* Logo */}
@@ -95,9 +95,9 @@ const AuthPage = () => {
                 </div>
 
                 <div className="pt-8 space-y-3 text-blue-50">
-                  <p className="text-base">🛒 Easy online shopping</p>
-                  <p className="text-base">⚡ Quick delivery</p>
-                  <p className="text-base">🌟 Quality products</p>
+                  <p className="text-base">• Easy online shopping</p>
+                  <p className="text-base">• Quick delivery</p>
+                  <p className="text-base">• Quality products</p>
                 </div>
               </div>
             </div>
@@ -137,14 +137,15 @@ const AuthPage = () => {
 
               {/* Login Form */}
               <div
-                className={`transition-all duration-300 transform ${
+                className={`transition-all duration-500 ease-in-out ${
                   isLogin 
-                    ? 'opacity-100 translate-x-0 relative z-10' 
-                    : 'opacity-0 translate-x-full absolute inset-0 pointer-events-none z-0'
+                    ? 'opacity-100 block' 
+                    : 'opacity-0 hidden'
                 }`}
               >
                 <h2 className="text-2xl font-semibold text-gray-900 mb-6">Welcome back</h2>
                 <form onSubmit={handleLoginSubmit} className="space-y-5">
+                  {/* ...existing form fields... */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
                     <div className="relative">
@@ -185,7 +186,7 @@ const AuthPage = () => {
 
                   <div className="mt-4 text-center">
                     <p className="text-xs text-gray-500">
-                      💡 Your account type (User/Admin) was set during signup
+                      Your account type (User/Admin) was set during signup
                     </p>
                   </div>
                 </form>
@@ -193,10 +194,10 @@ const AuthPage = () => {
 
               {/* Register Form */}
               <div
-                className={`transition-all duration-300 transform ${
+                className={`transition-all duration-500 ease-in-out ${
                   !isLogin 
-                    ? 'opacity-100 translate-x-0 relative z-10' 
-                    : 'opacity-0 -translate-x-full absolute inset-0 pointer-events-none z-0'
+                    ? 'opacity-100 block' 
+                    : 'opacity-0 hidden'
                 }`}
               >
                 <h2 className="text-2xl font-semibold text-gray-900 mb-6">Create an account</h2>
@@ -302,8 +303,8 @@ const AuthPage = () => {
                         onChange={(e) => setRegisterData({ ...registerData, role: e.target.value })}
                         className="w-full pl-12 pr-4 py-3 border-2 border-blue-300 rounded-lg focus:outline-none focus:border-blue-600 transition appearance-none bg-white font-medium text-gray-900 cursor-pointer"
                       >
-                        <option value="USER">👤 Regular User - Shop & Buy</option>
-                        <option value="ADMIN">👨‍💼 Admin - Manage Products & Orders</option>
+                        <option value="USER">Regular User - Shop & Buy</option>
+                        <option value="ADMIN">Admin - Manage Products & Orders</option>
                       </select>
                       <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                         <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -312,7 +313,7 @@ const AuthPage = () => {
                       </div>
                     </div>
                     <p className="text-xs text-blue-700 mt-2 font-medium">
-                      💡 <strong>Regular Users</strong> can shop. <strong>Admins</strong> can manage the store.
+                      <strong>Regular Users</strong> can shop. <strong>Admins</strong> can manage the store.
                     </p>
                   </div>
 

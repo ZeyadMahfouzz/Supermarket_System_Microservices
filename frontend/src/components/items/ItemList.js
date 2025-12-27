@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Search } from 'lucide-react';
+import { Search, Plus, Edit2, Trash2 } from 'lucide-react';
 import { itemsAPI } from '../../api/services';
+import { useAuth } from '../../contexts/AuthContext';
 import ItemCard from './ItemCard';
+import ItemModal from './ItemModal';
 import Spinner from '../common/Spinner';
 import Input from '../common/Input';
+import Button from '../common/Button';
 
 const ItemList = () => {
   const [items, setItems] = useState([]);
@@ -11,6 +14,10 @@ const ItemList = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [showModal, setShowModal] = useState(false);
+  const [editingItem, setEditingItem] = useState(null);
+  const [modalMode, setModalMode] = useState('add');
+  const { isAdmin } = useAuth();
 
   useEffect(() => {
     fetchItems();
@@ -52,6 +59,54 @@ const ItemList = () => {
     setFilteredItems(filtered);
   }, [items, searchQuery, selectedCategory]);
 
+  const handleAddItem = () => {
+    setModalMode('add');
+    setEditingItem(null);
+    setShowModal(true);
+  };
+
+  const handleEditItem = (item) => {
+    setModalMode('edit');
+    setEditingItem(item);
+    setShowModal(true);
+  };
+
+  const handleDeleteItem = async (itemId) => {
+    if (!window.confirm('Are you sure you want to delete this item?')) return;
+
+    try {
+      await itemsAPI.deleteItem(itemId);
+      alert('Item deleted successfully!');
+      fetchItems(); // Refresh the list
+    } catch (error) {
+      console.error('Error deleting item:', error);
+      alert('Failed to delete item');
+    }
+  };
+
+  const handleSaveItem = async (itemData) => {
+    try {
+      console.log('Saving item data:', itemData);
+
+      if (modalMode === 'add') {
+        await itemsAPI.createItem(itemData);
+        alert('Item added successfully!');
+      } else {
+        console.log('Updating item ID:', editingItem.id);
+        const response = await itemsAPI.updateItem(editingItem.id, itemData);
+        console.log('Update response:', response);
+        alert('Item updated successfully!');
+      }
+      fetchItems(); // Refresh the list
+      return true;
+    } catch (error) {
+      console.error('Error saving item:', error);
+      console.error('Error response:', error.response?.data);
+      alert(`Failed to save item: ${error.response?.data?.error || error.message}`);
+      return false;
+    }
+  };
+
   const categories = ['All', ...new Set(items.map(item => item.category || 'General'))];
 
   if (loading) {
@@ -65,9 +120,25 @@ const ItemList = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
-      <div className="mb-8 animate-slide-up">
-        <h1 className="text-4xl font-bold text-gray-800 mb-2">Our Products</h1>
-        <p className="text-gray-600">Browse and add items to your cart</p>
+      <div className="mb-8 animate-slide-up flex items-center justify-between">
+        <div>
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">Our Products</h1>
+          <p className="text-gray-600">
+            {isAdmin ? 'Manage your product inventory' : 'Browse and add items to your cart'}
+          </p>
+        </div>
+
+        {/* Add Product Button - Admin Only */}
+        {isAdmin && (
+          <Button
+            variant="primary"
+            onClick={handleAddItem}
+            className="flex items-center gap-2"
+          >
+            <Plus className="h-5 w-5" />
+            Add Product
+          </Button>
+        )}
       </div>
 
       {/* Search and Filter */}
@@ -112,11 +183,42 @@ const ItemList = () => {
             <div
               key={item.id}
               style={{ animationDelay: `${index * 0.05}s` }}
+              className="relative group"
             >
               <ItemCard item={item} />
+
+              {/* Admin Controls Overlay */}
+              {isAdmin && (
+                <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button
+                    onClick={() => handleEditItem(item)}
+                    className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-lg transition"
+                    title="Edit item"
+                  >
+                    <Edit2 className="h-4 w-4" />
+                  </button>
+                  <button
+                    onClick={() => handleDeleteItem(item.id)}
+                    className="p-2 bg-red-600 text-white rounded-lg hover:bg-red-700 shadow-lg transition"
+                    title="Delete item"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>
+      )}
+
+      {/* Item Modal for Add/Edit */}
+      {showModal && (
+        <ItemModal
+          item={editingItem}
+          mode={modalMode}
+          onClose={() => setShowModal(false)}
+          onSave={handleSaveItem}
+        />
       )}
     </div>
   );

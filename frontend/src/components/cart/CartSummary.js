@@ -1,28 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShoppingBag, CreditCard } from 'lucide-react';
+import { ShoppingBag, CreditCard, Smartphone } from 'lucide-react';
 import Button from '../common/Button';
 import Card from '../common/Card';
 import { useCart } from '../../contexts/CartContext';
 
 const CartSummary = () => {
   const [paymentMethod, setPaymentMethod] = useState('CREDIT_CARD');
-  const [loading, setLoading] = useState(false);
-  const { cart, checkout } = useCart();
+  const { cart } = useCart();
   const navigate = useNavigate();
 
-  const handleCheckout = async () => {
-    setLoading(true);
-    const result = await checkout(paymentMethod);
-
-    if (result.success) {
-      alert('Checkout successful! Your order has been placed.');
-      navigate('/');
-    } else {
-      alert(result.message);
-    }
-
-    setLoading(false);
+  const handleProceedToPayment = () => {
+    // Navigate to payment page with selected payment method
+    navigate('/payment', { state: { paymentMethod } });
   };
 
   if (!cart || !cart.items || cart.items.length === 0) {
@@ -40,7 +30,7 @@ const CartSummary = () => {
         {/* Items Count */}
         <div className="flex justify-between text-gray-600">
           <span>Items ({cart.items.length})</span>
-          <span>${cart.totalPrice?.toFixed(2)}</span>
+          <span>EGP {cart.totalPrice?.toFixed(2)}</span>
         </div>
 
         {/* Divider */}
@@ -49,17 +39,20 @@ const CartSummary = () => {
         {/* Total */}
         <div className="flex justify-between text-xl font-bold text-gray-800">
           <span>Total</span>
-          <span className="text-blue-600">${cart.totalPrice?.toFixed(2)}</span>
+          <span className="text-blue-600">EGP {cart.totalPrice?.toFixed(2)}</span>
         </div>
       </div>
 
       {/* Payment Method Selection */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Payment Method
+        <label className="block text-sm font-medium text-gray-700 mb-3">
+          Select Payment Method
         </label>
         <div className="space-y-2">
-          <label className="flex items-center p-3 border-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-50">
+          {/* Credit Card */}
+          <label className={`flex items-center p-3 border-2 rounded-lg cursor-pointer transition-colors ${
+            paymentMethod === 'CREDIT_CARD' ? 'border-blue-600 bg-blue-50' : 'border-gray-200 hover:bg-gray-50'
+          }`}>
             <input
               type="radio"
               name="payment"
@@ -69,9 +62,45 @@ const CartSummary = () => {
               className="mr-3"
             />
             <CreditCard className="h-5 w-5 mr-2 text-gray-600" />
-            <span>Credit Card</span>
+            <span className="font-medium">Credit Card</span>
           </label>
-          <label className="flex items-center p-3 border-2 rounded-lg cursor-pointer transition-colors hover:bg-gray-50">
+
+          {/* Debit Card */}
+          <label className={`flex items-center p-3 border-2 rounded-lg cursor-pointer transition-colors ${
+            paymentMethod === 'DEBIT_CARD' ? 'border-blue-600 bg-blue-50' : 'border-gray-200 hover:bg-gray-50'
+          }`}>
+            <input
+              type="radio"
+              name="payment"
+              value="DEBIT_CARD"
+              checked={paymentMethod === 'DEBIT_CARD'}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+              className="mr-3"
+            />
+            <CreditCard className="h-5 w-5 mr-2 text-gray-600" />
+            <span className="font-medium">Debit Card</span>
+          </label>
+
+          {/* Mobile Payment */}
+          <label className={`flex items-center p-3 border-2 rounded-lg cursor-pointer transition-colors ${
+            paymentMethod === 'MOBILE_PAYMENT' ? 'border-blue-600 bg-blue-50' : 'border-gray-200 hover:bg-gray-50'
+          }`}>
+            <input
+              type="radio"
+              name="payment"
+              value="MOBILE_PAYMENT"
+              checked={paymentMethod === 'MOBILE_PAYMENT'}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+              className="mr-3"
+            />
+            <Smartphone className="h-5 w-5 mr-2 text-gray-600" />
+            <span className="font-medium">Mobile Wallet</span>
+          </label>
+
+          {/* Cash on Delivery */}
+          <label className={`flex items-center p-3 border-2 rounded-lg cursor-pointer transition-colors ${
+            paymentMethod === 'CASH' ? 'border-blue-600 bg-blue-50' : 'border-gray-200 hover:bg-gray-50'
+          }`}>
             <input
               type="radio"
               name="payment"
@@ -80,8 +109,7 @@ const CartSummary = () => {
               onChange={(e) => setPaymentMethod(e.target.value)}
               className="mr-3"
             />
-            <span className="text-2xl mr-2">💵</span>
-            <span>Cash on Delivery</span>
+            <span className="font-medium">Cash on Delivery</span>
           </label>
         </div>
       </div>
@@ -91,11 +119,9 @@ const CartSummary = () => {
         variant="primary"
         size="lg"
         fullWidth
-        onClick={handleCheckout}
-        loading={loading}
-        disabled={loading}
+        onClick={handleProceedToPayment}
       >
-        Proceed to Checkout
+        Proceed to Payment
       </Button>
 
       {/* Additional Info */}

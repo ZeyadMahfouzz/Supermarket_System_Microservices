@@ -60,8 +60,8 @@ const CartPage = () => {
         </div>
 
         {isEmpty ? (
-          <div className="text-center py-16 animate-scale-in">
-            <div className="text-8xl mb-6">🛒</div>
+          <div className="bg-white rounded-lg shadow-md p-12 text-center animate-fade-in">
+            <ShoppingCart className="h-24 w-24 text-gray-300 mx-auto mb-6" />
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Your cart is empty</h2>
             <p className="text-gray-600 mb-8">Add some items to get started!</p>
             <Button

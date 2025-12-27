@@ -106,6 +106,10 @@ public class ItemController {
             @RequestHeader("X-User-Role") String role,
             @RequestBody Map<String, Object> body) {
 
+        System.out.println("=== UPDATE ITEM REQUEST ===");
+        System.out.println("Request body: " + body);
+        System.out.println("imageUrl in request: " + body.get("imageUrl"));
+
         // Admin check
         if (!"ADMIN".equalsIgnoreCase(role)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
@@ -129,6 +133,8 @@ public class ItemController {
         }
 
         Item updatedItem = itemRepository.findById(id).map(item -> {
+            System.out.println("Before update - imageUrl: " + item.getImageUrl());
+
             if (body.containsKey("name") && body.get("name") != null) {
                 item.setName((String) body.get("name"));
             }
@@ -146,13 +152,24 @@ public class ItemController {
             if (body.containsKey("description") && body.get("description") != null) {
                 item.setDescription((String) body.get("description"));
             }
-            return itemRepository.save(item);
+            if (body.containsKey("imageUrl")) {
+                String newImageUrl = (String) body.get("imageUrl");
+                System.out.println("Setting new imageUrl: " + newImageUrl);
+                item.setImageUrl(newImageUrl); // Allow null or empty string
+            }
+
+            Item saved = itemRepository.save(item);
+            System.out.println("After update - imageUrl: " + saved.getImageUrl());
+            return saved;
         }).orElse(null);
 
         if (updatedItem == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Map.of("error", "Item not found"));
         }
+
+        System.out.println("Returning updated item with imageUrl: " + updatedItem.getImageUrl());
+        System.out.println("=== END UPDATE ITEM REQUEST ===");
 
         return ResponseEntity.ok(updatedItem);
     }

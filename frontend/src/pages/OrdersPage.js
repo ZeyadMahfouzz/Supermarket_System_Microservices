@@ -21,9 +21,11 @@ const OrdersPage = () => {
         data = await ordersAPI.getOrdersByStatus(selectedStatus);
       }
 
+      console.log('Fetched orders:', data);
       setOrders(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching orders:', error);
+      console.error('Error response:', error.response?.data);
       setOrders([]);
     } finally {
       setLoading(false);
@@ -95,8 +97,8 @@ const OrdersPage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-semibold text-gray-900 mb-2">
-            {isAdmin ? '📦 All Orders' : '📦 My Orders'}
+          <h1 className="text-4xl font-bold text-gray-800 mb-2">
+            {isAdmin ? 'All Orders' : 'My Orders'}
           </h1>
           <p className="text-gray-600">
             {isAdmin ? 'Manage all customer orders' : 'View and track your orders'}
@@ -134,13 +136,13 @@ const OrdersPage = () => {
         ) : (
           <div className="space-y-4">
             {orders.map((order) => (
-              <div key={order.orderId} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
+              <div key={order.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center space-x-3">
                     {getStatusIcon(order.status)}
                     <div>
                       <h3 className="text-lg font-semibold text-gray-900">
-                        Order #{order.orderId}
+                        Order #{order.id}
                       </h3>
                       {isAdmin && (
                         <p className="text-sm text-gray-600">User ID: {order.userId}</p>
@@ -156,7 +158,7 @@ const OrdersPage = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                   <div>
                     <p className="text-sm text-gray-500">Total Amount</p>
-                    <p className="text-lg font-bold text-blue-600">${order.totalAmount?.toFixed(2)}</p>
+                    <p className="text-lg font-bold text-blue-600">EGP {order.totalAmount?.toFixed(2)}</p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Payment Method</p>
@@ -165,7 +167,7 @@ const OrdersPage = () => {
                   <div>
                     <p className="text-sm text-gray-500">Order Date</p>
                     <p className="text-md font-medium text-gray-900">
-                      {new Date(order.createdAt).toLocaleDateString()}
+                      {new Date(order.orderDate).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
@@ -174,7 +176,7 @@ const OrdersPage = () => {
                 {isAdmin && order.status !== 'CANCELLED' && order.status !== 'DELIVERED' && (
                   <div className="flex gap-2 mt-4 pt-4 border-t border-gray-200">
                     <select
-                      onChange={(e) => handleUpdateStatus(order.orderId, e.target.value)}
+                      onChange={(e) => handleUpdateStatus(order.id, e.target.value)}
                       className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
                       defaultValue=""
                     >
@@ -192,7 +194,7 @@ const OrdersPage = () => {
                 {!isAdmin && order.status === 'PENDING' && (
                   <div className="flex gap-2 mt-4 pt-4 border-t border-gray-200">
                     <button
-                      onClick={() => handleCancelOrder(order.orderId)}
+                      onClick={() => handleCancelOrder(order.id)}
                       className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium"
                     >
                       Cancel Order
