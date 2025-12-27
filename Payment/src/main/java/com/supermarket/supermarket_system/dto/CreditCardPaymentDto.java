@@ -1,3 +1,7 @@
+// DTO used to capture and validate credit card payment details.
+// Validation annotations ensure incorrect or insecure data
+// never reaches the service layer.
+
 package com.supermarket.supermarket_system.dto;
 
 import jakarta.validation.constraints.NotBlank;

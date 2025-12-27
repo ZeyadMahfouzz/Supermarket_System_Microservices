@@ -71,6 +71,17 @@ public class PaymentService {
         }
     }
 
+    // EXISTING METHODS
+    public Payment processPayment(Payment payment) {
+        // Generate a unique transaction ID
+        payment.setTransactionId(UUID.randomUUID().toString());
+
+        // Instant approval
+        payment.setStatus(PaymentStatus.COMPLETED);
+
+        return paymentRepository.save(payment);
+    }
+
     public List<Payment> getAllPayments() {
         return paymentRepository.findAll();
     }
