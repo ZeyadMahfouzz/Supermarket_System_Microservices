@@ -1,3 +1,5 @@
+//Data Transfer Object for updating item quantities.
+//Validates that quantity is at least 1 before updating.
 package com.supermarket.supermarket_system.dto.cart;
 
 import jakarta.validation.constraints.Min;
