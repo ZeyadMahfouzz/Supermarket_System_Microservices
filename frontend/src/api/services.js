@@ -39,7 +39,9 @@ export const itemsAPI = {
   },
 
   deleteItem: async (id) => {
-    const response = await api.delete(`/items/${id}`);
+    const response = await api.delete('/items', {
+      data: { id }
+    });
     return response.data;
   },
 };

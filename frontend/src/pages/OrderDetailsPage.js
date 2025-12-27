@@ -34,9 +34,9 @@ const OrderDetailsPage = () => {
     switch (status) {
       case 'PENDING':
         return 'bg-yellow-100 text-yellow-800';
-      case 'CONFIRMED':
+      case 'PROCESSING':
         return 'bg-blue-100 text-blue-800';
-      case 'SHIPPED':
+      case 'SHIPPING':
         return 'bg-purple-100 text-purple-800';
       case 'DELIVERED':
         return 'bg-green-100 text-green-800';
@@ -147,8 +147,8 @@ const OrderDetailsPage = () => {
             <div className="relative">
               <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200"></div>
 
-              {['PENDING', 'CONFIRMED', 'SHIPPED', 'DELIVERED'].map((status, index) => {
-                const isCompleted = ['PENDING', 'CONFIRMED', 'SHIPPED', 'DELIVERED'].indexOf(order.status) >= index;
+              {['PENDING', 'PROCESSING', 'SHIPPING', 'DELIVERED'].map((status, index) => {
+                const isCompleted = ['PENDING', 'PROCESSING', 'SHIPPING', 'DELIVERED'].indexOf(order.status) >= index;
                 const isCurrent = order.status === status;
 
                 return (

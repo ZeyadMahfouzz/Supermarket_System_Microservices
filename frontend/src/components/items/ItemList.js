@@ -183,23 +183,23 @@ const ItemList = () => {
             <div
               key={item.id}
               style={{ animationDelay: `${index * 0.05}s` }}
-              className="relative group"
+              className="relative"
             >
               <ItemCard item={item} />
 
-              {/* Admin Controls Overlay */}
+              {/* Admin Controls Overlay - Always visible for admins */}
               {isAdmin && (
-                <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute top-2 right-2 flex gap-2 z-10">
                   <button
                     onClick={() => handleEditItem(item)}
-                    className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-lg transition"
+                    className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-lg transition-all hover:scale-110"
                     title="Edit item"
                   >
                     <Edit2 className="h-4 w-4" />
                   </button>
                   <button
                     onClick={() => handleDeleteItem(item.id)}
-                    className="p-2 bg-red-600 text-white rounded-lg hover:bg-red-700 shadow-lg transition"
+                    className="p-2 bg-red-600 text-white rounded-lg hover:bg-red-700 shadow-lg transition-all hover:scale-110"
                     title="Delete item"
                   >
                     <Trash2 className="h-4 w-4" />

@@ -4,9 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="267d24eb-9f31-430b-9553-8719e849eedf" name="Changes" comment="modifications in order">
+    <list default="true" id="267d24eb-9f31-430b-9553-8719e849eedf" name="Changes" comment="Frontend mainly">
+      <change afterPath="$PROJECT_DIR$/add_more_products.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Payment/src/main/java/com/supermarket/supermarket_system/service/PaymentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Payment/src/main/java/com/supermarket/supermarket_system/service/PaymentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/dto/cart/CartItemResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/dto/cart/CartItemResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/mappers/CartMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/Cart/src/main/java/com/supermarket/supermarket_system/mappers/CartMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/controller/OrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Orders/src/main/java/com/supermarket/supermarket_system/controller/OrderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/services.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/services.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/items/ItemList.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/items/ItemList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/OrderDetailsPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/OrderDetailsPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/OrdersPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/OrdersPage.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,8 +44,8 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/ZeyadMahfouzz/Supermarket_System_Microservices&quot;,
-    &quot;accountId&quot;: &quot;3e85b830-09ac-427e-bf0f-edde7157da3f&quot;
+    &quot;url&quot;: &quot;https://github.com/ZeyadMahfouzz/Supermarket_System_Microservices.git&quot;,
+    &quot;accountId&quot;: &quot;6206c6e7-7376-4e55-a47f-c46e9e553f90&quot;
   }
 }</component>
   <component name="HttpClientEndpointsTabState">
@@ -46,6 +53,10 @@
   </component>
   <component name="HttpClientOnboardingState">{
   &quot;isOnboardingCommentShown&quot;: true
+}</component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
 }</component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
@@ -138,19 +149,34 @@
           <value>
             <map>
               <entry key="CartApplication" value="STOPPED" />
+              <entry key="CartApplication (1)" value="STOPPED" />
               <entry key="EurekaApplication" value="STOPPED" />
               <entry key="GatewayApplication" value="STOPPED" />
-              <entry key="ItemsApplication" value="STOPPED" />
+              <entry key="ItemsApplication (1)" value="STOPPED" />
               <entry key="OrdersApplication" value="STOPPED" />
-              <entry key="PaymentApplication" value="STOPPED" />
-              <entry key="UsersApplication" value="STOPPED" />
+              <entry key="OrdersApplication (1)" value="STOPPED" />
+              <entry key="PaymentApplication (1)" value="STOPPED" />
+              <entry key="UsersApplication (1)" value="STOPPED" />
             </map>
           </value>
         </entry>
       </map>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.UsersApplication">
+  <component name="RunManager" selected="Spring Boot.OrdersApplication (1)">
+    <configuration name="CartApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="supermarket_system (1)" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.CartApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.supermarket.supermarket_system.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="CartApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="Cart" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.CartApplication" />
@@ -172,9 +198,35 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ItemsApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="supermarket_system (2)" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.ItemsApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.supermarket.supermarket_system.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ItemsApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="Items" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.ItemsApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrdersApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="supermarket_system (3)" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.OrdersApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.supermarket.supermarket_system.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -186,6 +238,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="PaymentApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="supermarket_system (4)" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.PaymentApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.supermarket.supermarket_system.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="PaymentApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="Payment" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.PaymentApplication" />
@@ -193,8 +258,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UsersApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="Users" />
+    <configuration name="UsersApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="supermarket_system (5)" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.supermarket.supermarket_system.UsersApplication" />
       <extension name="coverage">
         <pattern>
@@ -213,19 +278,27 @@
       <item itemvalue="Spring Boot.GatewayApplication" />
       <item itemvalue="Spring Boot.ItemsApplication" />
       <item itemvalue="Spring Boot.PaymentApplication" />
-      <item itemvalue="Spring Boot.UsersApplication" />
+      <item itemvalue="Spring Boot.CartApplication (1)" />
+      <item itemvalue="Spring Boot.ItemsApplication (1)" />
+      <item itemvalue="Spring Boot.OrdersApplication (1)" />
+      <item itemvalue="Spring Boot.PaymentApplication (1)" />
+      <item itemvalue="Spring Boot.UsersApplication (1)" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.UsersApplication" />
+        <item itemvalue="Spring Boot.UsersApplication (1)" />
+        <item itemvalue="Spring Boot.PaymentApplication (1)" />
+        <item itemvalue="Spring Boot.ItemsApplication (1)" />
+        <item itemvalue="Spring Boot.OrdersApplication (1)" />
+        <item itemvalue="Spring Boot.CartApplication (1)" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.27397.103" />
-        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.27397.103" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.28539.13" />
+        <option value="bundled-js-predefined-d6986cc7102b-a71380e98a7c-JavaScript-IU-252.28539.13" />
       </set>
     </attachedChunks>
   </component>
@@ -287,6 +360,8 @@
       <workItem from="1766784654088" duration="323000" />
       <workItem from="1766786235064" duration="1068000" />
       <workItem from="1766835434932" duration="851000" />
+      <workItem from="1766868122687" duration="1989000" />
+      <workItem from="1766870147089" duration="648000" />
     </task>
     <task id="LOCAL-00001" summary="Users - Gateway - Eureka">
       <option name="closed" value="true" />
@@ -522,7 +597,8 @@
     <MESSAGE value="fixede order model" />
     <MESSAGE value="fixed order model" />
     <MESSAGE value="modifications in order" />
-    <option name="LAST_COMMIT_MESSAGE" value="modifications in order" />
+    <MESSAGE value="Frontend mainly" />
+    <option name="LAST_COMMIT_MESSAGE" value="Frontend mainly" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

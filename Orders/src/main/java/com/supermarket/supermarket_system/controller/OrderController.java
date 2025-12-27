@@ -95,7 +95,7 @@ public class OrderController {
 
 
     // Get orders by status (Admins see all, Users see only their own)
-    @GetMapping("/status")
+    @PostMapping("/status")
     public ResponseEntity<?> getOrdersByStatus(
             @RequestHeader("X-User-Id") Long userId,
             @RequestHeader("X-User-Role") String role,

@@ -63,8 +63,8 @@ const OrdersPage = () => {
   const getStatusIcon = (status) => {
     switch (status) {
       case 'PENDING': return <Clock className="h-5 w-5 text-yellow-600" />;
-      case 'CONFIRMED': return <CheckCircle className="h-5 w-5 text-blue-600" />;
-      case 'SHIPPED': return <TruckIcon className="h-5 w-5 text-purple-600" />;
+      case 'PROCESSING': return <CheckCircle className="h-5 w-5 text-blue-600" />;
+      case 'SHIPPING': return <TruckIcon className="h-5 w-5 text-purple-600" />;
       case 'DELIVERED': return <CheckCircle className="h-5 w-5 text-green-600" />;
       case 'CANCELLED': return <XCircle className="h-5 w-5 text-red-600" />;
       default: return <Package className="h-5 w-5 text-gray-600" />;
@@ -74,15 +74,15 @@ const OrdersPage = () => {
   const getStatusColor = (status) => {
     switch (status) {
       case 'PENDING': return 'bg-yellow-100 text-yellow-800';
-      case 'CONFIRMED': return 'bg-blue-100 text-blue-800';
-      case 'SHIPPED': return 'bg-purple-100 text-purple-800';
+      case 'PROCESSING': return 'bg-blue-100 text-blue-800';
+      case 'SHIPPING': return 'bg-purple-100 text-purple-800';
       case 'DELIVERED': return 'bg-green-100 text-green-800';
       case 'CANCELLED': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
-  const statusFilters = ['ALL', 'PENDING', 'CONFIRMED', 'SHIPPED', 'DELIVERED', 'CANCELLED'];
+  const statusFilters = ['ALL', 'PENDING', 'PROCESSING', 'SHIPPING', 'DELIVERED', 'CANCELLED'];
 
   if (loading) {
     return (
@@ -182,8 +182,8 @@ const OrdersPage = () => {
                     >
                       <option value="" disabled>Update Status</option>
                       <option value="PENDING">PENDING</option>
-                      <option value="CONFIRMED">CONFIRMED</option>
-                      <option value="SHIPPED">SHIPPED</option>
+                      <option value="PROCESSING">PROCESSING</option>
+                      <option value="SHIPPING">SHIPPING</option>
                       <option value="DELIVERED">DELIVERED</option>
                       <option value="CANCELLED">CANCELLED</option>
                     </select>

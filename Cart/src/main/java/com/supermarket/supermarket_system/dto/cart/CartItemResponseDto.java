@@ -6,6 +6,8 @@ public class CartItemResponseDto {
     private int quantity;
     private Double unitPrice;
     private Double subtotal;
+    private String name;
+    private String imageUrl;
 
     public Long getCartItemId() { return cartItemId; }
     public void setCartItemId(Long cartItemId) { this.cartItemId = cartItemId; }
@@ -21,5 +23,11 @@ public class CartItemResponseDto {
 
     public Double getSubtotal() { return subtotal; }
     public void setSubtotal(Double subtotal) { this.subtotal = subtotal; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 }
 
