@@ -1,3 +1,4 @@
+//Data Transfer Object for adding items to cart (though the controller doesn't use it yet).
 package com.supermarket.supermarket_system.dto.cart;
 
 import jakarta.validation.constraints.Min;

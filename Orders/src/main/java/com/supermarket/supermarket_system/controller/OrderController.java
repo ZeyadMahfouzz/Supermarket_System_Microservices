@@ -25,7 +25,7 @@ public class OrderController {
     private OrderMapper orderMapper;
 
     // Get specific order by ID (OWNER or ADMIN only)
-    @PostMapping("/details")
+    @GetMapping("/details")
     public ResponseEntity<?> getOrderById(
             @RequestHeader("X-User-Id") Long userId,
             @RequestHeader("X-User-Role") String role,
@@ -95,7 +95,7 @@ public class OrderController {
 
 
     // Get orders by status (Admins see all, Users see only their own)
-    @PostMapping("/status")
+    @GetMapping("/status")
     public ResponseEntity<?> getOrdersByStatus(
             @RequestHeader("X-User-Id") Long userId,
             @RequestHeader("X-User-Role") String role,
@@ -129,7 +129,7 @@ public class OrderController {
 
 
     // Update order status (ADMIN ONLY)
-    @PostMapping("/status/update")
+    @PatchMapping("/status/update")
     public ResponseEntity<?> updateOrderStatus(
             @RequestHeader("X-User-Role") String role,
             @Valid @RequestBody UpdateStatusRequestDto request) {
