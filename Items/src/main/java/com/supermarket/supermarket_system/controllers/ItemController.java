@@ -146,6 +146,9 @@ public class ItemController {
             if (body.containsKey("description") && body.get("description") != null) {
                 item.setDescription((String) body.get("description"));
             }
+            if (body.containsKey("imageUrl") && body.get("imageUrl") != null) {
+                item.setImageUrl((String) body.get("imageUrl"));
+            }
             return itemRepository.save(item);
         }).orElse(null);
 
