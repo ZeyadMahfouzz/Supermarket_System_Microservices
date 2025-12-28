@@ -21,8 +21,28 @@ export const itemsAPI = {
   },
 
   getItemById: async (id) => {
-    const response = await api.get(`/items/${id}`);
-    return response.data;
+    // Backend uses GET /items/details with @RequestBody which is non-standard
+    // Use axios POST as workaround or fetch all items and filter
+    try {
+      // Try to use POST method to send body data (more reliable)
+      const response = await api.post('/items/details', { id });
+      return response.data;
+    } catch (error) {
+      // If POST fails, try GET with params
+      console.warn('POST to /items/details failed, trying alternative');
+      try {
+        // Fallback: get all items and find the one we need
+        const allItems = await api.get('/items');
+        const item = allItems.data.find(item => item.id === id);
+        if (!item) {
+          throw new Error('Item not found');
+        }
+        return item;
+      } catch (fallbackError) {
+        console.error('Both methods failed to get item', error, fallbackError);
+        throw error;
+      }
+    }
   },
 
   createItem: async (itemData) => {
@@ -54,12 +74,20 @@ export const cartAPI = {
   },
 
   addItemToCart: async (itemId, quantity) => {
-    const response = await api.post('/cart/items', { itemId, quantity });
-    return response.data;
+    console.log('cartAPI: Sending add to cart request', { itemId, quantity });
+    try {
+      const response = await api.post('/cart/items', { itemId, quantity });
+      console.log('cartAPI: Add to cart successful', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('cartAPI: Add to cart failed', error);
+      console.error('cartAPI: Error response:', error.response?.data);
+      throw error;
+    }
   },
 
   updateCartItemQuantity: async (cartItemId, quantity) => {
-    const response = await api.put(`/cart/items/${cartItemId}`, { quantity });
+    const response = await api.put('/cart/items', { cartItemId, quantity });
     return response.data;
   },
 

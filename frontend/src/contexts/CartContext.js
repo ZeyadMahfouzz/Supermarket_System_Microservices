@@ -15,6 +15,7 @@ export const useCart = () => {
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
   const { isAuthenticated } = useAuth();
 
   const fetchCart = async () => {
@@ -39,14 +40,29 @@ export const CartProvider = ({ children }) => {
 
   const addItem = async (itemId, quantity = 1) => {
     try {
+      console.log('CartContext: Adding item to cart', { itemId, quantity });
+      console.log('CartContext: User authenticated?', isAuthenticated);
+      console.log('CartContext: UserId from localStorage:', localStorage.getItem('userId'));
+
       const updatedCart = await cartAPI.addItemToCart(itemId, quantity);
+      console.log('CartContext: Cart updated successfully', updatedCart);
+
       setCart(updatedCart);
+      setRefreshTrigger(prev => prev + 1); // Trigger refresh in other components
       return { success: true };
     } catch (error) {
-      console.error('Error adding item to cart:', error);
+      console.error('CartContext: Error adding item to cart:', error);
+      console.error('CartContext: Error response:', error.response);
+      console.error('CartContext: Error data:', error.response?.data);
+      console.error('CartContext: Error status:', error.response?.status);
+
+      const errorMessage = error.response?.data?.error ||
+                          error.response?.data?.message ||
+                          error.message ||
+                          'Failed to add item to cart';
       return {
         success: false,
-        message: error.response?.data?.message || 'Failed to add item to cart'
+        message: errorMessage
       };
     }
   };
@@ -55,12 +71,16 @@ export const CartProvider = ({ children }) => {
     try {
       const updatedCart = await cartAPI.updateCartItemQuantity(cartItemId, quantity);
       setCart(updatedCart);
+      setRefreshTrigger(prev => prev + 1); // Trigger refresh
       return { success: true };
     } catch (error) {
       console.error('Error updating quantity:', error);
+      const errorMessage = error.response?.data?.error ||
+                          error.response?.data?.message ||
+                          'Failed to update quantity';
       return {
         success: false,
-        message: error.response?.data?.message || 'Failed to update quantity'
+        message: errorMessage
       };
     }
   };
@@ -135,6 +155,7 @@ export const CartProvider = ({ children }) => {
     clearCart,
     checkout,
     cartItemCount: getCartItemCount(),
+    refreshTrigger, // Expose refresh trigger
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

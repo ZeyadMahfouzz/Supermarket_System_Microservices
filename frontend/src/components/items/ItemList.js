@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Search, Plus, Edit2, Trash2 } from 'lucide-react';
 import { itemsAPI } from '../../api/services';
 import { useAuth } from '../../contexts/AuthContext';
+import { useCart } from '../../contexts/CartContext';
 import ItemCard from './ItemCard';
 import ItemModal from './ItemModal';
 import Spinner from '../common/Spinner';
@@ -18,14 +19,18 @@ const ItemList = () => {
   const [editingItem, setEditingItem] = useState(null);
   const [modalMode, setModalMode] = useState('add');
   const { isAdmin } = useAuth();
+  const { refreshTrigger } = useCart(); // Get refresh trigger from cart context
 
   useEffect(() => {
     fetchItems();
   }, []);
 
+  // Refresh items when cart actions occur
   useEffect(() => {
-    filterItems();
-  }, [searchQuery, selectedCategory, items]);
+    if (refreshTrigger > 0) {
+      fetchItems();
+    }
+  }, [refreshTrigger]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchItems = async () => {
     try {
@@ -56,8 +61,17 @@ const ItemList = () => {
       filtered = filtered.filter(item => item.category === selectedCategory);
     }
 
+    // Regular users should not see out-of-stock items
+    if (!isAdmin) {
+      filtered = filtered.filter(item => item.quantity > 0);
+    }
+
     setFilteredItems(filtered);
-  }, [items, searchQuery, selectedCategory]);
+  }, [items, searchQuery, selectedCategory, isAdmin]);
+
+  useEffect(() => {
+    filterItems();
+  }, [filterItems]);
 
   const handleAddItem = () => {
     setModalMode('add');

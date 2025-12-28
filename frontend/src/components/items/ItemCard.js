@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShoppingCart, Check } from 'lucide-react';
+import { ShoppingCart, Check, AlertCircle } from 'lucide-react';
 import Card from '../common/Card';
 import Button from '../common/Button';
 import { useCart } from '../../contexts/CartContext';
@@ -9,12 +9,10 @@ const ItemCard = ({ item }) => {
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [stockError, setStockError] = useState(null);
 
   const { addItem } = useCart();
   const { isAuthenticated, isAdmin } = useAuth();
-
-  // Debug log
-  console.log('ItemCard - isAdmin:', isAdmin, 'isAuthenticated:', isAuthenticated);
 
   const handleAddToCart = async () => {
     if (!isAuthenticated) {
@@ -23,14 +21,32 @@ const ItemCard = ({ item }) => {
     }
 
     if (loading) {
-      console.log('Already adding to cart, ignoring click');
-      return; // Prevent multiple clicks while loading
+      return;
     }
 
-    console.log('Adding item to cart:', item.id, 'quantity:', quantity);
+    setStockError(null);
     setLoading(true);
 
     try {
+      // Check if we have enough stock locally first
+      if (item.quantity === 0) {
+        // Feature error - show to user
+        setStockError('This item is now out of stock');
+        alert('This item is now out of stock');
+        setLoading(false);
+        return;
+      }
+
+      if (quantity > item.quantity) {
+        // Feature error - show to user
+        setStockError(`Only ${item.quantity} items available in stock`);
+        alert(`Only ${item.quantity} items available in stock`);
+        setQuantity(Math.min(quantity, item.quantity));
+        setLoading(false);
+        return;
+      }
+
+      console.log('Adding to cart - Item ID:', item.id, 'Quantity:', quantity);
       const result = await addItem(item.id, quantity);
       console.log('Add to cart result:', result);
 
@@ -38,12 +54,56 @@ const ItemCard = ({ item }) => {
         setAdded(true);
         setTimeout(() => setAdded(false), 2000);
         setQuantity(1);
+        setStockError(null);
       } else {
-        alert(result.message || 'Failed to add item to cart');
+        // Check if it's a feature-related error or server error
+        const errorMsg = result.message || '';
+        const isFeatureError =
+          errorMsg.toLowerCase().includes('stock') ||
+          errorMsg.toLowerCase().includes('quantity') ||
+          errorMsg.toLowerCase().includes('available') ||
+          errorMsg.toLowerCase().includes('not found') ||
+          errorMsg.toLowerCase().includes('invalid') ||
+          errorMsg.toLowerCase().includes('not available');
+
+        if (isFeatureError) {
+          // Feature error - show to user
+          setStockError(result.message);
+          alert(result.message);
+        } else {
+          // Server/network error - log only, show generic message
+          console.error('Server error adding to cart:', result.message);
+          alert('Unable to add item to cart. Please try again later.');
+        }
       }
     } catch (error) {
       console.error('Error in handleAddToCart:', error);
-      alert('Failed to add item to cart');
+      console.error('Error details:', error.response?.data);
+
+      // Determine if it's a feature error or server error
+      const errorData = error.response?.data;
+      const errorMsg = errorData?.error || errorData?.message || error.message || '';
+      const statusCode = error.response?.status;
+
+      const isFeatureError =
+        errorMsg.toLowerCase().includes('stock') ||
+        errorMsg.toLowerCase().includes('quantity') ||
+        errorMsg.toLowerCase().includes('available') ||
+        errorMsg.toLowerCase().includes('not found') ||
+        errorMsg.toLowerCase().includes('invalid') ||
+        statusCode === 400 || // Bad request - usually validation
+        statusCode === 404;   // Not found
+
+      if (isFeatureError) {
+        // Feature error - show to user
+        const userMsg = errorData?.error || errorData?.message || 'Unable to add item to cart';
+        setStockError(userMsg);
+        alert(userMsg);
+      } else {
+        // Server error (5xx) or network error - log only
+        console.error('Server/network error:', statusCode, errorMsg);
+        alert('Unable to add item to cart. Please try again later.');
+      }
     } finally {
       setLoading(false);
     }
@@ -89,6 +149,14 @@ const ItemCard = ({ item }) => {
           {item.description || 'No description available'}
         </p>
 
+        {/* Stock Error Message */}
+        {stockError && (
+          <div className="flex items-center gap-2 p-2 bg-red-50 border border-red-200 rounded-lg mb-3">
+            <AlertCircle className="h-4 w-4 text-red-600 flex-shrink-0" />
+            <p className="text-xs text-red-600">{stockError}</p>
+          </div>
+        )}
+
         {/* Price and Stock */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex-1">
@@ -117,7 +185,7 @@ const ItemCard = ({ item }) => {
           </div>
 
           {/* Quantity Selector - Only for regular users */}
-          {!isAdmin && (
+          {!isAdmin && item.quantity > 0 && (
             <div className="flex items-center space-x-2">
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}

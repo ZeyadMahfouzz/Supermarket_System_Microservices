@@ -2,18 +2,26 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, ArrowLeft, Trash2 } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
+import { useToast } from '../hooks/useToast';
 import CartItem from '../components/cart/CartItem';
 import CartSummary from '../components/cart/CartSummary';
 import Button from '../components/common/Button';
 import Spinner from '../components/common/Spinner';
+import Toast from '../components/common/Toast';
 
 const CartPage = () => {
   const { cart, loading, clearCart } = useCart();
   const navigate = useNavigate();
+  const { toasts, showSuccess, showError, removeToast } = useToast();
 
   const handleClearCart = async () => {
     if (window.confirm('Are you sure you want to clear your cart?')) {
-      await clearCart();
+      const result = await clearCart();
+      if (result.success) {
+        showSuccess('Cart cleared successfully');
+      } else {
+        showError(result.message || 'Failed to clear cart');
+      }
     }
   };
 
@@ -81,7 +89,7 @@ const CartPage = () => {
                   key={item.cartItemId}
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  <CartItem item={item} />
+                  <CartItem item={item} onShowToast={showError} />
                 </div>
               ))}
             </div>
@@ -93,9 +101,21 @@ const CartPage = () => {
           </div>
         )}
       </div>
+
+      {/* Toast Notifications */}
+      <div className="fixed top-4 right-4 z-50 space-y-2">
+        {toasts.map((toast) => (
+          <Toast
+            key={toast.id}
+            message={toast.message}
+            type={toast.type}
+            duration={toast.duration}
+            onClose={() => removeToast(toast.id)}
+          />
+        ))}
+      </div>
     </div>
   );
 };
 
 export default CartPage;
-
